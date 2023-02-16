@@ -33,6 +33,7 @@ int main(void)
 			case SHOW_DAY:
 				//TODO
 				cout << "show day\n";
+
 				break;
 			case SHOW_THE_LONGEST_DAY:
 				//TODO
@@ -89,7 +90,7 @@ string separate_word(string line)
 int start_day(vector<string> &diary, string input_line)
 {
 	end_day(diary);
-	diary.push_back(input_line);
+	diary.push_back(input_line + '\n');
 	return 1;
 }
 
@@ -108,6 +109,6 @@ int last_day(vector<string> diary)
 
 int normal_text(vector<string> &diary, string input_line)
 {
-	diary[last_day(diary)] += '\n' + input_line;
+	diary[last_day(diary)] += input_line + '\n';
 	return 1;
 }
