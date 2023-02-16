@@ -50,7 +50,6 @@ int main(void)
 int input_detect(string line)
 {
 	string word = separate_word(line);
-	cout << __LINE__ << endl;
 	if (word == "start_day")
 		return START_DAY;
 	else if (word == "show_day")
@@ -69,14 +68,16 @@ string separate_word(string line)
 	char buffer;
 	int counter = 0;
 	string word;
-	while ((buffer = line[counter]) != ' ' && buffer != '\n')
+	line += '\0';
+	buffer = line[counter];
+	while (buffer != ' ' && buffer != '\0')
 	{
 		counter++;
 		cout << buffer << " " << counter << endl;
 		word += buffer;
+		buffer = line[counter];
 	}
 	
-	word += '\0';
 	return word;
 }
 
