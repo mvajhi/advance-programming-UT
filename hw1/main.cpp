@@ -9,49 +9,119 @@
 #define SHOW_THE_BEST_DAY 4
 #define NOT_FOUND -1
 #define OK 1
+#define DEFAULT_SUMMERY_LENGHT 20
 
 using namespace std;
 
+
 int input_detect(string line);
 string separate_word(string line);
-int start_day(vector<string> &diary, string input_line);
-int end_day(vector<string> &diary);
-int last_day(vector<string> diary);
-int normal_text(vector<string> &diary, string input_line);
-int show_day(vector<string> diary, string input_line);
-int find_day_with_date(vector<string> diary, string input_line);
+
+
+class day
+{
+private:
+	string text_value;
+	string date_value;
+
+public:
+	day(string str_date)
+	{
+		date_value = str_date.substr(10,9);
+	}
+	string date() { return date_value; }
+	void add_event(string event) { text_value += event + '\n'; }
+	string text() { return text_value + '\0'; }
+	int lengnth_text(){ return text_value.length(); }
+	string full_report() { return "start_day " + date_value + '\n' + text_value + "\n"; }
+	string summery_report(int length = DEFAULT_SUMMERY_LENGHT)
+	{
+		string summery_text;
+		for (int i = 0; i < length; i++)
+			summery_text += text_value[i];
+		return "start_day " + date_value + '\n' + summery_text + "...\n";
+	}
+	int positive_word (/*positive_list*/)
+	{
+		//TODO
+		cout << "TODO";
+		return 0;
+	}
+};
+
+class diary_class
+{
+private:
+	vector<day> days;
+	int find_day_with_date(string date)
+	{
+		for (int i = 0; i < days.size(); i++)
+			if (date == days[i].date())
+				return i;	
+		return NOT_FOUND;
+	}
+	int find_bigest_day()
+	{
+		int biggest_value = -1;
+		int biggest_num = NOT_FOUND;
+		for (int i = 0; i < days.size(); i++)
+		{
+			if (biggest_value < days[i].lengnth_text())
+			{
+				biggest_value = days[i].lengnth_text();
+				biggest_num = i;
+			}
+		}
+		return biggest_num;
+	}
+
+public:
+	void new_day(string date)
+	{
+		day buffer_day (date);
+		days.push_back(buffer_day);
+	}
+	void add_event(string event) { days.back().add_event(event); }
+	string show_day(string str_date)
+	{
+		int day_num = find_day_with_date (str_date.substr(9,16));
+		return days[day_num].full_report();
+	}
+	string show_the_longest_day()
+	{
+		return days[find_bigest_day()].summery_report();
+	}
+
+};
+
+
 
 int main(void)
 {
 	string line_buffer;
-	vector<string> diary;
+	diary_class diary;
 	while (getline(cin, line_buffer))
 	{
 		switch (input_detect(line_buffer))
 		{
 			case NORMAL_TEXT:
-				normal_text(diary, line_buffer);
+				diary.add_event(line_buffer);
 				break;
 			case START_DAY:
-				start_day(diary, line_buffer);
+				diary.new_day(line_buffer);
 				break;
 			case SHOW_DAY:
-				//TODO
-				cout << "show day\n";
-				end_day(diary);
-				show_day(diary, line_buffer);
+				cout << diary.show_day(line_buffer);
 				break;
 			case SHOW_THE_LONGEST_DAY:
 				//TODO
-				cout << "longest\n";
-				end_day(diary);
+				cout << diary.show_the_longest_day();
 				break;
 			case SHOW_THE_BEST_DAY:
 				//TODO
 				cout << "best\n";
-				end_day(diary);
 				break;
-			defult:
+			default:
 				cout << "some thing wrong " << __LINE__ << endl;
 		}
 	}
@@ -93,52 +163,3 @@ string separate_word(string line)
 	return word;
 }
 
-
-int start_day(vector<string> &diary, string input_line)
-{
-	end_day(diary);
-	diary.push_back(input_line + '\n');
-	return OK;
-}
-
-int end_day(vector<string> &diary)
-{
-	if (last_day(diary) < 0)
-		return 0;
-	diary[last_day(diary)] += '\0';
-	return OK;
-}
-
-int last_day(vector<string> diary)
-{
-	return diary.size() - 1;
-}
-
-int normal_text(vector<string> &diary, string input_line)
-{
-	diary[last_day(diary)] += input_line + '\n';
-	return OK;
-}
-
-int show_day(vector<string> diary, string input_line)
-{
-	int day_num = find_day_with_date(diary, input_line);
-	if (day_num == NOT_FOUND)
-	{
-		cout << "NOT FOUND\n";
-		return NOT_FOUND;
-	}
-	summarize(str
-	cout << diary[day_num];
-	return OK;
-}
-
-int find_day_with_date(vector<string> diary, string input_line)
-{
-	for (int i = 0; i < diary.size(); i++)
-	{
-		if (diary[i].substr(10,9) == input_line.substr(9,16))
-			return i;
-	}
-	return NOT_FOUND;
-}
