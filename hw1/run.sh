@@ -1,5 +1,5 @@
 #!/bin/bash
-g++ main.cpp -o main
+g++ -std=c++11 main.cpp -o main
 
 if [ $? -eq 0 ];
 then
