@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include <string.h>
+#include <sstream>
 
 #define NORMAL_TEXT 0
 #define START_DAY 1
@@ -10,6 +12,8 @@
 #define NOT_FOUND -1
 #define OK 1
 #define DEFAULT_SUMMERY_LENGHT 20
+#define POSITIVE_WORD_FILE_ADDRESS "positive-words.txt"
+#define START_DATE_IN_STRING 10
 
 using namespace std;
 
@@ -26,26 +30,36 @@ private:
 
 public:
 	day(string str_date)
-	{
-		date_value = str_date.substr(10,9);
+	{	
+		date_value = str_date.substr(START_DATE_IN_STRING, str_date.length() - START_DATE_IN_STRING);
 	}
 	string date() { return date_value; }
 	void add_event(string event) { text_value += event + '\n'; }
 	string text() { return text_value + '\0'; }
 	int lengnth_text(){ return text_value.length(); }
-	string full_report() { return "start_day " + date_value + '\n' + text_value + "\n"; }
+	string full_report() { return text_value; }
 	string summery_report(int length = DEFAULT_SUMMERY_LENGHT)
 	{
 		string summery_text;
 		for (int i = 0; i < length; i++)
 			summery_text += text_value[i];
-		return "start_day " + date_value + '\n' + summery_text + "...\n";
+		return date_value + '\n' + summery_text + "...\n";
 	}
-	int positive_word (/*positive_list*/)
+	int positive_word_count ()
 	{
-		//TODO
-		cout << "TODO";
-		return 0;
+		string positive_word;
+		stringstream text_stream(text_value);
+		string text_word;
+		int positive_word_counter = 0;
+		while (getline(text_stream, text_word, ' '))
+		{
+			ifstream positive_word_file(POSITIVE_WORD_FILE_ADDRESS);
+			while (getline(positive_word_file, positive_word, '\n'))
+				if (positive_word == text_word)
+					positive_word_counter++;
+			positive_word_file.close();
+		}
+		return positive_word_counter;
 	}
 };
 
@@ -74,6 +88,20 @@ private:
 		}
 		return biggest_num;
 	}
+	int find_best_day()
+	{
+		int best_value = -1;
+		int best_num = NOT_FOUND;
+		for (int i = 0; i < days.size(); i++)
+		{
+			if (best_value < days[i].positive_word_count())
+			{
+				best_value = days[i].positive_word_count();
+				best_num = i;
+			}
+		}
+		return best_num;
+	}
 
 public:
 	void new_day(string date)
@@ -90,6 +118,10 @@ public:
 	string show_the_longest_day()
 	{
 		return days[find_bigest_day()].summery_report();
+	}
+	string show_the_best_day()
+	{
+		return days[find_best_day()].summery_report();
 	}
 
 };
@@ -114,12 +146,10 @@ int main(void)
 				cout << diary.show_day(line_buffer);
 				break;
 			case SHOW_THE_LONGEST_DAY:
-				//TODO
 				cout << diary.show_the_longest_day();
 				break;
 			case SHOW_THE_BEST_DAY:
-				//TODO
-				cout << "best\n";
+				cout << diary.show_the_best_day();
 				break;
 			default:
 				cout << "some thing wrong " << __LINE__ << endl;
