@@ -30,7 +30,7 @@ int how_meny_number_enter()
 	return input;
 }
 
-
+//get numbers while count reach arg value and return vector of numbers
 vector<int> get_numbers(int count)
 {
 	vector<int> input_numbers;
@@ -43,6 +43,7 @@ vector<int> get_numbers(int count)
 	return input_numbers;
 }
 
+//get int vector and print numbers with using misag algorithm
 void misag_move(vector<int> &numbers, int state, int before_number, int counter)
 {
 	if (state >= numbers.size())
