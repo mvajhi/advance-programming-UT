@@ -47,7 +47,7 @@ int main()
 	vector<string> solution;
 	vector<vector<vector<int>>> history;
 	int is_find = solve(board, solution, history);
-	if(is_find == FIND_WAY)
+	if (is_find == FIND_WAY)
 		print_solution(solution);
 	else
 		cout << "Loser";
