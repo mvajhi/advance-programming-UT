@@ -127,9 +127,9 @@ string add_to_solution(vector<int> state, vector<int> next_state)
 {
 	char row[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G'};
 	string output = row[state[0]] + to_string(state[1] + 1) + " ";
-	if (next_state[0] - state[0] == MOVEMENT_SIZE)
+	if (next_state[0] - state[0] == -MOVEMENT_SIZE)
 		output += "UP";
-	else if (next_state[0] - state[0] == -MOVEMENT_SIZE)
+	else if (next_state[0] - state[0] == MOVEMENT_SIZE)
 		output += "DOWN";
 	else if (next_state[1] - state[1] == MOVEMENT_SIZE)
 		output += "RIGHT";
