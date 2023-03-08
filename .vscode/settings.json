@@ -5,6 +5,10 @@
                 "initializer_list": "cpp",
                 "utility": "cpp",
                 "fstream": "cpp",
-                "iosfwd": "cpp"
+                "iosfwd": "cpp",
+                "compare": "cpp",
+                "functional": "cpp",
+                "tuple": "cpp",
+                "type_traits": "cpp"
         }
 }

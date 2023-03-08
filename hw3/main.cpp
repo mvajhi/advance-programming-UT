@@ -2,132 +2,131 @@
 #include <vector>
 #include <string>
 
-#define NUMBER_OF_DAYS_TO_TEACH 2
-#define DEFAULT_TEACHING_DAYS 0
-#define HOUR_MINUTE 60
-#define TIME_STRING_SIZE 5
-#define DEFAULT_MINUTE_TIME 0
-#define DEFAULT_HOUR_TIME 0
+#define COUNT_DAY_SHOULD_TEACH 2
+#define TIME_SIZE 5
+#define HOUR_PER_MIN 60
 
 using namespace std;
 
-class Time;
-class lesson;
-class teacher;
-class school_schedule;
+struct teacher
+{
+        string name;
+        vector<string> lessons;
+        vector<int> free_days;
+};
+
+struct lesson
+{
+        string name;
+        vector<int> days_shoud_teach;
+        int start_time;
+        int end_time;
+};
+
+int input(vector<teacher> &teachers, vector<lesson> &lessons);
+int day_stoi(string str_day);
+int input_teachers(vector<teacher> &teachers);
+int input_lessons(vector<lesson> &lessons);
+int time_stoi(string time_str);
 
 int main()
 {
-        // Time t1, t2, t3;
-        // cout << "-----------------\n";
-        // Time t4("10:30");
-        // cout << "t4 : " << t4.str_time() << endl;
-        // cout << "-----------------\n";
-        // Time t5(10 ,30);
-        // cout << "t4 : " << t5.str_time() << endl;
-        // cout << "-----------------\n";
-        // Time t6(10 * HOUR_MINUTE + 30);
-        // cout << "t4 : " << t6.str_time() << endl;
-        // while (true)
-        // {
-        //         string t1_str, t2_str;
-        //         cin >> t1_str;
-        //         cin >> t2_str;
-        //         cout << "-----------------\n";
-        //         cout << "t1 hour: " << t1.hour() << endl;
-        //         cout << "-----------------\n";
-        //         cout << "t1 min: " << t1.minute() << endl;
-        //         cout << "-----------------\n";
-        //         t3 = t1 + t2;
-        //         cout << "tt+: " << t3.str_time() << endl;
-        //         cout << "-----------------\n";
-        //         t3 = t1 + 30;
-        //         cout << "t30+: " << t3.str_time() << endl;
-        //         cout << "-----------------\n";
-        //         cout << "t1 < t2: " << to_string(t1 < t2) << endl;
-        //         cout << "-----------------\n";
-        //         cout << "t1 <= t2: " << to_string(t1 <= t2) << endl;
-        //         cout << "-----------------\n";
-        //         cout << "t1 == t2: " << to_string(t1 == t2) << endl;
-        //         cout << "-----------------\n";
-        //         cout << "t1 > t2: " << to_string(t1 > t2) << endl;
-        //         cout << "-----------------\n";
-        //         cout << "t1 >= t2: " << to_string(t1 >= t2) << endl;
-        //         cout << "-----------------\n";
-
-        // }
-
+        // input
+        vector<teacher> teachers;
+        vector<lesson> lessons;
+        input(teachers, lessons);
         return 0;
 }
 
-class Time
+int input(vector<teacher> &teachers, vector<lesson> &lessons)
 {
-private:
-        int time_per_min;
 
-public:
-        Time(string str_time);
-        Time(int hour, int minute) { set_time(hour, minute); }
-        Time(int new_time_per_minute) { set_time(new_time_per_minute); }
-        Time() { set_time(DEFAULT_HOUR_TIME, DEFAULT_MINUTE_TIME); }
-        void set_time(int hour, int minute) { time_per_min = hour * HOUR_MINUTE + minute; }
-        void set_time(int new_time_per_minute) { time_per_min = new_time_per_minute; }
-        int per_min() { return time_per_min; }
-        int hour() { return time_per_min / HOUR_MINUTE; }
-        int minute() { return time_per_min % HOUR_MINUTE; };
-        string str_time() { return to_string(hour()) + ':' + to_string(minute()); }
-        Time operator+(int minute) { return (Time)this->time_per_min + minute; }
-        Time operator+(Time t2) { return (Time)(this->time_per_min + t2.time_per_min); }
-        bool operator<(Time t2) { return this->time_per_min < t2.time_per_min; }
-        bool operator<=(Time t2) { return this->time_per_min <= t2.time_per_min; }
-        bool operator==(Time t2) { return this->time_per_min == t2.time_per_min; }
-        bool operator>(Time t2) { return this->time_per_min > t2.time_per_min; }
-        bool operator>=(Time t2) { return this->time_per_min >= t2.time_per_min; }
-};
-
-Time::Time(string str_time)
-{
-        if (str_time.length() != TIME_STRING_SIZE)
-        {
-                cout << "invalid arg to set time. set default time try again\n";
-                set_time(DEFAULT_HOUR_TIME, DEFAULT_MINUTE_TIME);
-        }
-        set_time(stoi(str_time.substr(0, 2)), stoi(str_time.substr(3, 2)));
+        input_teachers(teachers);
+        input_lessons(lessons);
+        return 0;
 }
 
-class lesson
+int day_stoi(string day)
 {
-private:
-        string name;
-        vector<int> teaching_days;
-        vector<teacher> teachers;
-        Time start;
-        Time end;
+        vector<string> week = {"Saturday", "Sunday", "Monday", "Tuesday",
+                               "Wednesday", "Thusday", "Friday"};
 
-public:
-        lesson(/* args */);
-        bool can_hold_class(Time now, int week_day);
-};
+        for (int i = 0; i < week.size(); i++)
+                if (day == week[i])
+                        return i;
 
-class teacher
+        cout << "error day stoi\n";
+        return -1;
+}
+
+int input_teachers(vector<teacher> &teachers)
 {
-private:
-        string name;
-        vector<lesson> lessons;
-        vector<int> free_days;
+        int teachers_count = 0;
 
-public:
-        teacher(/* args */);
-        bool is_busy(Time now, int week_day);
-};
+        cin >> teachers_count;
+        for (int i = 0; i < teachers_count; i++)
+        {
+                teacher new_teacher;
+                int free_days_count = 0;
+                int lessons_count = 0;
+                cin >> new_teacher.name;
+                cin >> free_days_count;
+                for (int i = 0; i < free_days_count; i++)
+                {
+                        string new_day;
+                        cin >> new_day;
+                        new_teacher.free_days.push_back(day_stoi(new_day));
+                }
+                cin >> lessons_count;
+                for (int i = 0; i < lessons_count; i++)
+                {
+                        string new_lesson;
+                        cin >> new_lesson;
+                        new_teacher.lessons.push_back(new_lesson);
+                }
+                teachers.push_back(new_teacher);
+        }
+        return 0;
+}
 
-class school_schedule
+int input_lessons(vector<lesson> &lessons)
 {
-private:
-        vector<lesson> lessons;
-        vector<teacher> teachers;
-        Time break_time;
+        int lesson_count = 0;
 
-public:
-        school_schedule(Time break_time);
-};
+        cin >> lesson_count;
+        for (int i = 0; i < lesson_count; i++)
+        {
+                lesson new_lesson;
+                
+                cin >> new_lesson.name;
+
+                for (int i = 0; i < COUNT_DAY_SHOULD_TEACH; i++)
+                {
+                        string new_day;
+                        cin >> new_day;
+                        new_lesson.days_shoud_teach.push_back(day_stoi(new_day));
+                }
+
+                string start_time_str;
+                string end_time_str;
+                cin >> start_time_str >> end_time_str;
+                new_lesson.start_time = time_stoi(start_time_str);
+                new_lesson.end_time = time_stoi(end_time_str);
+
+                lessons.push_back(new_lesson);
+        }
+        return 0;
+}
+
+/*
+input "hh:mm"
+return hh * 60 + mm
+*/
+int time_stoi(string time_str)
+{
+        if (time_str.length() != TIME_SIZE)
+                cout << "Invalid time input\n";
+        int hour = stoi(time_str.substr(0, 2));
+        int min = stoi(time_str.substr(3, 2));
+        return hour * HOUR_PER_MIN + min;
+}
