@@ -9,6 +9,7 @@
                 "compare": "cpp",
                 "functional": "cpp",
                 "tuple": "cpp",
-                "type_traits": "cpp"
+                "type_traits": "cpp",
+                "vector": "cpp"
         }
 }
