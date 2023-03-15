@@ -46,7 +46,7 @@ int day_stoi(string str_day);
 int input_teachers(vector<teacher> &teachers);
 int input_lessons(vector<lesson> &lessons);
 int time_stoi(string time_str);
-int create_schedule_for_school(vector<teacher> &teachers, vector<lesson> &lessons);
+int create_schedule_for_school(vector<schedule_part> *schedules, vector<teacher> &teachers, vector<lesson> &lessons);
 int create_schedule_for_class(vector<teacher> &teachers, vector<lesson> &lessons,
                               vector<schedule_part> &schedule);
 vector<pair<lesson, teacher>> sorted_available_lessons_with_teachers_list(vector<teacher> teachers, vector<lesson> lessons, int day, int time);
@@ -78,7 +78,8 @@ int main()
 
         input(teachers, lessons);
 
-        create_schedule_for_school(teachers, lessons);
+        vector<schedule_part> schedules[NUMBER_OF_CLASS];
+        create_schedule_for_school(schedules, teachers, lessons);
 
         return 0;
 }
@@ -176,9 +177,8 @@ int time_stoi(string time_str)
         return hour * HOUR_PER_MIN + min;
 }
 
-int create_schedule_for_school(vector<teacher> &teachers, vector<lesson> &lessons)
+int create_schedule_for_school(vector<schedule_part> *schedules, vector<teacher> &teachers, vector<lesson> &lessons)
 {
-        vector<schedule_part> schedules[NUMBER_OF_CLASS];
         for (int i = 0; i < NUMBER_OF_CLASS; i++)
                 create_schedule_for_class(teachers, lessons, schedules[i]);
         return 0;
@@ -381,3 +381,4 @@ bool is_time_full(vector<schedule_part> schedule, int day, int time)
                         return true;        
         return false;
 }
+
