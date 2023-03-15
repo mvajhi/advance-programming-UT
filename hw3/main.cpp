@@ -62,6 +62,10 @@ pair<lesson, teacher> choosing_class_from_list(vector<pair<lesson, teacher>> lis
 bool before_added_in_schedule(pair<lesson, teacher> the_class, vector<schedule_part> schedule);
 void add_to_schedule(vector<schedule_part> &schedule, pair<lesson, teacher> the_class, int week_day, int time);
 bool is_time_full(vector<schedule_part> schedule, int day, int time);
+void output(vector<schedule_part> *schedules, vector<lesson> lessons);
+vector<schedule_part> find_lessons_in_schedule(string lesson_name, vector<schedule_part> schedule);
+string time_itos(int int_time);
+string make_two_digit(string number);
 
 const int START_SHOOL = time_stoi(START_SCHOOL_STR);
 const int END_SCHOOL = time_stoi(END_SCHOOL_STR);
@@ -80,6 +84,8 @@ int main()
 
         vector<schedule_part> schedules[NUMBER_OF_CLASS];
         create_schedule_for_school(schedules, teachers, lessons);
+
+        output(schedules, lessons);
 
         return 0;
 }
@@ -339,46 +345,93 @@ pair<lesson, teacher> choosing_class_from_list(vector<pair<lesson, teacher>> lis
 
 bool before_added_in_schedule(pair<lesson, teacher> the_class, vector<schedule_part> schedule)
 {
-        int repeat_counter = 0;
+        int repeat_count = find_lessons_in_schedule(the_class.first.name, schedule).size();
 
-        for (auto i : schedule)
-                if (the_class.first.name == i.this_time_lesson.name)
-                        repeat_counter++;
-
-        if (repeat_counter == COUNT_DAY_SHOULD_TEACH)
+        if (repeat_count == COUNT_DAY_SHOULD_TEACH)
                 return true;
         else
                 return false;
 }
 
+vector<schedule_part> find_lessons_in_schedule(string lesson_name, vector<schedule_part> schedule)
+{
+        vector<schedule_part> schedule_part_have_this;
+
+        for (auto i : schedule)
+                if (lesson_name == i.this_time_lesson.name)
+                        schedule_part_have_this.push_back(i);
+        
+        return schedule_part_have_this;
+}
+
 void add_to_schedule(vector<schedule_part> &schedule, pair<lesson, teacher> the_class, int week_day, int time)
 {
-                schedule_part new_part;
-                new_part.start_time = time;
-                new_part.end_time = time + CLASS_TIME;
-                new_part.this_time_lesson = the_class.first;
-                new_part.this_time_teacher = the_class.second;
-                
-                if (the_class.first.name != BREAK_CLASS.first.name)
+        schedule_part new_part;
+        new_part.start_time = time;
+        new_part.end_time = time + CLASS_TIME;
+        new_part.this_time_lesson = the_class.first;
+        new_part.this_time_teacher = the_class.second;
+
+        if (the_class.first.name != BREAK_CLASS.first.name)
+        {
+                for (auto i : the_class.first.days_shoud_teach)
                 {
-                        for (auto i : the_class.first.days_shoud_teach)
-                        {
-                                new_part.week_day = i;
-                                schedule.push_back(new_part);
-                        }
-                }
-                else
-                {
-                        new_part.week_day = week_day;
+                        new_part.week_day = i;
                         schedule.push_back(new_part);
                 }
+        }
+        else
+        {
+                new_part.week_day = week_day;
+                schedule.push_back(new_part);
+        }
 }
 
 bool is_time_full(vector<schedule_part> schedule, int day, int time)
 {
         for (auto i : schedule)
                 if (i.start_time == time && i.week_day == day)
-                        return true;        
+                        return true;
         return false;
 }
 
+void output(vector<schedule_part> *schedules, vector<lesson> lessons)
+{
+        for (auto i : lessons)
+        {
+                cout << i.name << endl;
+                for (int j = 0; j < NUMBER_OF_CLASS; j++)
+                {
+                        vector<schedule_part> parts_have_this_lesson = find_lessons_in_schedule(i.name, schedules[j]);
+                        
+                        if (parts_have_this_lesson.size() == 0)
+                                cout << "Not Found" << endl;
+                        else
+                        {
+                                string teacher_name = parts_have_this_lesson[0].this_time_teacher.name;
+                                string start_time = time_itos(parts_have_this_lesson[0].start_time);
+                                string end_time = time_itos(parts_have_this_lesson[0].end_time);
+
+                                cout << teacher_name << ": " << start_time << " " << end_time << endl;
+                        }
+                }
+                        
+        }
+}
+
+string time_itos(int int_time)
+{
+        string hour = make_two_digit(to_string(int_time / 60));
+        string min = make_two_digit(to_string(int_time % 60));
+
+        string clock_form = hour + ":" + min;
+
+        return clock_form;
+}
+
+string make_two_digit(string number)
+{
+        while (number.length() < 2)
+                number = "0" + number;
+        return number;
+}
