@@ -66,6 +66,10 @@ void output(vector<schedule_part> *schedules, vector<lesson> lessons);
 vector<schedule_part> find_lessons_in_schedule(string lesson_name, vector<schedule_part> schedule);
 string time_itos(int int_time);
 string make_two_digit(string number);
+vector<pair<lesson, teacher>> check_classes_available_next_time(vector<pair<lesson, teacher>> classes, int today,
+                                                                int time, vector<schedule_part> schedule);
+bool can_have_class(pair<lesson, teacher> the_class, int day, int time, vector<schedule_part> schedule);
+bool lesson_sort_method(lesson l1, lesson l2);
 
 const int START_SHOOL = time_stoi(START_SCHOOL_STR);
 const int END_SCHOOL = time_stoi(END_SCHOOL_STR);
@@ -203,8 +207,9 @@ int create_schedule_for_class(vector<teacher> &teachers, vector<lesson> &lessons
                 }
 
                 vector<pair<lesson, teacher>> lessons_with_teachers_list = sorted_available_lessons_with_teachers_list(teachers, lessons, today, now);
+                vector<pair<lesson, teacher>> classes_availeble_next_day = check_classes_available_next_time(lessons_with_teachers_list, today, now, schedule);
 
-                pair<lesson, teacher> chosen_class = choosing_class_from_list(lessons_with_teachers_list, schedule);
+                pair<lesson, teacher> chosen_class = choosing_class_from_list(classes_availeble_next_day, schedule);
 
                 add_to_schedule(schedule, chosen_class, today, now);
 
@@ -347,7 +352,7 @@ bool before_added_in_schedule(pair<lesson, teacher> the_class, vector<schedule_p
 {
         int repeat_count = find_lessons_in_schedule(the_class.first.name, schedule).size();
 
-        if (repeat_count == COUNT_DAY_SHOULD_TEACH)
+        if (repeat_count != 0)
                 return true;
         else
                 return false;
@@ -360,7 +365,7 @@ vector<schedule_part> find_lessons_in_schedule(string lesson_name, vector<schedu
         for (auto i : schedule)
                 if (lesson_name == i.this_time_lesson.name)
                         schedule_part_have_this.push_back(i);
-        
+
         return schedule_part_have_this;
 }
 
@@ -397,13 +402,14 @@ bool is_time_full(vector<schedule_part> schedule, int day, int time)
 
 void output(vector<schedule_part> *schedules, vector<lesson> lessons)
 {
+        sort(lessons.begin(), lessons.end(), lesson_sort_method);
         for (auto i : lessons)
         {
                 cout << i.name << endl;
                 for (int j = 0; j < NUMBER_OF_CLASS; j++)
                 {
                         vector<schedule_part> parts_have_this_lesson = find_lessons_in_schedule(i.name, schedules[j]);
-                        
+
                         if (parts_have_this_lesson.size() == 0)
                                 cout << "Not Found" << endl;
                         else
@@ -415,9 +421,10 @@ void output(vector<schedule_part> *schedules, vector<lesson> lessons)
                                 cout << teacher_name << ": " << start_time << " " << end_time << endl;
                         }
                 }
-                        
         }
 }
+
+bool lesson_sort_method(lesson l1, lesson l2) { return l1.name.compare(l2.name) < 0 ? true : false; }
 
 string time_itos(int int_time)
 {
@@ -434,4 +441,33 @@ string make_two_digit(string number)
         while (number.length() < 2)
                 number = "0" + number;
         return number;
+}
+
+vector<pair<lesson, teacher>> check_classes_available_next_time(vector<pair<lesson, teacher>> classes, int today, int time, vector<schedule_part> schedule)
+{
+        vector<pair<lesson, teacher>> classes_availeble_next_day;
+
+        for (auto i : classes)
+        {
+                int next_day = i.first.days_shoud_teach[0] == today
+                                   ? i.first.days_shoud_teach[1]
+                                   : i.first.days_shoud_teach[0];
+
+                if (can_have_class(i, next_day, time, schedule))
+                        classes_availeble_next_day.push_back(i);
+        }
+        return classes_availeble_next_day;
+}
+
+bool can_have_class(pair<lesson, teacher> the_class, int day, int time, vector<schedule_part> schedule)
+{
+        if (is_time_full(schedule, day, time))
+                return false;
+
+        vector<lesson> class_lesson = {the_class.first};
+        vector<teacher> class_teacher = {the_class.second};
+        if (sorted_available_lessons_with_teachers_list(class_teacher, class_lesson, day, time).size() == 0)
+                return false;
+
+        return true;
 }
