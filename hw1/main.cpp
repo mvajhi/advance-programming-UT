@@ -43,6 +43,8 @@ public:
 		string summery_text;
 		for (int i = 0; i < length; i++)
 			summery_text += text_value[i];
+		if (text_value.size() <= DEFAULT_SUMMERY_LENGHT)
+			return date_value + '\n' + text_value;
 		return date_value + '\n' + summery_text + "...\n";
 	}
 	int positive_word_count ()
