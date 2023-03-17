@@ -16,12 +16,15 @@
 
 using namespace std;
 
+struct schedule_part;
+
 struct teacher
 {
         string name;
         vector<string> lessons;
         vector<int> free_days;
-        vector<pair<int, int>> busy_time;
+        vector<schedule_part> busy_time;
+        // TODO save busy time per day
 };
 
 struct lesson
@@ -55,9 +58,9 @@ vector<pair<lesson, teacher>> find_lessons_have_teacher(int day, int time, vecto
 bool sorting_class_method(pair<lesson, teacher> class1, pair<lesson, teacher> class2);
 bool have_this_lesson(string the_lesson_name, vector<string> lessons_name);
 bool free_in_this_day(int the_day, vector<int> free_days);
-bool free_in_this_time(int start_time, int end_time, vector<pair<int, int>> busy_time);
+bool free_in_this_time(int day, int start_time, int end_time, vector<schedule_part> busy_time);
 void update_time(int &day, int &clock);
-void add_to_busy_time(vector<teacher> &teachers, string teacher_name, int start_time, int end_time);
+void add_to_busy_time(vector<teacher> &teachers, pair<lesson, teacher> the_class, int now);
 pair<lesson, teacher> choosing_class_from_list(vector<pair<lesson, teacher>> list, vector<schedule_part> schedule);
 bool before_added_in_schedule(pair<lesson, teacher> the_class, vector<schedule_part> schedule);
 void add_to_schedule(vector<schedule_part> &schedule, pair<lesson, teacher> the_class, int week_day, int time);
@@ -214,7 +217,7 @@ int create_schedule_for_class(vector<teacher> &teachers, vector<lesson> &lessons
                 add_to_schedule(schedule, chosen_class, today, now);
 
                 if (chosen_class.first.name != BREAK_CLASS.first.name)
-                        add_to_busy_time(teachers, chosen_class.second.name, now, now + CLASS_TIME);
+                        add_to_busy_time(teachers, chosen_class, now);
 
                 update_time(today, now);
         }
@@ -264,7 +267,7 @@ vector<pair<lesson, teacher>> find_lessons_have_teacher(int day, int time, vecto
                                 continue;
                         if (!free_in_this_day(day, j.free_days))
                                 continue;
-                        if (!free_in_this_time(time, time + CLASS_TIME, j.busy_time))
+                        if (!free_in_this_time(day, time, time + CLASS_TIME, j.busy_time))
                                 continue;
 
                         lessons_have_teacher.push_back(make_pair(i, j));
@@ -310,14 +313,16 @@ bool free_in_this_day(int the_day, vector<int> free_days)
         return false;
 }
 
-bool free_in_this_time(int start_time, int end_time, vector<pair<int, int>> busy_time)
+bool free_in_this_time(int day, int start_time, int end_time, vector<schedule_part> busy_time)
 {
         for (auto i : busy_time)
-                if (i.first <= start_time && start_time <= i.second)
+                if (day != i.week_day)
+                        continue;
+                else if (i.start_time <= start_time && start_time <= i.end_time)
                         return false;
-                else if (start_time <= i.second && i.second <= end_time)
+                else if (start_time <= i.end_time && i.end_time <= end_time)
                         return false;
-                else if (start_time <= i.first && i.first <= end_time)
+                else if (start_time <= i.start_time && i.start_time <= end_time)
                         return false;
         return true;
 }
@@ -333,11 +338,23 @@ void update_time(int &day, int &clock)
         }
 }
 
-void add_to_busy_time(vector<teacher> &teachers, string teacher_name, int start_time, int end_time)
+void add_to_busy_time(vector<teacher> &teachers, pair<lesson, teacher> the_class, int time)
 {
+        schedule_part new_part;
+        new_part.week_day = the_class.first.days_shoud_teach[0];
+        new_part.start_time = time;
+        new_part.end_time = time + CLASS_TIME;
+        new_part.this_time_lesson = the_class.first;
+        new_part.this_time_teacher = the_class.second;
+
+        string teacher_name = the_class.second.name;
         for (int i = 0; i < teachers.size(); i++)
                 if (teachers[i].name == teacher_name)
-                        teachers[i].busy_time.push_back(make_pair(start_time, end_time));
+                {
+                        teachers[i].busy_time.push_back(new_part);
+                        new_part.week_day = the_class.first.days_shoud_teach[1];
+                        teachers[i].busy_time.push_back(new_part);
+                }
 }
 
 pair<lesson, teacher> choosing_class_from_list(vector<pair<lesson, teacher>> list, vector<schedule_part> schedule)
