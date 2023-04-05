@@ -82,7 +82,6 @@ public:
         Team(int team_id, Employee *team_head, vector<Employee *> team_members, int bonus_min_work, float bonus_max_variance);
 };
 
-
 class Level
 {
 private:
@@ -94,13 +93,8 @@ private:
         int tax_perecentage;
 
 public:
-        bool set_name(string name_level);
-        void set_base_salary(int base_salary_level) { base_salary = base_salary_level; }
-        void set_salary_per_hour(int salary_per_hour_level) { salary_per_hour = salary_per_hour_level; }
-        void set_salary_per_extra_hour(int salary_per_extra_hour_level) { salary_per_extra_hour = salary_per_extra_hour_level; }
-        void set_offcial_working_hours(int offcial_working_hours_level) { offcial_working_hours = offcial_working_hours_level; }
-        bool set_tax_perecentage(int tax_perecentage_level);
-        string get_name() { return name; }
+        Level(string name_level, int base_salary_level, int salary_per_hour_level,
+              int salary_per_extra_hour_level, int offcial_working_hours_level, int tax_perecentage_level);
 };
 
 // TODO get address from arg
@@ -175,23 +169,15 @@ void Salary_manager::add_levels_with_dectionary(vector<map<string, string>> leve
 {
         for (auto i : level_dectionary)
         {
-                Level *new_level = new Level;
-                for (auto j : i)
-                {
-                        if (j.first == NAME_INDEX_IN_CONFIGS_CSV)
-                                new_level->set_name(j.second);
-                        else if (j.first == BASE_SALARY_INDEX_IN_CONFIGS_CSV)
-                                new_level->set_base_salary(stoi(j.second));
-                        else if (j.first == SALARY_PER_HOUR_INDEX_IN_CONFIGS_CSV)
-                                new_level->set_salary_per_hour(stoi(j.second));
-                        else if (j.first == SALARY_PER_EXTRA_HOUR_INDEX_IN_CONFIGS_CSV)
-                                new_level->set_salary_per_extra_hour(stoi(j.second));
-                        else if (j.first == OFFCIAL_WORKING_HOURS_INDEX_IN_CONFIGS_CSV)
-                                new_level->set_offcial_working_hours(stoi(j.second));
-                        else if (j.first == TAX_PERECENTAGE_INDEX_IN_CONFIGS_CSV)
-                                new_level->set_tax_perecentage(stoi(j.second));
-                }
-                employee_levels.insert(pair(new_level->get_name(), new_level));
+                Level *new_level = new Level(
+                    i[NAME_INDEX_IN_CONFIGS_CSV],
+                    stoi(i[BASE_SALARY_INDEX_IN_CONFIGS_CSV]),
+                    stoi(i[SALARY_PER_HOUR_INDEX_IN_CONFIGS_CSV]),
+                    stoi(i[SALARY_PER_EXTRA_HOUR_INDEX_IN_CONFIGS_CSV]),
+                    stoi(i[OFFCIAL_WORKING_HOURS_INDEX_IN_CONFIGS_CSV]),
+                    stoi(i[TAX_PERECENTAGE_INDEX_IN_CONFIGS_CSV]));
+
+                employee_levels.insert(pair(i[NAME_INDEX_IN_CONFIGS_CSV], new_level));
         }
 }
 
@@ -231,22 +217,14 @@ Team::Team(int team_id, Employee *team_head, vector<Employee *> team_members, in
         bonus_working_hours_max_variance = bonus_max_variance;
 }
 
-bool Level::set_name(string name_level)
+Level::Level(string name_level, int base_salary_level, int salary_per_hour_level,
+             int salary_per_extra_hour_level, int offcial_working_hours_level, int tax_perecentage_level)
 {
-        for (auto i : LEVEL_NAMES)
-                if (i == name_level)
-                {
-                        name = name_level;
-                        return true;
-                }
-
-        return false;
-}
-
-bool Level::set_tax_perecentage(int tax_perecentage_level)
-{
-        if (tax_perecentage_level < 0 && tax_perecentage_level > 100)
-                return false;
+        name = name_level;
+        base_salary = base_salary_level;
+        salary_per_hour = salary_per_hour_level;
+        salary_per_extra_hour = salary_per_extra_hour_level;
+        offcial_working_hours = offcial_working_hours_level;
         tax_perecentage = tax_perecentage_level;
-        return true;
 }
+
