@@ -11,10 +11,14 @@ using namespace std;
 class Salary_manager;
 class Employee;
 class Team;
-class Working_interval;
+class Working_time_manager;
 class Level;
 
-vector<string> dumping_CSV_file_into_memory_line_by_line(string file_address);
+struct Time_interval
+{
+        int start;
+        int end;
+};
 
 int main()
 {
@@ -41,8 +45,7 @@ private:
         int age;
         string level;
         Level *level_details;
-        int working_day;
-        Working_interval working_interval;
+        Working_time_manager working_times;
 
 public:
         Employee(/* args */);
@@ -63,14 +66,12 @@ public:
         Team(/* args */);
 };
 
-class Working_interval
+class Working_time_manager
 {
 private:
-        int start_time;
-        int end_time;
-
+        vector<pair<int, Time_interval>> times;
 public:
-        Working_interval(/*arg*/);
+        Working_time_manager(/*arg*/);
 };
 
 class Level
