@@ -43,7 +43,6 @@ private:
         int id;
         string name;
         int age;
-        string level;
         Level *level_details;
         Working_time_manager working_times;
 
@@ -77,6 +76,7 @@ public:
 class Level
 {
 private:
+        string name;
         int base_salary;
         int salary_per_hour;
         int salary_per_extra_hour;
