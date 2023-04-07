@@ -11,8 +11,13 @@ using namespace std;
 const string SPREATE_CHAR_IN_CSV = ",";
 const string SPREATE_MEMBER_IN_TEAM_CSV = "$";
 const char SPREATE_TIME_RANGE_IN_CSV = '-';
+const string SPREATE_2_EMPLOYEE_CLI_OUTPUT = "---\n";
 const int MONTH_LENGTH = 30;
 const int DAY_LENGTH = 24;
+const int DEFAULT_TEAM_BONUS = 0;
+
+const string EMPLOYEE_NOT_FOUND_MASSAGE = "EMPLOYEE_NOT_FOUND";
+const string EMPLOYEE_WITHOUT_TEAM_MASSAGE = "N/A";
 
 const string NAME_INDEX_IN_CONFIGS_CSV = "level";
 const string BASE_SALARY_INDEX_IN_CONFIGS_CSV = "base_salary";
@@ -49,6 +54,16 @@ struct Time_interval
         int end;
 };
 
+struct Level
+{
+        string name;
+        int base_salary;
+        int salary_per_hour;
+        int salary_per_extra_hour;
+        int offcial_working_hours;
+        float tax_perecentage;
+};
+
 class Salary_manager
 {
 private:
@@ -69,6 +84,8 @@ public:
         ~Salary_manager();
         void import_csv_files(string employee_file_address, string team_file_address,
                               string working_hours_file_address, string salary_config_file_address);
+        string report_salaries();
+        string employee_report(int id);
 };
 
 class Working_time_manager
@@ -80,6 +97,8 @@ private:
 
 public:
         int add_new_time(int day, string range);
+        int total_work();
+        int get_absent_day_count();
 };
 
 class Employee
@@ -89,11 +108,20 @@ private:
         string name;
         int age;
         Level *level_details;
+        Team *team;
         Working_time_manager working_times;
+        int total_earning();
+        int tax();
+        int salary();
+        int bonus();
+        bool have_team() { return team != NULL; }
 
 public:
         Employee(int employee_id, string employee_name, int employee_age, Level *employee_level);
         int add_new_work_time(int day, string range) { return working_times.add_new_time(day, range); }
+        void added_to_team(Team *employee_team) { team = employee_team; }
+        string summery_report();
+        string full_report();
 };
 
 class Team
@@ -103,25 +131,16 @@ private:
         Employee *head;
         vector<Employee *> members;
         int bonus_min_working_hours;
+        float bonus_percentage;
         float bonus_working_hours_max_variance;
+
+        //TODO
+        bool have_bonus() { return true; }
 
 public:
         Team(int team_id, Employee *team_head, vector<Employee *> team_members, int bonus_min_work, float bonus_max_variance);
-};
-
-class Level
-{
-private:
-        string name;
-        int base_salary;
-        int salary_per_hour;
-        int salary_per_extra_hour;
-        int offcial_working_hours;
-        int tax_perecentage;
-
-public:
-        Level(string name_level, int base_salary_level, int salary_per_hour_level,
-              int salary_per_extra_hour_level, int offcial_working_hours_level, int tax_perecentage_level);
+        int get_id() { return id; }
+        float get_bonus() { return have_bonus() ? bonus_percentage : 0; }
 };
 
 // TODO get address from arg
@@ -136,7 +155,8 @@ int main()
         the_salary_manager.import_csv_files(employee_file_address, team_file_address,
                                             working_hours_file_address, salary_config_file_address);
 
-        cout << "end\n";
+        cout << the_salary_manager.report_salaries() << endl;
+        cout << the_salary_manager.employee_report(6);
 
         return 0;
 }
@@ -147,6 +167,74 @@ Employee::Employee(int employee_id, string employee_name, int employee_age, Leve
         name = employee_name;
         age = employee_age;
         level_details = employee_level;
+        team = NULL;
+}
+
+string Employee::summery_report()
+{
+        string output;
+        output += "ID: " + to_string(id) + "\n";
+        output += "Name: " + name + "\n";
+        output += "Total Hours Working: " + to_string(working_times.total_work()) + "\n";
+        output += "Total Earning: " + to_string(total_earning()) + "\n";
+
+        return output;
+}
+
+string Employee::full_report()
+{
+        string output;
+        output += "ID: " + to_string(id) + "\n";
+        output += "Name: " + name + "\n";
+        output += "Age: " + to_string(age) + "\n";
+        output += "Level: " + level_details->name + "\n";
+        output += "Team ID: ";
+        if (team == NULL)
+                output += EMPLOYEE_WITHOUT_TEAM_MASSAGE + "\n";
+        else
+                output += to_string(team->get_id()) + "\n";
+        output += "Total Hours Working: " + to_string(working_times.total_work()) + "\n";
+        output += "Absent Days: " + to_string(working_times.get_absent_day_count()) + "\n";
+        output += "Salary: " + to_string(salary()) + "\n";
+        output += "Bonus: " + to_string(bonus()) + "\n";
+        output += "Tax: " + to_string(tax()) + "\n";
+        output += "Total Earning: " + to_string(total_earning()) + "\n";
+
+        return output;
+}
+
+int Employee::total_earning()
+{
+        return (salary() + bonus()) * (1 - level_details->tax_perecentage);
+}
+
+int Employee::tax()
+{
+        return (salary() + bonus()) * level_details->tax_perecentage;
+}
+
+int Employee::salary()
+{
+        int sum = 0;
+        int total_hours = working_times.total_work();
+        if (total_hours > level_details->offcial_working_hours)
+        {
+                sum += level_details->salary_per_hour * level_details->offcial_working_hours;
+                sum += level_details->salary_per_extra_hour * (total_hours - level_details->offcial_working_hours);
+        }
+        else
+        {
+                sum += level_details->salary_per_hour * total_hours;
+        }
+
+        return sum;
+}
+
+int Employee::bonus()
+{
+        if (!have_team())
+                return 0;
+        return salary() * team->get_bonus();
 }
 
 Salary_manager::~Salary_manager()
@@ -196,13 +284,14 @@ void Salary_manager::add_levels_with_dectionary(vector<map<string, string>> leve
 {
         for (auto i : level_dectionary)
         {
-                Level *new_level = new Level(
-                    i[NAME_INDEX_IN_CONFIGS_CSV],
-                    stoi(i[BASE_SALARY_INDEX_IN_CONFIGS_CSV]),
-                    stoi(i[SALARY_PER_HOUR_INDEX_IN_CONFIGS_CSV]),
-                    stoi(i[SALARY_PER_EXTRA_HOUR_INDEX_IN_CONFIGS_CSV]),
-                    stoi(i[OFFCIAL_WORKING_HOURS_INDEX_IN_CONFIGS_CSV]),
-                    stoi(i[TAX_PERECENTAGE_INDEX_IN_CONFIGS_CSV]));
+                Level *new_level = new Level;
+
+                new_level->name = i[NAME_INDEX_IN_CONFIGS_CSV];
+                new_level->base_salary = stoi(i[BASE_SALARY_INDEX_IN_CONFIGS_CSV]);
+                new_level->salary_per_hour = stoi(i[SALARY_PER_HOUR_INDEX_IN_CONFIGS_CSV]);
+                new_level->salary_per_extra_hour = stoi(i[SALARY_PER_EXTRA_HOUR_INDEX_IN_CONFIGS_CSV]);
+                new_level->offcial_working_hours = stoi(i[OFFCIAL_WORKING_HOURS_INDEX_IN_CONFIGS_CSV]);
+                new_level->tax_perecentage = stof(i[TAX_PERECENTAGE_INDEX_IN_CONFIGS_CSV]) / 100;
 
                 employee_levels.insert(pair(i[NAME_INDEX_IN_CONFIGS_CSV], new_level));
         }
@@ -244,6 +333,9 @@ void Salary_manager::add_team_with_dectionary(vector<map<string, string>> team_d
                     members,
                     stoi(i[BONUS_MIN_TIME_INDEX_IN_TEAMS_CSV]),
                     stof(i[BONUS_MAX_VARIANCE_INDEX_IN_TEAMS_CSV]));
+
+                for (auto i : members)
+                        i->added_to_team(new_team);
 
                 teams.insert(pair(stoi(i[TEAM_ID_INDEX_IN_TEAMS_CSV]), new_team));
         }
@@ -299,6 +391,24 @@ void Salary_manager::import_csv_files(string employee_file_address, string team_
         add_team_with_dectionary(team_dectionary);
 }
 
+string Salary_manager::report_salaries()
+{
+        string output;
+
+        for (auto i : employees)
+                output += i.second->summery_report() + SPREATE_2_EMPLOYEE_CLI_OUTPUT;
+
+        return output;
+}
+
+string Salary_manager::employee_report(int id)
+{
+        if (employees.count(id) == 0)
+                return EMPLOYEE_NOT_FOUND_MASSAGE + "\n";
+
+        return employees[id]->full_report();
+}
+
 Team::Team(int team_id, Employee *team_head, vector<Employee *> team_members, int bonus_min_work, float bonus_max_variance)
 {
         id = team_id;
@@ -306,17 +416,7 @@ Team::Team(int team_id, Employee *team_head, vector<Employee *> team_members, in
         members = team_members;
         bonus_min_working_hours = bonus_min_work;
         bonus_working_hours_max_variance = bonus_max_variance;
-}
-
-Level::Level(string name_level, int base_salary_level, int salary_per_hour_level,
-             int salary_per_extra_hour_level, int offcial_working_hours_level, int tax_perecentage_level)
-{
-        name = name_level;
-        base_salary = base_salary_level;
-        salary_per_hour = salary_per_hour_level;
-        salary_per_extra_hour = salary_per_extra_hour_level;
-        offcial_working_hours = offcial_working_hours_level;
-        tax_perecentage = tax_perecentage_level;
+        bonus_percentage = DEFAULT_TEAM_BONUS;
 }
 
 bool Working_time_manager::is_busy(pair<int, Time_interval> time)
@@ -351,4 +451,25 @@ int Working_time_manager::add_new_time(int day, string range)
         times.push_back(pair(day, new_range));
 
         return 1;
+}
+
+int Working_time_manager::total_work()
+{
+        int sum = 0;
+
+        for (auto i : times)
+                sum += i.second.end - i.second.start;
+
+        return sum;
+}
+
+int Working_time_manager::get_absent_day_count()
+{
+        map<int, int> day;
+        int count = 0;
+        for (auto i : times)
+                day[i.first]++;
+        for (auto i : day)
+                count++;
+        return MONTH_LENGTH - count;
 }
