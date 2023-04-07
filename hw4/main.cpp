@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <cmath>
 
 using namespace std;
 
@@ -14,6 +15,7 @@ const char SPREATE_TIME_RANGE_IN_CSV = '-';
 const string SPREATE_2_EMPLOYEE_CLI_OUTPUT = "---\n";
 const int MONTH_LENGTH = 30;
 const int DAY_LENGTH = 24;
+const int WORKING_DAYS = 30;
 const int DEFAULT_TEAM_BONUS = 0;
 
 const string EMPLOYEE_NOT_FOUND_MASSAGE = "EMPLOYEE_NOT_FOUND";
@@ -110,10 +112,10 @@ private:
         Level *level_details;
         Team *team;
         Working_time_manager working_times;
-        int total_earning();
-        int tax();
+        float total_earning();
+        float tax();
         int salary();
-        int bonus();
+        float bonus();
         bool have_team() { return team != NULL; }
 
 public:
@@ -176,7 +178,7 @@ string Employee::summery_report()
         output += "ID: " + to_string(id) + "\n";
         output += "Name: " + name + "\n";
         output += "Total Hours Working: " + to_string(working_times.total_work()) + "\n";
-        output += "Total Earning: " + to_string(total_earning()) + "\n";
+        output += "Total Earning: " + to_string((int)round(total_earning())) + "\n";
 
         return output;
 }
@@ -196,19 +198,19 @@ string Employee::full_report()
         output += "Total Hours Working: " + to_string(working_times.total_work()) + "\n";
         output += "Absent Days: " + to_string(working_times.get_absent_day_count()) + "\n";
         output += "Salary: " + to_string(salary()) + "\n";
-        output += "Bonus: " + to_string(bonus()) + "\n";
-        output += "Tax: " + to_string(tax()) + "\n";
-        output += "Total Earning: " + to_string(total_earning()) + "\n";
+        output += "Bonus: " + to_string((int)round(bonus())) + "\n";
+        output += "Tax: " + to_string((int)round(tax())) + "\n";
+        output += "Total Earning: " + to_string((int)round(total_earning())) + "\n";
 
         return output;
 }
 
-int Employee::total_earning()
+float Employee::total_earning()
 {
         return (salary() + bonus()) * (1 - level_details->tax_perecentage);
 }
 
-int Employee::tax()
+float Employee::tax()
 {
         return (salary() + bonus()) * level_details->tax_perecentage;
 }
@@ -230,7 +232,7 @@ int Employee::salary()
         return sum;
 }
 
-int Employee::bonus()
+float Employee::bonus()
 {
         if (!have_team())
                 return 0;
@@ -471,5 +473,5 @@ int Working_time_manager::get_absent_day_count()
                 day[i.first]++;
         for (auto i : day)
                 count++;
-        return MONTH_LENGTH - count;
+        return WORKING_DAYS - count;
 }
