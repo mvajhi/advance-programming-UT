@@ -13,17 +13,22 @@ const string SPREATE_CHAR_IN_CSV = ",";
 const string SPREATE_MEMBER_IN_TEAM_CSV = "$";
 const char SPREATE_TIME_RANGE_IN_CSV = '-';
 const string SPREATE_2_LINES_CLI_OUTPUT = "---";
+const string NO_CHANGE_CHAR = "-";
 const int MONTH_LENGTH = 30;
 const int DAY_LENGTH = 24;
 const int WORKING_DAYS = 30;
 const int DEFAULT_TEAM_BONUS = 0;
-const int DECINAL_PRECISION_FOR_AVG_WORKING_TEAM_REPORT = 1;
+const int DECIMAL_PRECISION_FOR_AVG_WORKING_REPORT = 1;
 const int MAX_INT = 2147483647;
 const int NOT_SET_START_DAY = 1;
 const int NOT_SET_END_DAY = MONTH_LENGTH;
+const int NOT_SET_START_HOUR = 0;
+const int NOT_SET_END_HOUR = DAY_LENGTH;
 
 const string EMPLOYEE_NOT_FOUND_MASSAGE = "EMPLOYEE_NOT_FOUND";
 const string TEAM_NOT_FOUND_MASSAGE = "TEAM_NOT_FOUND";
+const string LEVEL_NOT_FOUND_MASSAGE = "INVALID_LEVEL";
+const string SUCCESS_MASSAGE = "OK";
 const string EMPLOYEE_WITHOUT_TEAM_MASSAGE = "N/A";
 
 const string NAME_INDEX_IN_CONFIGS_CSV = "level";
@@ -71,6 +76,18 @@ struct Level
         float tax_perecentage;
 };
 
+enum update_config_key
+{
+        base_salary,
+        salary_per_hour,
+        salary_per_extra_hour,
+        official_working_hours,
+        tax_percentage
+};
+
+string float_to_string(float number, int precision);
+string update_configs(Salary_manager &the_salary_manager);
+
 class Salary_manager
 {
 private:
@@ -89,6 +106,11 @@ private:
         map<int, int> get_work_per_day(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
         pair<int, vector<int>> get_max_days(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
         pair<int, vector<int>> get_min_days(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
+        pair<float, vector<int>> get_max_hours(int start_day = NOT_SET_START_HOUR, int end_day = NOT_SET_END_HOUR);
+        pair<float, vector<int>> get_min_hours(int start_day = NOT_SET_START_HOUR, int end_day = NOT_SET_END_HOUR);
+        vector<pair<int, float>> get_avg_employee_in_range(int start_hour, int end_hour);
+        float get_avg_employees_in_one_hour(int start_hour);
+        int get_employees_in_one_hour(int start_hour);
 
 public:
         ~Salary_manager();
@@ -98,7 +120,10 @@ public:
         string employee_report(int id);
         string team_report(int id);
         string total_work_per_day(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
-        string per_hour_report()
+        string per_hour_report(int start_hour, int end_hour);
+        string salary_config_report(string level);
+        bool is_valid_level(string level);
+        void update_salary_config(update_config_key key, string level, string value);
 };
 
 class Working_time_manager
@@ -109,12 +134,14 @@ private:
         bool is_busy(pair<int, Time_interval> time);
         bool do_they_share_time(Time_interval t1, Time_interval t2);
         bool are_they_in_one_day(int d1, int d2);
+        bool is_it_inside(Time_interval t1, Time_interval t2);
 
 public:
         int add_new_time(int day, string range);
         int total_work(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
         int get_absent_day_count(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
         map<int, int> get_work_time_per_day(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
+        int count_work_in_hour(int hour);
 };
 
 class Employee
@@ -143,6 +170,7 @@ public:
         string get_name() { return name; }
         int get_total_working(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY) { return working_times.total_work(start_day, end_day); }
         map<int, int> get_work_per_day(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY) { return working_times.get_work_time_per_day(start_day, end_day); }
+        int days_work_in_this_hour(int hour) { return working_times.count_work_in_hour(hour); }
 };
 
 class Team
@@ -184,6 +212,10 @@ int main()
         cout << the_salary_manager.employee_report(6);
         cout << the_salary_manager.team_report(1);
         cout << the_salary_manager.total_work_per_day(8, 20);
+        // TODO check input
+        cout << the_salary_manager.per_hour_report(7, 12);
+        cout << the_salary_manager.salary_config_report("expert");
+        cout << update_configs(the_salary_manager);
 
         return 0;
 }
@@ -247,6 +279,17 @@ map<int, int> Working_time_manager::get_work_time_per_day(int start_day, int end
                         work_per_day.insert(pair(i.first, i.second.end - i.second.start));
 
         return work_per_day;
+}
+
+int Working_time_manager::count_work_in_hour(int hour)
+{
+        int counter = 0;
+
+        for (auto i : times)
+                if (is_it_inside(Time_interval{hour, hour + 1}, i.second))
+                        counter++;
+
+        return counter;
 }
 
 float Employee::total_earning()
@@ -455,6 +498,70 @@ pair<int, vector<int>> Salary_manager::get_min_days(int start_day, int end_day)
         return min_days;
 }
 
+pair<float, vector<int>> Salary_manager::get_max_hours(int start_hour, int end_hour)
+{
+        vector<pair<int, float>> avgs_in_range = get_avg_employee_in_range(start_hour, end_hour);
+        pair<float, vector<int>> max_hours(-1, (0));
+
+        for (int i = 0; i <= (end_hour - start_hour); i++)
+        {
+                int hour = start_hour + i;
+                int employee_avg = 0;
+
+                if (employee_avg > max_hours.first)
+                        max_hours = pair(employee_avg, vector(1, hour));
+                else if (employee_avg == max_hours.first)
+                        max_hours.second.push_back(hour);
+        }
+
+        return max_hours;
+}
+
+pair<float, vector<int>> Salary_manager::get_min_hours(int start_hour, int end_hour)
+{
+        vector<pair<int, float>> avgs_in_range = get_avg_employee_in_range(start_hour, end_hour);
+        pair<float, vector<int>> min_hours(MAX_INT, (0));
+
+        for (int i = 0; i <= (end_hour - start_hour); i++)
+        {
+                int hour = start_hour + i;
+                int employee_avg = 0;
+
+                if (employee_avg < min_hours.first)
+                        min_hours = pair(employee_avg, vector(1, hour));
+                else if (employee_avg == min_hours.first)
+                        min_hours.second.push_back(hour);
+        }
+
+        return min_hours;
+}
+
+vector<pair<int, float>> Salary_manager::get_avg_employee_in_range(int start_hour, int end_hour)
+{
+        vector<pair<int, float>> averages;
+        for (int i = 0; i < (end_hour - start_hour); i++)
+        {
+                int this_hour = start_hour + i;
+                averages.push_back(pair(this_hour, get_avg_employees_in_one_hour(this_hour)));
+        }
+        return averages;
+}
+
+float Salary_manager::get_avg_employees_in_one_hour(int start_hour)
+{
+        return (float)get_employees_in_one_hour(start_hour) / MONTH_LENGTH;
+}
+
+int Salary_manager::get_employees_in_one_hour(int start_hour)
+{
+        int counter = 0;
+
+        for (auto i : employees)
+                counter += i.second->days_work_in_this_hour(start_hour);
+
+        return counter;
+}
+
 vector<string> Salary_manager::dumping_CSV_file_into_memory_line_by_line(string file_address)
 {
         ifstream csv_file_stream;
@@ -554,6 +661,72 @@ string Salary_manager::total_work_per_day(int start_day, int end_day)
         return output;
 }
 
+string Salary_manager::per_hour_report(int start_hour, int end_hour)
+{
+        string output;
+        vector<pair<int, float>> avgs_in_range = get_avg_employee_in_range(start_hour, end_hour);
+        pair<float, vector<int>> max_hours = get_max_hours(start_hour, end_hour);
+        pair<float, vector<int>> min_hours = get_min_hours(start_hour, end_hour);
+
+        for (auto i : avgs_in_range)
+                output += to_string(i.first) + "-" + to_string(i.first + 1) + ": " +
+                          float_to_string(i.second, DECIMAL_PRECISION_FOR_AVG_WORKING_REPORT) + "\n";
+        // TODO
+        output += SPREATE_2_LINES_CLI_OUTPUT + "\n";
+        output += "Period(s) with Max Working Employees:";
+        for (auto i : max_hours.second)
+                output += " " + to_string(i) + "-" + to_string(i + 1);
+        output += "\n";
+
+        output += "Period(s) with Min Working Employees:";
+        for (auto i : min_hours.second)
+                output += " " + to_string(i) + "-" + to_string(i + 1);
+        output += "\n";
+
+        return output;
+}
+
+string Salary_manager::salary_config_report(string level)
+{
+        if (employee_levels.count(level) == 0)
+                return LEVEL_NOT_FOUND_MASSAGE + "\n";
+
+        string output;
+        output += "Base Salary: " + to_string(employee_levels[level]->base_salary) + "\n";
+        output += "Salary Per Hour: " + to_string(employee_levels[level]->salary_per_hour) + "\n";
+        output += "Salary Per Extra Hour: " + to_string(employee_levels[level]->salary_per_extra_hour) + "\n";
+        output += "Official Working Hours: " + to_string(employee_levels[level]->offcial_working_hours) + "\n";
+        output += "Tax: " + to_string((int)(employee_levels[level]->tax_perecentage * 100)) + "%\n";
+
+        return output;
+}
+
+bool Salary_manager::is_valid_level(string level)
+{
+        return employee_levels.count(level);
+}
+
+void Salary_manager::update_salary_config(update_config_key key, string level, string value)
+{
+        switch (key)
+        {
+        case base_salary:
+                employee_levels[level]->base_salary = stoi(value);
+                break;
+        case salary_per_hour:
+                employee_levels[level]->salary_per_hour = stoi(value);
+                break;
+        case salary_per_extra_hour:
+                employee_levels[level]->salary_per_extra_hour = stoi(value);
+                break;
+        case official_working_hours:
+                employee_levels[level]->offcial_working_hours = stoi(value);
+                break;
+        case tax_percentage:
+                employee_levels[level]->tax_perecentage = stoi(value) / 100.0;
+        }
+}
+
 Team::Team(int team_id, Employee *team_head, vector<Employee *> team_members, int bonus_min_work, float bonus_max_variance)
 {
         id = team_id;
@@ -566,16 +739,14 @@ Team::Team(int team_id, Employee *team_head, vector<Employee *> team_members, in
 
 string Team::report_salary()
 {
-        string avg_working = to_string((round(average_working_time() * pow(10, DECINAL_PRECISION_FOR_AVG_WORKING_TEAM_REPORT)) /
-                                        DECINAL_PRECISION_FOR_AVG_WORKING_TEAM_REPORT));
-        avg_working = avg_working.substr(0, avg_working.find('.') + DECINAL_PRECISION_FOR_AVG_WORKING_TEAM_REPORT + 1);
 
         string output;
         output += "ID: " + to_string(id) + "\n";
         output += "Head ID: " + to_string(head->get_id()) + "\n";
         output += "Head Name: " + head->get_name() + "\n";
         output += "Team Total Working Hours: " + to_string(total_working()) + "\n";
-        output += "Average Member Working Hour: " + avg_working + "\n";
+        output += "Average Member Working Hour: " +
+                  float_to_string(average_working_time(), DECIMAL_PRECISION_FOR_AVG_WORKING_REPORT) + "\n";
         output += "Bonus: " + to_string((int)(bonus_percentage * 100)) + "\n";
         output += summery_member_report();
 
@@ -625,6 +796,11 @@ bool Working_time_manager::are_they_in_one_day(int d1, int d2)
         return d1 == d2;
 }
 
+bool Working_time_manager::is_it_inside(Time_interval t1, Time_interval t2)
+{
+        return t1.start >= t2.start && t1.end <= t2.end;
+}
+
 // TODO fix retrun value
 int Working_time_manager::add_new_time(int day, string range)
 {
@@ -662,4 +838,32 @@ int Working_time_manager::get_absent_day_count(int start_day, int end_day)
 {
         int count = get_work_time_per_day(start_day, end_day).size();
         return WORKING_DAYS - count;
+}
+
+string float_to_string(float number, int precision)
+{
+        string output = to_string((round(number * pow(10, precision)) / precision));
+        output = output.substr(0, output.find('.') + precision + 1);
+        return output;
+}
+
+string update_configs(Salary_manager &the_salary_manager)
+{
+        string input;
+        string level;
+        cin >> level;
+        if (!the_salary_manager.is_valid_level(level))
+        {
+                getline(cin, input);
+                return LEVEL_NOT_FOUND_MASSAGE + "\n";
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+                cin >> input;
+                if (input != NO_CHANGE_CHAR)
+                        the_salary_manager.update_salary_config((update_config_key)i, level, input);
+        }
+
+        return SUCCESS_MASSAGE + "\n";
 }
