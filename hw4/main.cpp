@@ -12,12 +12,15 @@ using namespace std;
 const string SPREATE_CHAR_IN_CSV = ",";
 const string SPREATE_MEMBER_IN_TEAM_CSV = "$";
 const char SPREATE_TIME_RANGE_IN_CSV = '-';
-const string SPREATE_2_EMPLOYEE_CLI_OUTPUT = "---";
+const string SPREATE_2_LINES_CLI_OUTPUT = "---";
 const int MONTH_LENGTH = 30;
 const int DAY_LENGTH = 24;
 const int WORKING_DAYS = 30;
 const int DEFAULT_TEAM_BONUS = 0;
 const int DECINAL_PRECISION_FOR_AVG_WORKING_TEAM_REPORT = 1;
+const int MAX_INT = 2147483647;
+const int NOT_SET_START = 1;
+const int NOT_SET_END = MONTH_LENGTH;
 
 const string EMPLOYEE_NOT_FOUND_MASSAGE = "EMPLOYEE_NOT_FOUND";
 const string TEAM_NOT_FOUND_MASSAGE = "TEAM_NOT_FOUND";
@@ -83,14 +86,18 @@ private:
         void add_working_hours_with_dectionary(vector<map<string, string>> working_hours_dectionary);
         void add_team_with_dectionary(vector<map<string, string>> team_dectionary);
         vector<Employee *> find_list_of_employee_with_csv_part(string csv_part);
+        map<int, int> get_work_per_day(int start = NOT_SET_START, int end = NOT_SET_END);
+        pair<int, vector<int>> get_max_days(int start = NOT_SET_START, int end = NOT_SET_END);
+        pair<int, vector<int>> get_min_days(int start = NOT_SET_START, int end = NOT_SET_END);
 
 public:
         ~Salary_manager();
         void import_csv_files(string employee_file_address, string team_file_address,
                               string working_hours_file_address, string salary_config_file_address);
-        string report_salaries();
+        string salaries_report();
         string employee_report(int id);
         string team_report(int id);
+        string total_work_per_day(int start = NOT_SET_START, int end = NOT_SET_END);
 };
 
 class Working_time_manager
@@ -104,8 +111,9 @@ private:
 
 public:
         int add_new_time(int day, string range);
-        int total_work();
-        int get_absent_day_count();
+        int total_work(int start = NOT_SET_START, int end = NOT_SET_END);
+        int get_absent_day_count(int start = NOT_SET_START, int end = NOT_SET_END);
+        map<int, int> get_work_time_per_day(int start = NOT_SET_START, int end = NOT_SET_END);
 };
 
 class Employee
@@ -132,7 +140,8 @@ public:
         string full_report();
         int get_id() { return id; }
         string get_name() { return name; }
-        int get_total_working() { return working_times.total_work(); }
+        int get_total_working(int start = NOT_SET_START, int end = NOT_SET_END) { return working_times.total_work(start, end); }
+        map<int, int> get_work_per_day(int start = NOT_SET_START, int end = NOT_SET_END) { return working_times.get_work_time_per_day(start, end); }
 };
 
 class Team
@@ -170,9 +179,10 @@ int main()
         the_salary_manager.import_csv_files(employee_file_address, team_file_address,
                                             working_hours_file_address, salary_config_file_address);
 
-        cout << the_salary_manager.report_salaries() << endl;
+        cout << the_salary_manager.salaries_report() << endl;
         cout << the_salary_manager.employee_report(6);
         cout << the_salary_manager.team_report(1);
+        cout << the_salary_manager.total_work_per_day(8, 20);
 
         return 0;
 }
@@ -225,6 +235,17 @@ string Employee::full_report()
         output += "Total Earning: " + to_string((int)round(total_earning())) + "\n";
 
         return output;
+}
+
+map<int, int> Working_time_manager::get_work_time_per_day(int start, int end)
+{
+        map<int, int> work_per_day;
+
+        for (auto i : times)
+                if (start <= i.first && i.first <= end)
+                        work_per_day.insert(pair(i.first, i.second.end - i.second.start));
+
+        return work_per_day;
 }
 
 float Employee::total_earning()
@@ -376,6 +397,63 @@ vector<Employee *> Salary_manager::find_list_of_employee_with_csv_part(string cs
         return employee_list;
 }
 
+map<int, int> Salary_manager::get_work_per_day(int start, int end)
+{
+        map<int, int> work_per_day;
+
+        for (auto i : employees)
+        {
+                map<int, int> employee_work_per_day = i.second->get_work_per_day(start, end);
+                work_per_day.insert(employee_work_per_day.begin(), employee_work_per_day.end());
+        }
+
+        return work_per_day;
+}
+
+pair<int, vector<int>> Salary_manager::get_max_days(int start, int end)
+{
+        map<int, int> work_per_day = get_work_per_day(start, end);
+        pair<int, vector<int>> max_days(-1, (0));
+
+        for (int i = 0; i <= (end - start); i++)
+        {
+                int day = start + i;
+                int work_time = 0;
+
+                if (work_per_day.count(day) != 0)
+                        work_time = work_per_day[day];
+
+                if (work_time > max_days.first)
+                        max_days = pair(work_time, vector(1, day));
+                else if (work_time == max_days.first)
+                        max_days.second.push_back(day);
+        }
+
+        return max_days;
+}
+
+pair<int, vector<int>> Salary_manager::get_min_days(int start, int end)
+{
+        map<int, int> work_per_day = get_work_per_day(start, end);
+        pair<int, vector<int>> min_days(MAX_INT, (0));
+
+        for (int i = 0; i <= (end - start); i++)
+        {
+                int day = start + i;
+                int work_time = 0;
+
+                if (work_per_day.count(day) != 0)
+                        work_time = work_per_day[day];
+
+                if (work_time < min_days.first)
+                        min_days = pair(work_time, vector(1, day));
+                else if (work_time == min_days.first)
+                        min_days.second.push_back(day);
+        }
+
+        return min_days;
+}
+
 vector<string> Salary_manager::dumping_CSV_file_into_memory_line_by_line(string file_address)
 {
         ifstream csv_file_stream;
@@ -415,12 +493,12 @@ void Salary_manager::import_csv_files(string employee_file_address, string team_
         add_team_with_dectionary(team_dectionary);
 }
 
-string Salary_manager::report_salaries()
+string Salary_manager::salaries_report()
 {
         string output;
 
         for (auto i : employees)
-                output += i.second->summery_report() + SPREATE_2_EMPLOYEE_CLI_OUTPUT + "\n";
+                output += i.second->summery_report() + SPREATE_2_LINES_CLI_OUTPUT + "\n";
 
         return output;
 }
@@ -439,6 +517,40 @@ string Salary_manager::team_report(int id)
                 return TEAM_NOT_FOUND_MASSAGE + "\n";
 
         return teams[id]->report_salary();
+}
+
+// TODO SHOULD check input valid
+string Salary_manager::total_work_per_day(int start, int end)
+{
+        string output;
+        map<int, int> work_per_day = get_work_per_day(start, end);
+        pair<int, vector<int>> max_days = get_max_days(start, end);
+        pair<int, vector<int>> min_days = get_min_days(start, end);
+
+        for (int i = 0; i <= (end - start); i++)
+        {
+                int day = start + i;
+                int work_time = 0;
+
+                if (work_per_day.count(day) != 0)
+                        work_time = work_per_day[day];
+
+                output += "Day #" + to_string(day) + ": " + to_string(work_time) + "\n";
+        }
+
+        output += SPREATE_2_LINES_CLI_OUTPUT + "\n";
+
+        output += "Day(s) with Max Working Hours:";
+        for (auto i : max_days.second)
+                output += " " + to_string(i);
+        output += "\n";
+
+        output += "Day(s) with Min Working Hours:";
+        for (auto i : min_days.second)
+                output += " " + to_string(i);
+        output += "\n";
+
+        return output;
 }
 
 Team::Team(int team_id, Employee *team_head, vector<Employee *> team_members, int bonus_min_work, float bonus_max_variance)
@@ -487,7 +599,7 @@ string Team::summery_member_report()
 {
         string output;
         for (auto i : members)
-                output += SPREATE_2_EMPLOYEE_CLI_OUTPUT + "\n" + i->short_summery_report();
+                output += SPREATE_2_LINES_CLI_OUTPUT + "\n" + i->short_summery_report();
         return output;
 }
 
@@ -535,23 +647,18 @@ int Working_time_manager::add_new_time(int day, string range)
         return 1;
 }
 
-int Working_time_manager::total_work()
+int Working_time_manager::total_work(int start, int end)
 {
         int sum = 0;
 
-        for (auto i : times)
-                sum += i.second.end - i.second.start;
+        for (auto i : get_work_time_per_day(start, end))
+                sum += i.second;
 
         return sum;
 }
 
-int Working_time_manager::get_absent_day_count()
+int Working_time_manager::get_absent_day_count(int start, int end)
 {
-        map<int, int> day;
-        int count = 0;
-        for (auto i : times)
-                day[i.first]++;
-        for (auto i : day)
-                count++;
+        int count = get_work_time_per_day(start, end).size();
         return WORKING_DAYS - count;
 }
