@@ -12,13 +12,15 @@ using namespace std;
 const string SPREATE_CHAR_IN_CSV = ",";
 const string SPREATE_MEMBER_IN_TEAM_CSV = "$";
 const char SPREATE_TIME_RANGE_IN_CSV = '-';
-const string SPREATE_2_EMPLOYEE_CLI_OUTPUT = "---\n";
+const string SPREATE_2_EMPLOYEE_CLI_OUTPUT = "---";
 const int MONTH_LENGTH = 30;
 const int DAY_LENGTH = 24;
 const int WORKING_DAYS = 30;
 const int DEFAULT_TEAM_BONUS = 0;
+const int DECINAL_PRECISION_FOR_AVG_WORKING_TEAM_REPORT = 1;
 
 const string EMPLOYEE_NOT_FOUND_MASSAGE = "EMPLOYEE_NOT_FOUND";
+const string TEAM_NOT_FOUND_MASSAGE = "TEAM_NOT_FOUND";
 const string EMPLOYEE_WITHOUT_TEAM_MASSAGE = "N/A";
 
 const string NAME_INDEX_IN_CONFIGS_CSV = "level";
@@ -88,6 +90,7 @@ public:
                               string working_hours_file_address, string salary_config_file_address);
         string report_salaries();
         string employee_report(int id);
+        string team_report(int id);
 };
 
 class Working_time_manager
@@ -96,6 +99,8 @@ private:
         vector<pair<int, Time_interval>> times;
 
         bool is_busy(pair<int, Time_interval> time);
+        bool do_they_share_time(Time_interval t1, Time_interval t2);
+        bool are_they_in_one_day(int d1, int d2);
 
 public:
         int add_new_time(int day, string range);
@@ -123,7 +128,11 @@ public:
         int add_new_work_time(int day, string range) { return working_times.add_new_time(day, range); }
         void added_to_team(Team *employee_team) { team = employee_team; }
         string summery_report();
+        string short_summery_report();
         string full_report();
+        int get_id() { return id; }
+        string get_name() { return name; }
+        int get_total_working() { return working_times.total_work(); }
 };
 
 class Team
@@ -136,13 +145,17 @@ private:
         float bonus_percentage;
         float bonus_working_hours_max_variance;
 
-        //TODO
+        // TODO
         bool have_bonus() { return true; }
+        int total_working();
+        float average_working_time();
+        string summery_member_report();
 
 public:
         Team(int team_id, Employee *team_head, vector<Employee *> team_members, int bonus_min_work, float bonus_max_variance);
         int get_id() { return id; }
         float get_bonus() { return have_bonus() ? bonus_percentage : 0; }
+        string report_salary();
 };
 
 // TODO get address from arg
@@ -159,6 +172,7 @@ int main()
 
         cout << the_salary_manager.report_salaries() << endl;
         cout << the_salary_manager.employee_report(6);
+        cout << the_salary_manager.team_report(1);
 
         return 0;
 }
@@ -180,6 +194,14 @@ string Employee::summery_report()
         output += "Total Hours Working: " + to_string(working_times.total_work()) + "\n";
         output += "Total Earning: " + to_string((int)round(total_earning())) + "\n";
 
+        return output;
+}
+
+string Employee::short_summery_report()
+{
+        string output;
+        output += "Member ID: " + to_string(id) + "\n";
+        output += "Total Earning: " + to_string((int)round(total_earning())) + "\n";
         return output;
 }
 
@@ -398,7 +420,7 @@ string Salary_manager::report_salaries()
         string output;
 
         for (auto i : employees)
-                output += i.second->summery_report() + SPREATE_2_EMPLOYEE_CLI_OUTPUT;
+                output += i.second->summery_report() + SPREATE_2_EMPLOYEE_CLI_OUTPUT + "\n";
 
         return output;
 }
@@ -411,6 +433,14 @@ string Salary_manager::employee_report(int id)
         return employees[id]->full_report();
 }
 
+string Salary_manager::team_report(int id)
+{
+        if (teams.count(id) == 0)
+                return TEAM_NOT_FOUND_MASSAGE + "\n";
+
+        return teams[id]->report_salary();
+}
+
 Team::Team(int team_id, Employee *team_head, vector<Employee *> team_members, int bonus_min_work, float bonus_max_variance)
 {
         id = team_id;
@@ -421,15 +451,65 @@ Team::Team(int team_id, Employee *team_head, vector<Employee *> team_members, in
         bonus_percentage = DEFAULT_TEAM_BONUS;
 }
 
+string Team::report_salary()
+{
+        string avg_working = to_string((round(average_working_time() * pow(10, DECINAL_PRECISION_FOR_AVG_WORKING_TEAM_REPORT)) /
+                                        DECINAL_PRECISION_FOR_AVG_WORKING_TEAM_REPORT));
+        avg_working = avg_working.substr(0, avg_working.find('.') + DECINAL_PRECISION_FOR_AVG_WORKING_TEAM_REPORT + 1);
+
+        string output;
+        output += "ID: " + to_string(id) + "\n";
+        output += "Head ID: " + to_string(head->get_id()) + "\n";
+        output += "Head Name: " + head->get_name() + "\n";
+        output += "Team Total Working Hours: " + to_string(total_working()) + "\n";
+        output += "Average Member Working Hour: " + avg_working + "\n";
+        output += "Bonus: " + to_string((int)(bonus_percentage * 100)) + "\n";
+        output += summery_member_report();
+
+        return output;
+}
+
+int Team::total_working()
+{
+        int sum = 0;
+
+        for (auto i : members)
+                sum += i->get_total_working();
+        return sum;
+}
+
+float Team::average_working_time()
+{
+        return total_working() / members.size();
+}
+
+string Team::summery_member_report()
+{
+        string output;
+        for (auto i : members)
+                output += SPREATE_2_EMPLOYEE_CLI_OUTPUT + "\n" + i->short_summery_report();
+        return output;
+}
+
 bool Working_time_manager::is_busy(pair<int, Time_interval> time)
 {
         for (auto i : times)
-                if (time.first == i.first)
-                        if ((time.second.start < i.second.start && time.second.end > i.second.start) ||
-                            (time.second.start > i.second.start && time.second.start < i.second.end) ||
-                            (time.second.end > i.second.start && time.second.end < i.second.end))
+                if (are_they_in_one_day(time.first, i.first))
+                        if (do_they_share_time(time.second, i.second))
                                 return true;
         return false;
+}
+
+bool Working_time_manager::do_they_share_time(Time_interval t1, Time_interval t2)
+{
+        return (t1.start < t2.start && t1.end > t2.start) ||
+               (t1.start > t2.start && t1.start < t2.end) ||
+               (t1.end > t2.start && t1.end < t2.end);
+}
+
+bool Working_time_manager::are_they_in_one_day(int d1, int d2)
+{
+        return d1 == d2;
 }
 
 // TODO fix retrun value
