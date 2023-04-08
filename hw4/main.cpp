@@ -58,7 +58,6 @@ class Salary_manager;
 class Employee;
 class Team;
 class Working_time_manager;
-class Level;
 
 struct Time_interval
 {
@@ -87,6 +86,7 @@ enum update_config_key
 
 string float_to_string(float number, int precision);
 string update_configs(Salary_manager &the_salary_manager);
+bool sort_by_time(pair<int, Team *> t1, pair<int, Team *> t2);
 
 class Salary_manager
 {
@@ -111,6 +111,7 @@ private:
         vector<pair<int, float>> get_avg_employee_in_range(int start_hour, int end_hour);
         float get_avg_employees_in_one_hour(int start_hour);
         int get_employees_in_one_hour(int start_hour);
+        vector<pair<int, Team *>> sorting_bonus_team();
 
 public:
         ~Salary_manager();
@@ -118,12 +119,18 @@ public:
                               string working_hours_file_address, string salary_config_file_address);
         string salaries_report();
         string employee_report(int id);
+        bool is_employee_id_valid(int id);
         string team_report(int id);
+        bool is_team_id_valid(int id);
         string total_work_per_day(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
         string per_hour_report(int start_hour, int end_hour);
         string salary_config_report(string level);
         bool is_valid_level(string level);
         void update_salary_config(update_config_key key, string level, string value);
+        int add_working_hours(int employee_id, int day, Time_interval hours);
+        int delete_working_hours(int employee_id, int day);
+        int update_team_bonus(int team_id, float bonus);
+        string teams_bonus_report();
 };
 
 class Working_time_manager
@@ -138,6 +145,8 @@ private:
 
 public:
         int add_new_time(int day, string range);
+        int add_new_time(int day, Time_interval range);
+        int delete_working_hours(int day);
         int total_work(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
         int get_absent_day_count(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
         map<int, int> get_work_time_per_day(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
@@ -162,6 +171,8 @@ private:
 public:
         Employee(int employee_id, string employee_name, int employee_age, Level *employee_level);
         int add_new_work_time(int day, string range) { return working_times.add_new_time(day, range); }
+        int add_new_work_time(int day, Time_interval range) { return working_times.add_new_time(day, range); }
+        int delete_working_hours(int day) { return working_times.delete_working_hours(day); }
         void added_to_team(Team *employee_team) { team = employee_team; }
         string summery_report();
         string short_summery_report();
@@ -184,16 +195,20 @@ private:
         float bonus_working_hours_max_variance;
 
         // TODO
-        bool have_bonus() { return true; }
-        int total_working();
         float average_working_time();
         string summery_member_report();
+        bool have_min_work_hour() { return total_working() > bonus_min_working_hours; }
+        bool have_ok_variance() { return get_variance() < bonus_working_hours_max_variance; }
+        float get_variance();
 
 public:
         Team(int team_id, Employee *team_head, vector<Employee *> team_members, int bonus_min_work, float bonus_max_variance);
         int get_id() { return id; }
         float get_bonus() { return have_bonus() ? bonus_percentage : 0; }
+        int set_bonus(float bonus);
         string report_salary();
+        bool have_bonus() { return have_min_work_hour() && have_ok_variance(); }
+        int total_working();
 };
 
 // TODO get address from arg
@@ -209,13 +224,23 @@ int main()
                                             working_hours_file_address, salary_config_file_address);
 
         cout << the_salary_manager.salaries_report() << endl;
+        // TODO check input
         cout << the_salary_manager.employee_report(6);
+        // TODO check input
         cout << the_salary_manager.team_report(1);
         cout << the_salary_manager.total_work_per_day(8, 20);
         // TODO check input
         cout << the_salary_manager.per_hour_report(7, 12);
+        // TODO check input
         cout << the_salary_manager.salary_config_report("expert");
-        cout << update_configs(the_salary_manager);
+        // cout << update_configs(the_salary_manager);
+        // TODO check input
+        cout << the_salary_manager.add_working_hours(1, 17, Time_interval{13, 17});
+        // TODO check input
+        cout << the_salary_manager.delete_working_hours(2, 16);
+        // TODO check input
+        cout << the_salary_manager.update_team_bonus(1, 0.5);
+        cout << the_salary_manager.teams_bonus_report();
 
         return 0;
 }
@@ -562,6 +587,23 @@ int Salary_manager::get_employees_in_one_hour(int start_hour)
         return counter;
 }
 
+bool sort_by_time(pair<int, Team *> t1, pair<int, Team *> t2)
+{
+        return t1.first > t2.first;
+}
+
+vector<pair<int, Team *>> Salary_manager::sorting_bonus_team()
+{
+        vector<pair<int, Team *>> bonus_teams;
+
+        for (auto i : teams)
+                if (i.second->have_bonus())
+                        bonus_teams.push_back(pair(i.second->total_working(), i.second));
+
+        sort(bonus_teams.begin(), bonus_teams.end(), sort_by_time);
+        return bonus_teams;
+}
+
 vector<string> Salary_manager::dumping_CSV_file_into_memory_line_by_line(string file_address)
 {
         ifstream csv_file_stream;
@@ -613,18 +655,31 @@ string Salary_manager::salaries_report()
 
 string Salary_manager::employee_report(int id)
 {
-        if (employees.count(id) == 0)
-                return EMPLOYEE_NOT_FOUND_MASSAGE + "\n";
+        // TODO SEPREAT CHECK INPUT
+        //  if (employees.count(id) == 0)
+        //          return EMPLOYEE_NOT_FOUND_MASSAGE + "\n";
 
         return employees[id]->full_report();
+}
+// TODO USE THIS
+bool Salary_manager::is_employee_id_valid(int id)
+{
+        return employees.count(id) != 0;
 }
 
 string Salary_manager::team_report(int id)
 {
-        if (teams.count(id) == 0)
-                return TEAM_NOT_FOUND_MASSAGE + "\n";
+        // TODO SEPREAT CHECK INPUT
+        //  if (teams.count(id) == 0)
+        //          return TEAM_NOT_FOUND_MASSAGE + "\n";
 
         return teams[id]->report_salary();
+}
+
+// TODO USE THIS
+bool Salary_manager::is_team_id_valid(int id)
+{
+        return teams.count(id) != 0;
 }
 
 // TODO SHOULD check input valid
@@ -688,8 +743,9 @@ string Salary_manager::per_hour_report(int start_hour, int end_hour)
 
 string Salary_manager::salary_config_report(string level)
 {
-        if (employee_levels.count(level) == 0)
-                return LEVEL_NOT_FOUND_MASSAGE + "\n";
+        // TODO SEPREAT CHECK INPUT
+        // if (employee_levels.count(level) == 0)
+        //         return LEVEL_NOT_FOUND_MASSAGE + "\n";
 
         string output;
         output += "Base Salary: " + to_string(employee_levels[level]->base_salary) + "\n";
@@ -700,7 +756,7 @@ string Salary_manager::salary_config_report(string level)
 
         return output;
 }
-
+// TODO USE THIS
 bool Salary_manager::is_valid_level(string level)
 {
         return employee_levels.count(level);
@@ -727,6 +783,32 @@ void Salary_manager::update_salary_config(update_config_key key, string level, s
         }
 }
 
+int Salary_manager::add_working_hours(int employee_id, int day, Time_interval hours)
+{
+        return employees[employee_id]->add_new_work_time(day, hours);
+}
+
+int Salary_manager::delete_working_hours(int employee_id, int day)
+{
+        return employees[employee_id]->delete_working_hours(day);
+}
+
+int Salary_manager::update_team_bonus(int team_id, float bonus)
+{
+        teams[team_id]->set_bonus(bonus);
+        return 0;
+}
+
+string Salary_manager::teams_bonus_report()
+{
+        string output;
+        vector<pair<int, Team *>> sorted_bonus_team = sorting_bonus_team();
+        for (auto i : sorted_bonus_team)
+                output += "Team ID:" + to_string(i.second->get_id());
+
+        return output;
+}
+
 Team::Team(int team_id, Employee *team_head, vector<Employee *> team_members, int bonus_min_work, float bonus_max_variance)
 {
         id = team_id;
@@ -735,6 +817,12 @@ Team::Team(int team_id, Employee *team_head, vector<Employee *> team_members, in
         bonus_min_working_hours = bonus_min_work;
         bonus_working_hours_max_variance = bonus_max_variance;
         bonus_percentage = DEFAULT_TEAM_BONUS;
+}
+
+int Team::set_bonus(float bonus)
+{
+        bonus_percentage = bonus;
+        return 0;
 }
 
 string Team::report_salary()
@@ -775,6 +863,17 @@ string Team::summery_member_report()
         return output;
 }
 
+float Team::get_variance()
+{
+        float variance = 0;
+        float avg = average_working_time();
+
+        for (auto i : members)
+                variance += pow(((float)i->get_total_working() - avg), 2);
+
+        return variance;
+}
+
 bool Working_time_manager::is_busy(pair<int, Time_interval> time)
 {
         for (auto i : times)
@@ -786,9 +885,10 @@ bool Working_time_manager::is_busy(pair<int, Time_interval> time)
 
 bool Working_time_manager::do_they_share_time(Time_interval t1, Time_interval t2)
 {
-        return (t1.start < t2.start && t1.end > t2.start) ||
-               (t1.start > t2.start && t1.start < t2.end) ||
-               (t1.end > t2.start && t1.end < t2.end);
+        return (t1.start <= t2.start && t1.end > t2.start) ||
+               (t1.start >= t2.start && t1.start < t2.end) ||
+               (t1.end > t2.start && t1.end <= t2.end) ||
+               (t1.start == t2.start && t1.end == t2.end);
 }
 
 bool Working_time_manager::are_they_in_one_day(int d1, int d2)
@@ -822,6 +922,23 @@ int Working_time_manager::add_new_time(int day, string range)
         times.push_back(pair(day, new_range));
 
         return 1;
+}
+
+int Working_time_manager::add_new_time(int day, Time_interval range)
+{
+        for (auto i : times)
+                if (i.first == day && do_they_share_time(range, i.second))
+                        return -1;
+        times.push_back(pair(day, range));
+        return 0;
+}
+
+int Working_time_manager::delete_working_hours(int day)
+{
+        for (int i = 0; i < times.size(); i++)
+                if (times[i].first == day)
+                        times.erase(times.begin() + i);
+        return 0;
 }
 
 int Working_time_manager::total_work(int start_day, int end_day)
