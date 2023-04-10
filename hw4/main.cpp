@@ -24,6 +24,7 @@ const int NOT_SET_START_DAY = 1;
 const int NOT_SET_END_DAY = MONTH_LENGTH;
 const int NOT_SET_START_HOUR = 0;
 const int NOT_SET_END_HOUR = DAY_LENGTH;
+const int PERCENTAGE = 100;
 
 const string EMPLOYEE_NOT_FOUND_MASSAGE = "EMPLOYEE_NOT_FOUND";
 const string TEAM_NOT_FOUND_MASSAGE = "TEAM_NOT_FOUND";
@@ -405,7 +406,7 @@ void Salary_manager::add_levels_with_dectionary(vector<map<string, string>> leve
                 new_level->salary_per_hour = stoi(i[SALARY_PER_HOUR_INDEX_IN_CONFIGS_CSV]);
                 new_level->salary_per_extra_hour = stoi(i[SALARY_PER_EXTRA_HOUR_INDEX_IN_CONFIGS_CSV]);
                 new_level->offcial_working_hours = stoi(i[OFFCIAL_WORKING_HOURS_INDEX_IN_CONFIGS_CSV]);
-                new_level->tax_perecentage = stof(i[TAX_PERECENTAGE_INDEX_IN_CONFIGS_CSV]) / 100;
+                new_level->tax_perecentage = stof(i[TAX_PERECENTAGE_INDEX_IN_CONFIGS_CSV]) / PERCENTAGE;
 
                 employee_levels.insert(pair(i[NAME_INDEX_IN_CONFIGS_CSV], new_level));
         }
@@ -752,7 +753,7 @@ string Salary_manager::salary_config_report(string level)
         output += "Salary Per Hour: " + to_string(employee_levels[level]->salary_per_hour) + "\n";
         output += "Salary Per Extra Hour: " + to_string(employee_levels[level]->salary_per_extra_hour) + "\n";
         output += "Official Working Hours: " + to_string(employee_levels[level]->offcial_working_hours) + "\n";
-        output += "Tax: " + to_string((int)(employee_levels[level]->tax_perecentage * 100)) + "%\n";
+        output += "Tax: " + to_string((int)(employee_levels[level]->tax_perecentage * PERCENTAGE)) + "%\n";
 
         return output;
 }
@@ -779,7 +780,7 @@ void Salary_manager::update_salary_config(update_config_key key, string level, s
                 employee_levels[level]->offcial_working_hours = stoi(value);
                 break;
         case tax_percentage:
-                employee_levels[level]->tax_perecentage = stoi(value) / 100.0;
+                employee_levels[level]->tax_perecentage = (float)stoi(value) / PERCENTAGE;
         }
 }
 
@@ -835,7 +836,7 @@ string Team::report_salary()
         output += "Team Total Working Hours: " + to_string(total_working()) + "\n";
         output += "Average Member Working Hour: " +
                   float_to_string(average_working_time(), DECIMAL_PRECISION_FOR_AVG_WORKING_REPORT) + "\n";
-        output += "Bonus: " + to_string((int)(bonus_percentage * 100)) + "\n";
+        output += "Bonus: " + to_string((int)(bonus_percentage * PERCENTAGE)) + "\n";
         output += summery_member_report();
 
         return output;
