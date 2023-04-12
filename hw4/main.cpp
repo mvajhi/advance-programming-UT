@@ -57,41 +57,6 @@ const string MEMBER_IDS_INDEX_IN_TEAMS_CSV = "member_ids";
 const string BONUS_MIN_TIME_INDEX_IN_TEAMS_CSV = "bonus_min_working_hours";
 const string BONUS_MAX_VARIANCE_INDEX_IN_TEAMS_CSV = "bonus_working_hours_max_variance";
 
-class Salary_manager;
-class Employee;
-class Team;
-class Working_time_manager;
-
-string float_to_string(float number, int precision);
-string update_configs(Salary_manager &the_salary_manager, vector<string> input);
-string get_employee_report(Salary_manager &the_salary_manager, vector<string> input);
-string get_team_report(Salary_manager &the_salary_manager, vector<string> input);
-string get_work_per_day(Salary_manager &the_salary_manager, vector<string> input);
-string get_avg_employee_per_hour(Salary_manager &the_salary_manager, vector<string> input);
-string get_salary_config_report(Salary_manager &the_salary_manager, vector<string> input);
-string add_working_time(Salary_manager &the_salary_manager, vector<string> input);
-string delete_working_time(Salary_manager &the_salary_manager, vector<string> input);
-string updating_team_bonus(Salary_manager &the_salary_manager, vector<string> input);
-bool sort_by_time(pair<int, Team *> t1, pair<int, Team *> t2);
-commands get_command(string input);
-vector<string> seperate_words(const string line, string separate_char);
-
-struct Time_interval
-{
-        int start;
-        int end;
-};
-
-struct Level
-{
-        string name;
-        int base_salary;
-        int salary_per_hour;
-        int salary_per_extra_hour;
-        int offcial_working_hours;
-        float tax_perecentage;
-};
-
 enum update_config_key
 {
         base_salary,
@@ -115,6 +80,44 @@ enum commands
         update_team_bonus,
         teams_bonus_report,
         invalid
+};
+
+class Salary_manager;
+class Employee;
+class Team;
+class Working_time_manager;
+
+string float_to_string(float number, int precision);
+string update_configs(Salary_manager &the_salary_manager, vector<string> input);
+string get_employee_report(Salary_manager &the_salary_manager, vector<string> input);
+string get_team_report(Salary_manager &the_salary_manager, vector<string> input);
+string get_work_per_day(Salary_manager &the_salary_manager, vector<string> input);
+string get_avg_employee_per_hour(Salary_manager &the_salary_manager, vector<string> input);
+string get_salary_config_report(Salary_manager &the_salary_manager, vector<string> input);
+string add_working_time(Salary_manager &the_salary_manager, vector<string> input);
+string delete_working_time(Salary_manager &the_salary_manager, vector<string> input);
+string updating_team_bonus(Salary_manager &the_salary_manager, vector<string> input);
+string processing(Salary_manager &the_salary_manager, vector<string> input);
+bool sort_by_time(pair<int, Team *> t1, pair<int, Team *> t2);
+commands get_command(string input);
+vector<string> seperate_words(const string line, string separate_char);
+vector<string> get_input();
+void import_csvs(Salary_manager &the_salary_manager, char *argv[]);
+
+struct Time_interval
+{
+        int start;
+        int end;
+};
+
+struct Level
+{
+        string name;
+        int base_salary;
+        int salary_per_hour;
+        int salary_per_extra_hour;
+        int offcial_working_hours;
+        float tax_perecentage;
 };
 
 class Salary_manager
@@ -239,64 +242,23 @@ public:
         int total_working();
 };
 
+//TODO fix for cpp11
 // TODO get address from arg
-int main()
+int main(int argc, char *argv[])
 {
-        string employee_file_address = "./assets/employees.csv";
-        string team_file_address = "./assets/teams.csv";
-        string working_hours_file_address = "./assets/working_hours.csv";
-        string salary_config_file_address = "./assets/salary_configs.csv";
-
         Salary_manager the_salary_manager;
-        the_salary_manager.import_csv_files(employee_file_address, team_file_address,
-                                            working_hours_file_address, salary_config_file_address);
+
+        import_csvs(the_salary_manager, argv);
 
         while (true)
         {
-                string line;
-                getline(cin, line);
-                vector<string> input = seperate_words(line, " ");
+                vector<string> input = get_input();
 
-                switch (get_command(input[0]))
-                {
-                case salaries_report:
-                        cout << the_salary_manager.salaries_report() << endl;
-                        break;
-                case employee_salaries_report:
-                        cout << get_employee_report(the_salary_manager, input);
-                        break;
-                case team_salaries_report:
-                        cout << get_team_report(the_salary_manager, input);
-                        break;
-                case total_work_per_day:
-                        cout << get_work_per_day(the_salary_manager, input);
-                        break;
-                case avg_employee_per_hour:
-                        cout << get_avg_employee_per_hour(the_salary_manager, input);
-                        break;
-                case salary_config_report:
-                        cout << get_salary_config_report(the_salary_manager, input);
-                        break;
-                case update_salary_config:
-                        cout << update_configs(the_salary_manager, input);
-                        break;
-                case add_working_hours:
-                        cout << add_working_time(the_salary_manager, input);
-                        break;
-                case delete_working_hours:
-                        cout << delete_working_time(the_salary_manager, input);
-                        break;
-                case update_team_bonus:
-                        cout << updating_team_bonus(the_salary_manager, input);
-                        break;
-                case teams_bonus_report:
-                        cout << the_salary_manager.teams_bonus_report();
-                        break;
-                default:
-                        cout << "Invalid input\n";
-                        break;
-                }
+                string output = processing(the_salary_manager, input);
+
+                cout << output;
         }
+
         return 0;
 }
 
@@ -1037,7 +999,7 @@ string float_to_string(float number, int precision)
         string output = to_string((round(number * pow(10, precision)) / precision));
 
         output = output.substr(0, output.find('.') + precision + 1);
-        
+
         return output;
 }
 
@@ -1075,7 +1037,7 @@ string get_team_report(Salary_manager &the_salary_manager, vector<string> input)
         return the_salary_manager.team_report(id);
 }
 
-string work_per_day(Salary_manager &the_salary_manager, vector<string> input)
+string get_work_per_day(Salary_manager &the_salary_manager, vector<string> input)
 {
         int start = stoi(input[1]);
         int end = stoi(input[2]);
@@ -1158,4 +1120,60 @@ string updating_team_bonus(Salary_manager &the_salary_manager, vector<string> in
         the_salary_manager.update_team_bonus(id, bonus);
 
         return SUCCESS_MASSAGE + "\n";
+}
+
+string processing(Salary_manager &the_salary_manager, vector<string> input)
+{
+        switch (get_command(input[0]))
+        {
+        case salaries_report:
+                return the_salary_manager.salaries_report() + "\n";
+        case employee_salaries_report:
+                return get_employee_report(the_salary_manager, input);
+        case team_salaries_report:
+                return get_team_report(the_salary_manager, input);
+        case total_work_per_day:
+                return get_work_per_day(the_salary_manager, input);
+        case avg_employee_per_hour:
+                return get_avg_employee_per_hour(the_salary_manager, input);
+        case salary_config_report:
+                return get_salary_config_report(the_salary_manager, input);
+        case update_salary_config:
+                return update_configs(the_salary_manager, input);
+        case add_working_hours:
+                return add_working_time(the_salary_manager, input);
+        case delete_working_hours:
+                return delete_working_time(the_salary_manager, input);
+        case update_team_bonus:
+                return updating_team_bonus(the_salary_manager, input);
+        case teams_bonus_report:
+                return the_salary_manager.teams_bonus_report();
+        }
+
+        return "Invalid input\n";
+}
+
+vector<string> get_input()
+{
+        string line;
+        getline(cin, line);
+        return seperate_words(line, " ");
+}
+
+void import_csvs(Salary_manager &the_salary_manager, char *argv[])
+{
+        //TODO rm this
+        // string employee_file_address = "./assets/employees.csv";
+        // string team_file_address = "./assets/teams.csv";
+        // string working_hours_file_address = "./assets/working_hours.csv";
+        // string salary_config_file_address = "./assets/salary_configs.csv";
+
+        string address = argv[1];
+        string employee_file_address = address + "/employees.csv";
+        string team_file_address = address + "/teams.csv";
+        string working_hours_file_address = address + "/working_hours.csv";
+        string salary_config_file_address = address + "/salary_configs.csv";
+
+        the_salary_manager.import_csv_files(employee_file_address, team_file_address,
+                                            working_hours_file_address, salary_config_file_address);
 }
