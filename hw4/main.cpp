@@ -62,6 +62,20 @@ class Employee;
 class Team;
 class Working_time_manager;
 
+string float_to_string(float number, int precision);
+string update_configs(Salary_manager &the_salary_manager, vector<string> input);
+string get_employee_report(Salary_manager &the_salary_manager, vector<string> input);
+string get_team_report(Salary_manager &the_salary_manager, vector<string> input);
+string get_work_per_day(Salary_manager &the_salary_manager, vector<string> input);
+string get_avg_employee_per_hour(Salary_manager &the_salary_manager, vector<string> input);
+string get_salary_config_report(Salary_manager &the_salary_manager, vector<string> input);
+string add_working_time(Salary_manager &the_salary_manager, vector<string> input);
+string delete_working_time(Salary_manager &the_salary_manager, vector<string> input);
+string updating_team_bonus(Salary_manager &the_salary_manager, vector<string> input);
+bool sort_by_time(pair<int, Team *> t1, pair<int, Team *> t2);
+commands get_command(string input);
+vector<string> seperate_words(const string line, string separate_char);
+
 struct Time_interval
 {
         int start;
@@ -102,12 +116,6 @@ enum commands
         teams_bonus_report,
         invalid
 };
-
-string float_to_string(float number, int precision);
-string update_configs(Salary_manager &the_salary_manager, vector<string> input);
-bool sort_by_time(pair<int, Team *> t1, pair<int, Team *> t2);
-commands get_command(string input);
-vector<string> seperate_words(const string line, string separate_char);
 
 class Salary_manager
 {
@@ -252,117 +260,41 @@ int main()
                 switch (get_command(input[0]))
                 {
                 case salaries_report:
-                {
                         cout << the_salary_manager.salaries_report() << endl;
                         break;
-                }
                 case employee_salaries_report:
-                {
-                        // TODO check input
-                        cout << the_salary_manager.employee_report(stoi(input[1]));
+                        cout << get_employee_report(the_salary_manager, input);
                         break;
-                }
                 case team_salaries_report:
-                {
-                        // TODO check input
-                        cout << the_salary_manager.team_report(stoi(input[1]));
+                        cout << get_team_report(the_salary_manager, input);
                         break;
-                }
                 case total_work_per_day:
-                {
-                        // TODO check input
-                        int start = stoi(input[1]);
-                        int end = stoi(input[2]);
-                        if (start > end || start < 1 || end > MONTH_LENGTH)
-                                cout << INVALID_ARGUMENTS_MASSAGE << "\n";
-                        else
-                                cout << the_salary_manager.total_work_per_day(start, end);
+                        cout << get_work_per_day(the_salary_manager, input);
                         break;
-                }
                 case avg_employee_per_hour:
-                {
-                        // TODO check input
-                        int start = stoi(input[1]);
-                        int end = stoi(input[2]);
-                        if (start > end || start < 0 || end > DAY_LENGTH)
-                                cout << INVALID_ARGUMENTS_MASSAGE << "\n";
-                        else
-                                cout << the_salary_manager.per_hour_report(start, end);
+                        cout << get_avg_employee_per_hour(the_salary_manager, input);
                         break;
-                }
                 case salary_config_report:
-                {
-                        // TODO check input
-                        cout << the_salary_manager.salary_config_report(input[1]);
+                        cout << get_salary_config_report(the_salary_manager, input);
                         break;
-                }
                 case update_salary_config:
-                {
                         cout << update_configs(the_salary_manager, input);
                         break;
-                }
                 case add_working_hours:
-                {
-                        // TODO check input
-                        int day = stoi(input[2]);
-                        int start = stoi(input[3]);
-                        int end = stoi(input[4]);
-                        if (start > end || start < 0 || end > DAY_LENGTH || day < 1 || day > MONTH_LENGTH)
-                                cout << INVALID_ARGUMENTS_MASSAGE << "\n";
-                        else
-                        {
-                                int flag = the_salary_manager.add_working_hours(stoi(input[1]), day, Time_interval{start, end});
-                                if (flag == 0)
-                                        cout << SUCCESS_MASSAGE << "\n";
-                                else if (flag == -1)
-                                        cout << INVALID_INTERVAL_MASSAGE << "\n";
-                                else
-                                        cout << EMPLOYEE_NOT_FOUND_MASSAGE << "\n";
-                        }
+                        cout << add_working_time(the_salary_manager, input);
                         break;
-                }
                 case delete_working_hours:
-                {
-                        // TODO check input
-                        int day = stoi(input[2]);
-                        if (day < 1 || day > MONTH_LENGTH)
-                                cout << INVALID_ARGUMENTS_MASSAGE << "\n";
-                        else
-                        {
-                                int flag = the_salary_manager.delete_working_hours(stoi(input[1]), day);
-                                if (flag == 0)
-                                        cout << SUCCESS_MASSAGE << "\n";
-                                else
-                                        cout << EMPLOYEE_NOT_FOUND_MASSAGE << "\n";
-                        }
+                        cout << delete_working_time(the_salary_manager, input);
                         break;
-                }
                 case update_team_bonus:
-                {
-                        // TODO check input
-                        int bonus = stoi(input[2]);
-                        if (bonus < 0 || bonus > PERCENTAGE)
-                                cout << INVALID_ARGUMENTS_MASSAGE << "\n";
-                        else
-                        {
-                                int flag = the_salary_manager.update_team_bonus(1, bonus);
-                                if (flag == 0)
-                                        cout << SUCCESS_MASSAGE << "\n";
-                                else
-                                        cout << TEAM_NOT_FOUND_MASSAGE << "\n";
-                        }
+                        cout << updating_team_bonus(the_salary_manager, input);
                         break;
-                }
                 case teams_bonus_report:
-                {
                         cout << the_salary_manager.teams_bonus_report();
                         break;
-                }
                 default:
-                {
                         cout << "Invalid input\n";
                         break;
-                }
                 }
         }
         return 0;
@@ -806,9 +738,6 @@ string Salary_manager::salaries_report()
 
 string Salary_manager::employee_report(int id)
 {
-        // TODO SEPREAT CHECK INPUT
-        if (employees.count(id) == 0)
-                return EMPLOYEE_NOT_FOUND_MASSAGE + "\n";
 
         return employees[id]->full_report();
 }
@@ -820,10 +749,6 @@ bool Salary_manager::is_employee_id_valid(int id)
 
 string Salary_manager::team_report(int id)
 {
-        // TODO SEPREAT CHECK INPUT
-        if (teams.count(id) == 0)
-                return TEAM_NOT_FOUND_MASSAGE + "\n";
-
         return teams[id]->report_salary();
 }
 
@@ -871,7 +796,7 @@ string Salary_manager::per_hour_report(int start_hour, int end_hour)
 {
         string output;
         vector<pair<int, float>> avgs_in_range = get_avg_employee_in_range(start_hour, end_hour);
-        //TODO bug
+        // TODO bug
         pair<float, vector<int>> max_hours = get_max_hours(start_hour, end_hour);
         pair<float, vector<int>> min_hours = get_min_hours(start_hour, end_hour);
 
@@ -895,10 +820,6 @@ string Salary_manager::per_hour_report(int start_hour, int end_hour)
 
 string Salary_manager::salary_config_report(string level)
 {
-        // TODO SEPREAT CHECK INPUT
-        if (employee_levels.count(level) == 0)
-                return LEVEL_NOT_FOUND_MASSAGE + "\n";
-
         string output;
         output += "Base Salary: " + to_string(employee_levels[level]->base_salary) + "\n";
         output += "Salary Per Hour: " + to_string(employee_levels[level]->salary_per_hour) + "\n";
@@ -937,16 +858,11 @@ void Salary_manager::update_salary_config(update_config_key key, string level, s
 
 int Salary_manager::add_working_hours(int employee_id, int day, Time_interval hours)
 {
-        // TODO SEPREAT CHECK INPUT
-        if (employees.count(employee_id) == 0)
-                return -2;
         return employees[employee_id]->add_new_work_time(day, hours);
 }
 
 int Salary_manager::delete_working_hours(int employee_id, int day)
 {
-        if (employees.count(employee_id) == 0)
-                return -2;
         return employees[employee_id]->delete_working_hours(day);
 }
 
@@ -1119,21 +1035,127 @@ int Working_time_manager::get_absent_day_count(int start_day, int end_day)
 string float_to_string(float number, int precision)
 {
         string output = to_string((round(number * pow(10, precision)) / precision));
+
         output = output.substr(0, output.find('.') + precision + 1);
+        
         return output;
 }
 
 string update_configs(Salary_manager &the_salary_manager, vector<string> input)
 {
         string level = input[1];
+
         if (!the_salary_manager.is_valid_level(level))
                 return LEVEL_NOT_FOUND_MASSAGE + "\n";
 
         for (int i = 0; i < 5; i++)
-        {
                 if (input[i + 2] != NO_CHANGE_CHAR)
                         the_salary_manager.update_salary_config((update_config_key)i, level, input[i + 2]);
-        }
+
+        return SUCCESS_MASSAGE + "\n";
+}
+
+string get_employee_report(Salary_manager &the_salary_manager, vector<string> input)
+{
+        int id = stoi(input[1]);
+
+        if (the_salary_manager.is_employee_id_valid(id))
+                return EMPLOYEE_NOT_FOUND_MASSAGE + "\n";
+
+        return the_salary_manager.employee_report(id);
+}
+
+string get_team_report(Salary_manager &the_salary_manager, vector<string> input)
+{
+        int id = stoi(input[1]);
+
+        if (the_salary_manager.is_team_id_valid(id))
+                return TEAM_NOT_FOUND_MASSAGE + "\n";
+
+        return the_salary_manager.team_report(id);
+}
+
+string work_per_day(Salary_manager &the_salary_manager, vector<string> input)
+{
+        int start = stoi(input[1]);
+        int end = stoi(input[2]);
+
+        if (start > end || start < 1 || end > MONTH_LENGTH)
+                return INVALID_ARGUMENTS_MASSAGE + "\n";
+
+        return the_salary_manager.total_work_per_day(start, end);
+}
+
+string get_avg_employee_per_hour(Salary_manager &the_salary_manager, vector<string> input)
+{
+        int start = stoi(input[1]);
+        int end = stoi(input[2]);
+
+        if (start > end || start < 0 || end > DAY_LENGTH)
+                return INVALID_ARGUMENTS_MASSAGE + "\n";
+
+        return the_salary_manager.per_hour_report(start, end);
+}
+
+string get_salary_config_report(Salary_manager &the_salary_manager, vector<string> input)
+{
+        string level = input[1];
+
+        if (the_salary_manager.is_valid_level(level))
+                return LEVEL_NOT_FOUND_MASSAGE + "\n";
+
+        return the_salary_manager.salary_config_report(level);
+}
+
+string add_working_time(Salary_manager &the_salary_manager, vector<string> input)
+{
+        int id = stoi(input[1]);
+        int day = stoi(input[2]);
+        int start = stoi(input[3]);
+        int end = stoi(input[4]);
+
+        if (the_salary_manager.is_employee_id_valid(id))
+                return EMPLOYEE_NOT_FOUND_MASSAGE + "\n";
+
+        if (start > end || start < 0 || end > DAY_LENGTH || day < 1 || day > MONTH_LENGTH)
+                return INVALID_ARGUMENTS_MASSAGE + "\n";
+
+        int flag = the_salary_manager.add_working_hours(id, day, Time_interval{start, end});
+
+        if (flag == 0)
+                return SUCCESS_MASSAGE + "\n";
+
+        return INVALID_INTERVAL_MASSAGE + "\n";
+}
+
+string delete_working_time(Salary_manager &the_salary_manager, vector<string> input)
+{
+        int id = stoi(input[1]);
+        int day = stoi(input[2]);
+
+        if (day < 1 || day > MONTH_LENGTH)
+                return INVALID_ARGUMENTS_MASSAGE + "\n";
+
+        if (the_salary_manager.is_employee_id_valid(id))
+                return EMPLOYEE_NOT_FOUND_MASSAGE + "\n";
+
+        the_salary_manager.delete_working_hours(id, day);
+
+        return SUCCESS_MASSAGE + "\n";
+}
+
+string updating_team_bonus(Salary_manager &the_salary_manager, vector<string> input)
+{
+        int id = stoi(input[1]);
+        int bonus = stoi(input[2]);
+
+        if (bonus < 0 || bonus > PERCENTAGE)
+                return INVALID_ARGUMENTS_MASSAGE + "\n";
+
+        if (the_salary_manager.is_team_id_valid(id))
+                return TEAM_NOT_FOUND_MASSAGE + "\n";
+
+        the_salary_manager.update_team_bonus(id, bonus);
 
         return SUCCESS_MASSAGE + "\n";
 }
