@@ -40,7 +40,6 @@ const string SALARY_PER_HOUR_INDEX_IN_CONFIGS_CSV = "salary_per_hour";
 const string SALARY_PER_EXTRA_HOUR_INDEX_IN_CONFIGS_CSV = "salary_per_extra_hour";
 const string OFFCIAL_WORKING_HOURS_INDEX_IN_CONFIGS_CSV = "official_working_hours";
 const string TAX_PERECENTAGE_INDEX_IN_CONFIGS_CSV = "tax_percentage";
-const vector<string> LEVEL_NAMES = {"junior", "expert", "senior", "team_lead"};
 
 const string ID_INDEX_IN_EMPLOYEE_CSV = "id";
 const string NAME_INDEX_IN_EMPLOYEE_CSV = "name";
@@ -318,7 +317,7 @@ map<int, int> Working_time_manager::get_work_time_per_day(int start_day, int end
 
         for (auto i : times)
                 if (start_day <= i.first && i.first <= end_day)
-                        work_per_day.insert(pair(i.first, i.second.end - i.second.start));
+                        work_per_day.insert(make_pair(i.first, i.second.end - i.second.start));
 
         return work_per_day;
 }
@@ -403,7 +402,7 @@ vector<map<string, string>> Salary_manager::convert_csv_lines_to_dictionary(vect
                 map<string, string> new_index_line;
 
                 for (int j = 0; j < index.size(); j++)
-                        new_index_line.insert(pair(index[j], words_line_buffer[j]));
+                        new_index_line.insert(make_pair(index[j], words_line_buffer[j]));
 
                 dictionary.push_back(new_index_line);
         }
@@ -424,7 +423,7 @@ void Salary_manager::add_levels_with_dectionary(vector<map<string, string>> leve
                 new_level->offcial_working_hours = stoi(i[OFFCIAL_WORKING_HOURS_INDEX_IN_CONFIGS_CSV]);
                 new_level->tax_perecentage = stof(i[TAX_PERECENTAGE_INDEX_IN_CONFIGS_CSV]) / PERCENTAGE;
 
-                employee_levels.insert(pair(i[NAME_INDEX_IN_CONFIGS_CSV], new_level));
+                employee_levels.insert(make_pair(i[NAME_INDEX_IN_CONFIGS_CSV], new_level));
         }
 }
 
@@ -437,7 +436,7 @@ void Salary_manager::add_employee_with_dectionary(vector<map<string, string>> em
                     i[NAME_INDEX_IN_EMPLOYEE_CSV],
                     stoi(i[AGE_INDEX_IN_EMPLOYEE_CSV]),
                     employee_levels[i[LEVEL_INDEX_IN_EMPLOYEE_CSV]]);
-                employees.insert(pair(stoi(i[ID_INDEX_IN_EMPLOYEE_CSV]), new_employee));
+                employees.insert(make_pair(stoi(i[ID_INDEX_IN_EMPLOYEE_CSV]), new_employee));
         }
 }
 
@@ -468,7 +467,7 @@ void Salary_manager::add_team_with_dectionary(vector<map<string, string>> team_d
                 for (auto i : members)
                         i->added_to_team(new_team);
 
-                teams.insert(pair(stoi(i[TEAM_ID_INDEX_IN_TEAMS_CSV]), new_team));
+                teams.insert(make_pair(stoi(i[TEAM_ID_INDEX_IN_TEAMS_CSV]), new_team));
         }
 }
 
@@ -510,7 +509,7 @@ pair<int, vector<int>> Salary_manager::get_max_days(int start_day, int end_day)
                         work_time = work_per_day[day];
 
                 if (work_time > max_days.first)
-                        max_days = pair(work_time, vector(1, day));
+                        max_days = make_pair(work_time, (vector<int>){1, day});
                 else if (work_time == max_days.first)
                         max_days.second.push_back(day);
         }
@@ -532,7 +531,7 @@ pair<int, vector<int>> Salary_manager::get_min_days(int start_day, int end_day)
                         work_time = work_per_day[day];
 
                 if (work_time < min_days.first)
-                        min_days = pair(work_time, vector(1, day));
+                        min_days = make_pair(work_time, (vector<int>){1, day});
                 else if (work_time == min_days.first)
                         min_days.second.push_back(day);
         }
@@ -551,7 +550,7 @@ pair<float, vector<int>> Salary_manager::get_max_hours(int start_hour, int end_h
                 int employee_avg = 0;
 
                 if (employee_avg > max_hours.first)
-                        max_hours = pair(employee_avg, vector(1, hour));
+                        max_hours = make_pair(employee_avg, (vector<int>){1, hour});
                 else if (employee_avg == max_hours.first)
                         max_hours.second.push_back(hour);
         }
@@ -570,7 +569,7 @@ pair<float, vector<int>> Salary_manager::get_min_hours(int start_hour, int end_h
                 int employee_avg = 0;
 
                 if (employee_avg < min_hours.first)
-                        min_hours = pair(employee_avg, vector(1, hour));
+                        min_hours = make_pair(employee_avg, (vector<int>){1, hour});
                 else if (employee_avg == min_hours.first)
                         min_hours.second.push_back(hour);
         }
@@ -584,7 +583,7 @@ vector<pair<int, float>> Salary_manager::get_avg_employee_in_range(int start_hou
         for (int i = 0; i < (end_hour - start_hour); i++)
         {
                 int this_hour = start_hour + i;
-                averages.push_back(pair(this_hour, get_avg_employees_in_one_hour(this_hour)));
+                averages.push_back(make_pair(this_hour, get_avg_employees_in_one_hour(this_hour)));
         }
         return averages;
 }
@@ -643,7 +642,7 @@ vector<pair<int, Team *>> Salary_manager::sorting_bonus_team()
 
         for (auto i : teams)
                 if (i.second->have_bonus())
-                        bonus_teams.push_back(pair(i.second->total_working(), i.second));
+                        bonus_teams.push_back(make_pair(i.second->total_working(), i.second));
 
         sort(bonus_teams.begin(), bonus_teams.end(), sort_by_time);
         return bonus_teams;
@@ -953,10 +952,10 @@ int Working_time_manager::add_new_time(int day, string range)
             start >= end)
                 return 0;
 
-        if (is_busy(pair(day, new_range)))
+        if (is_busy(make_pair(day, new_range)))
                 return 0;
 
-        times.push_back(pair(day, new_range));
+        times.push_back(make_pair(day, new_range));
 
         return 1;
 }
@@ -966,7 +965,7 @@ int Working_time_manager::add_new_time(int day, Time_interval range)
         for (auto i : times)
                 if (i.first == day && do_they_share_time(range, i.second))
                         return -1;
-        times.push_back(pair(day, range));
+        times.push_back(make_pair(day, range));
         return 0;
 }
 
