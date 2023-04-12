@@ -146,8 +146,8 @@ private:
 public:
         ~Salary_manager();
         string salaries_report();
-        string employee_report(int id) { return employees[id]->full_report(); }
-        string team_report(int id) { return teams[id]->report_salary(); }
+        string employee_report(int id);
+        string team_report(int id);
         string total_work_per_day(int start_day = NOT_SET_START_DAY, int end_day = NOT_SET_END_DAY);
         string per_hour_report(int start_hour, int end_hour);
         string salary_config_report(string level);
@@ -690,6 +690,16 @@ string Salary_manager::salaries_report()
                           SPREATE_2_LINES_CLI_OUTPUT + "\n";
 
         return output;
+}
+
+string Salary_manager::employee_report(int id)
+{
+        return employees[id]->full_report();
+}
+
+string Salary_manager::team_report(int id)
+{
+        return teams[id]->report_salary();
 }
 
 string Salary_manager::total_work_per_day(int start_day, int end_day)
