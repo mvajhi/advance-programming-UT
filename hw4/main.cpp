@@ -546,9 +546,10 @@ pair<float, vector<int>> Salary_manager::get_max_hours(int start_hour, int end_h
 
         for (auto i : avgs_in_range)
         {
-                if (i.second > max_hours.first)
-                        max_hours = make_pair(i.second, (vector<int>){i.first});
-                else if (i.second == max_hours.first)
+                float avg = stof(float_to_string(i.second, DECIMAL_PRECISION_FOR_AVG_WORKING_REPORT));
+                if (avg > max_hours.first)
+                        max_hours = make_pair(avg, (vector<int>){i.first});
+                else if (avg == max_hours.first)
                         max_hours.second.push_back(i.first);
         }
 
@@ -562,9 +563,10 @@ pair<float, vector<int>> Salary_manager::get_min_hours(int start_hour, int end_h
 
         for (auto i : avgs_in_range)
         {
-                if (i.second < min_hours.first)
-                        min_hours = make_pair(i.second, (vector<int>){i.first});
-                else if (i.second == min_hours.first)
+                float avg = stof(float_to_string(i.second, DECIMAL_PRECISION_FOR_AVG_WORKING_REPORT));
+                if (avg < min_hours.first)
+                        min_hours = make_pair(avg, (vector<int>){i.first});
+                else if (avg == min_hours.first)
                         min_hours.second.push_back(i.first);
         }
 
@@ -956,7 +958,7 @@ int Working_time_manager::get_absent_day_count(int start_day, int end_day)
 
 string float_to_string(float number, int precision)
 {
-        string output = to_string((round(number * pow(10, precision)) / precision));
+        string output = to_string((round(number * pow(10, precision)) / pow(10, precision)));
 
         output = output.substr(0, output.find('.') + precision + 1);
 
