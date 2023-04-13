@@ -344,7 +344,7 @@ float Employee::tax()
 
 int Employee::salary()
 {
-        int sum = 0;
+        int sum = level_details->base_salary;
         int total_hours = working_times.total_work();
         if (total_hours > level_details->offcial_working_hours)
         {
@@ -984,7 +984,7 @@ string get_employee_report(Salary_manager &the_salary_manager, vector<string> in
 {
         int id = stoi(input[1]);
 
-        if (the_salary_manager.is_employee_id_valid(id))
+        if (!the_salary_manager.is_employee_id_valid(id))
                 return EMPLOYEE_NOT_FOUND_MASSAGE + "\n";
 
         return the_salary_manager.employee_report(id);
@@ -994,7 +994,7 @@ string get_team_report(Salary_manager &the_salary_manager, vector<string> input)
 {
         int id = stoi(input[1]);
 
-        if (the_salary_manager.is_team_id_valid(id))
+        if (!the_salary_manager.is_team_id_valid(id))
                 return TEAM_NOT_FOUND_MASSAGE + "\n";
 
         return the_salary_manager.team_report(id);
@@ -1039,7 +1039,7 @@ string add_working_time(Salary_manager &the_salary_manager, vector<string> input
         int start = stoi(input[3]);
         int end = stoi(input[4]);
 
-        if (the_salary_manager.is_employee_id_valid(id))
+        if (!the_salary_manager.is_employee_id_valid(id))
                 return EMPLOYEE_NOT_FOUND_MASSAGE + "\n";
 
         if (start > end || start < 0 || end > DAY_LENGTH || day < 1 || day > MONTH_LENGTH)
@@ -1061,7 +1061,7 @@ string delete_working_time(Salary_manager &the_salary_manager, vector<string> in
         if (day < 1 || day > MONTH_LENGTH)
                 return INVALID_ARGUMENTS_MASSAGE + "\n";
 
-        if (the_salary_manager.is_employee_id_valid(id))
+        if (!the_salary_manager.is_employee_id_valid(id))
                 return EMPLOYEE_NOT_FOUND_MASSAGE + "\n";
 
         the_salary_manager.delete_working_hours(id, day);
@@ -1077,7 +1077,7 @@ string updating_team_bonus(Salary_manager &the_salary_manager, vector<string> in
         if (bonus < 0 || bonus > PERCENTAGE)
                 return INVALID_ARGUMENTS_MASSAGE + "\n";
 
-        if (the_salary_manager.is_team_id_valid(id))
+        if (!the_salary_manager.is_team_id_valid(id))
                 return TEAM_NOT_FOUND_MASSAGE + "\n";
 
         the_salary_manager.update_team_bonus(id, bonus);
@@ -1125,7 +1125,8 @@ vector<string> get_input()
 
 void import_csvs(Salary_manager &the_salary_manager, char *argv[])
 {
-        string address = argv[1];
+        // string address = argv[1];
+        string address = "assets";
         string employee_file_address = address + "/employees.csv";
         string team_file_address = address + "/teams.csv";
         string working_hours_file_address = address + "/working_hours.csv";
