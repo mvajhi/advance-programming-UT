@@ -828,6 +828,9 @@ Team::Team(int team_id, Employee *team_head, vector<Employee *> team_members,
 {
         id = team_id;
         head = team_head;
+        sort(team_members.begin(), team_members.end(),
+             [](Employee *e1, Employee *e2)
+             { return e1->get_id() < e2->get_id(); });
         members = team_members;
         bonus_min_working_hours = bonus_min_work;
         bonus_working_hours_max_variance = bonus_max_variance;
