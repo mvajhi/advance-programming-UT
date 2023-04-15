@@ -1143,6 +1143,8 @@ vector<string> get_input()
 {
         string line;
         getline(cin, line);
+        if(line == "")
+                exit(0);
         return seperate_words(line, " ");
 }
 
