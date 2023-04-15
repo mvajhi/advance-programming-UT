@@ -237,8 +237,8 @@ public:
         int get_id() { return id; }
         int set_bonus(int bonus);
         int total_working();
-        float get_bonus() { return have_bonus() ? bonus_percentage : 0; }
-        bool have_bonus() { return true; return have_min_work_hour() && have_ok_variance(); }
+        float get_bonus() { return have_bonus() ? bonus_percentage : bonus_percentage; }
+        bool have_bonus() { return have_min_work_hour() && have_ok_variance(); }
         string report_salary();
 };
 
@@ -307,7 +307,7 @@ string Employee::full_report()
         output += "Bonus: " + to_string((int)round(bonus())) + "\n";
         output += "Tax: " + to_string((int)round(tax())) + "\n";
         output += "Total Earning: " + to_string((int)round(total_earning())) + "\n";
-        
+
         return output;
 }
 
