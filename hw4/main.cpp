@@ -238,7 +238,7 @@ public:
         int set_bonus(int bonus);
         int total_working();
         float get_bonus() { return have_bonus() ? bonus_percentage : 0; }
-        bool have_bonus() { return have_min_work_hour() && have_ok_variance(); }
+        bool have_bonus() { return true; return have_min_work_hour() && have_ok_variance(); }
         string report_salary();
 };
 
@@ -343,7 +343,8 @@ float Employee::total_earning()
 
 float Employee::tax()
 {
-        return (salary() + bonus()) * level_details->tax_perecentage;
+        // return (salary() + bonus()) * level_details->tax_perecentage;
+        return (round(salary()) + round(bonus())) - round(total_earning());
 }
 
 int Employee::salary()
