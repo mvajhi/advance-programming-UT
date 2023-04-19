@@ -4,6 +4,7 @@
 
 using namespace std;
 
+int foo();
 
 int main()
 {
