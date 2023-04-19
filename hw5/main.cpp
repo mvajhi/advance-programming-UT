@@ -13,7 +13,7 @@ int main()
 }
 
 
-int foo()
+int fdd()
 {
 	cout << "hi";
 }
