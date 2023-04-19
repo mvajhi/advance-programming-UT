@@ -14,7 +14,7 @@ int main()
 }
 
 
-int foo()
+int faa()
 {
 	cout << "hi";
 }
