@@ -8,6 +8,7 @@ int foo();
 
 int main()
 {
+	cout <<"mehdi is bad boy";
 
 	return 0;
 }
