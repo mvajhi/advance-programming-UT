@@ -1,0 +1,1 @@
+#define "assets/level/level1.map" READ_BOARD_GAME 
