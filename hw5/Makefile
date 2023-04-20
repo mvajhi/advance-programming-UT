@@ -1,18 +1,26 @@
-BIN = ./bin
-OUT = main
-CXX = g++ --std=c++11
+CC=g++
+CFLAGS=-c -Wall --std=c++11 
+LDFLAGS=-lsfml-graphics -lsfml-window -lsfml-system
 
-$(OUT): main.o game_manager.o game_board.o
-	$(CXX) $(BIN)/*.o -o $@ -lsfml-graphics -lsfml-window -lsfml-system
+BIN_DIR =./bin
+EXECUTABLE = $(BIN_DIR)/main
 
-main.o: main.cpp 
-	$(CXX) -c $< -o $(BIN)/$@
+SOURCES=$(wildcard *.cpp)
+OBJS = $(patsubst %.cpp,$(BIN_DIR)/%.o,$(SOURCES))
+RUN_CMD=./$(EXECUTABLE)
 
-game_manager.o
 
-makedir:
-	mkdir $(BIN)
+$(BIN_DIR)/%.o: %.cpp | $(BIN_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: clean
+$(EXECUTABLE): $(OBJS) | $(BIN_DIR)
+	$(CC) $^ -o $@ $(LDFLAGS)
+
+$(BIN_DIR):
+	mkdir $(BIN_DIR)
+
+run: $(EXECUTABLE)
+	$(RUN_CMD)
+
 clean:
-	rm -rf $(BIN) $(OUT)
+	rm -rf $(OBJS) $(EXECUTABLE) $(BIN_DIR)
