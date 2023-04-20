@@ -1,3 +1,4 @@
+#pragma once
 #include "game_board.hpp"
 
 class game_manager

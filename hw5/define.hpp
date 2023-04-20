@@ -1,1 +1,6 @@
-#define "assets/level/level1.map" READ_BOARD_GAME 
+#pragma once
+using namespace std;
+
+const string ADDR_ASSSETS = "./assets/";
+const string ADDR_LEVELS = ADDR_ASSSETS + "levels/";
+const string ADDR_LEVEL_1 = ADDR_LEVELS + "level1.map";
