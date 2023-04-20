@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "game_manager.hpp"
 
 using namespace std;
 
