@@ -1,8 +1,4 @@
 #include "game_board.hpp"
-#include <iostream>
-#include <string>
-#include <vector>
-#include <fstream>
 
 game_board::game_board(/* args */)
 {

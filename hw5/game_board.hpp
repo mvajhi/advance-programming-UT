@@ -1,5 +1,9 @@
 #pragma once
 #include "define.hpp"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
 
 class game_board
 {
