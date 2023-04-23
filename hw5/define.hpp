@@ -9,6 +9,13 @@
 using namespace std;
 using namespace sf;
 
+const int WINDOW_WIDTH = 900;
+const int WINDOW_HEIGHT = 600;
+
+const int BLOCK_SIZE = 100;
+const int IMG_FLOOR_SIZE = 31;
+const float FLOOR_SCALE = BLOCK_SIZE * 1.0 / IMG_FLOOR_SIZE;
+
 const string ADDR_ASSSETS = "./assets/";
 const string ADDR_LEVELS = ADDR_ASSSETS + "levels/";
 const string ADDR_IMG = ADDR_ASSSETS + "img/";

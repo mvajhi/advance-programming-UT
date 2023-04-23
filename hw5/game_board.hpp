@@ -7,6 +7,7 @@ private:
         vector<string> board;
         Texture t_floor;
         Sprite floor;
+        vector<vector<Sprite>> window_board;
 
 public:
         game_board(/* args */);

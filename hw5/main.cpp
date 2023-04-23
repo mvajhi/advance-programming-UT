@@ -12,6 +12,7 @@ int main()
 
 	while (true)
 	{
+		// TODO handle events
 		// Event event;
 		// while (window.pollEvent(event))
 		// {
