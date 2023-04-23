@@ -17,11 +17,17 @@ void game_board::read_board_game(string address_file)
         board = output;
 }
 
-void game_board::draw_board(RenderWindow &window)
-{
-        window.draw(floor);
-}
-
 game_board::~game_board()
 {
+}
+
+vector<Drawable *> game_board::get_board(Vector2f position)
+{
+        //TODO should return board with position
+        //TODO draw with file
+
+        vector<Drawable *> board;
+        board.push_back(&floor);
+
+        return board;
 }

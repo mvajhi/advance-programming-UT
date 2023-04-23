@@ -8,20 +8,18 @@ using namespace sf;
 int main()
 {
 	game_manager the_game;
-	RenderWindow window(sf::VideoMode(900, 600), "SFML works!");
+	// RenderWindow window(sf::VideoMode(900, 600), "game");
 
-	while (window.isOpen())
+	while (true)
 	{
-		Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == Event::Closed)
-				window.close();
-		}
+		// Event event;
+		// while (window.pollEvent(event))
+		// {
+		// 	if (event.type == Event::Closed)
+		// 		window.close();
+		// }
 
-		window.clear();
-		the_game.draw(window);
-		window.display();
+		the_game.update();
 	}
 
 	return 0;
