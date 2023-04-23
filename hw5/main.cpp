@@ -3,21 +3,24 @@
 #include "game_manager.hpp"
 
 using namespace std;
+using namespace sf;
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(900, 600), "SFML works!");
+	game_manager the_game;
+	RenderWindow window(sf::VideoMode(900, 600), "SFML works!");
 
 	while (window.isOpen())
 	{
-		sf::Event event;
+		Event event;
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
+			if (event.type == Event::Closed)
 				window.close();
 		}
 
 		window.clear();
+		the_game.draw(window);
 		window.display();
 	}
 
