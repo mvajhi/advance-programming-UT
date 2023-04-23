@@ -19,9 +19,7 @@ int main()
 		// 		window.close();
 		// }
 
-		// window.clear();
-		// the_game.draw(window);
-		// window.display();
+		the_game.update();
 	}
 
 	return 0;
