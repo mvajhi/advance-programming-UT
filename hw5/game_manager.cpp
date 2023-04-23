@@ -4,7 +4,7 @@
 #include "game_board.hpp"
 
 
-game_manager::game_manager(/* args */)
+game_manager::game_manager(/* args */) : the_window()
 {
 }
 
