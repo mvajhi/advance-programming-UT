@@ -4,7 +4,7 @@
 #include <utility>
 #include "define.hpp"
 
-using namespace std;
+
 class Person
 {
     
