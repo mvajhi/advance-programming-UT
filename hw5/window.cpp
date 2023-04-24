@@ -11,8 +11,16 @@ void window::draw(vector<Drawable *> shapes)
                 draw_a_shape(shape);
 }
 
-void window::update(vector<Drawable *> updated_shapes)
+void window::set_view(vector<Drawable *> shapes, Vector2f position)
 {
+        //TODO change pos
+}
+
+//!!WANING should send copy of shape
+void window::update(vector<Drawable *> updated_shapes, Vector2f position)
+{
+        // TODO should return board with position
+        set_view(updated_shapes, position);
         m_window.clear();
         draw(updated_shapes);
         m_window.display();

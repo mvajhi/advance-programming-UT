@@ -8,7 +8,7 @@ using namespace sf;
 int main()
 {
 	game_manager the_game;
-	// RenderWindow window(sf::VideoMode(900, 600), "game");
+	the_game.read_level1();
 
 	while (true)
 	{

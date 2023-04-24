@@ -1,45 +1,53 @@
 #include "game_board.hpp"
 
-game_board::game_board(/* args */)
-{
-        t_floor.loadFromFile(ADDR_FLOOR);
-        floor.setTexture(t_floor);
-        floor.setScale(FLOOR_SCALE, FLOOR_SCALE);
-        floor.setPosition(BLOCK_SIZE / 2, WINDOW_HEIGHT - BLOCK_SIZE / 2);
-
-        vector<Sprite> width_block(WINDOW_WIDTH / BLOCK_SIZE, floor);
-        vector<vector<Sprite>> blocks(WINDOW_HEIGHT / BLOCK_SIZE, width_block);
-
-        for (int i = 0; i < blocks.size(); i++)
-                for (int j = 0; j < blocks[i].size(); j++)
-                        blocks[i][j].setPosition(j * BLOCK_SIZE, i * BLOCK_SIZE);
-
-        window_board = blocks;
-}
-
-void game_board::read_board_game(string address_file)
+vector<string> game_board::read_map_file(string address_file)
 {
         ifstream board_file(address_file);
         string line;
         vector<string> output;
         while (getline(board_file, line))
                 output.push_back(line);
-        board = output;
+        return output;
+}
+
+vector<Sprite> game_board::set_map()
+{
+        vector<Sprite> new_map;
+        Sprite tmp_floor = floor;
+
+        for (int y = 0; y < text_map.size(); y++)
+                for (int x = 0; x < text_map[y].length(); x++)
+                        if (text_map[y][x] == FLOOR_MAP_SYMBOLE)
+                        {
+                                tmp_floor.setPosition(x * BLOCK_SIZE, y * BLOCK_SIZE);
+                                new_map.push_back(tmp_floor);
+                        }
+
+        return new_map;
+}
+
+game_board::game_board(/* args */)
+{
+        t_floor.loadFromFile(ADDR_FLOOR);
+        floor.setTexture(t_floor);
+        floor.setScale(FLOOR_SCALE, FLOOR_SCALE);
+}
+
+void game_board::set_board_game(string address_file)
+{
+        text_map = read_map_file(address_file);
+        map = set_map();
 }
 
 game_board::~game_board()
 {
 }
 
-vector<Drawable *> game_board::get_board(Vector2f position)
+vector<Drawable *> game_board::get_board()
 {
-        // TODO should return board with position
-        // TODO draw with file
-
         vector<Drawable *> board;
-        for (int i = 0; i < window_board.size(); i++)
-                for (int j = 0; j < window_board[i].size(); j++)
-                        board.push_back(&window_board[i][j]);
+        for (int i = 0; i < map.size(); i++)
+                        board.push_back(&map[i]);
 
         return board;
 }

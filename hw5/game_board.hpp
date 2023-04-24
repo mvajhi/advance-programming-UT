@@ -4,14 +4,17 @@
 class game_board
 {
 private:
-        vector<string> board;
+        vector<string> text_map;
         Texture t_floor;
         Sprite floor;
-        vector<vector<Sprite>> window_board;
+        vector<Sprite> map;
+
+        vector<string> read_map_file(string address_file);
+        vector<Sprite> set_map();
 
 public:
         game_board(/* args */);
-        void read_board_game(string address_file);
+        void set_board_game(string address_file);
         ~game_board();
-        vector<Drawable *> get_board(Vector2f position);
+        vector<Drawable *> get_board();
 };
