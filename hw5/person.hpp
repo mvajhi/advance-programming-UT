@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include "difine.hpp"
+#include "define.hpp"
 
 using namespace std;
 class Person
