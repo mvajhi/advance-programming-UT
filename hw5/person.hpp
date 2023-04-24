@@ -20,4 +20,4 @@ class Person
     int jump_high;
     int health;
 
-}
+};
