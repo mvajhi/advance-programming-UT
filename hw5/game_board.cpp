@@ -15,8 +15,8 @@ vector<Sprite> game_board::set_map()
         vector<Sprite> new_map;
         Sprite tmp_floor = floor;
 
-        for (int y = 0; y < text_map.size(); y++)
-                for (int x = 0; x < text_map[y].length(); x++)
+        for (size_t y = 0; y < text_map.size(); y++)
+                for (size_t x = 0; x < text_map[y].length(); x++)
                         if (text_map[y][x] == FLOOR_MAP_SYMBOLE)
                         {
                                 tmp_floor.setPosition(x * BLOCK_SIZE, y * BLOCK_SIZE);
@@ -46,7 +46,7 @@ game_board::~game_board()
 vector<Drawable *> game_board::get_board()
 {
         vector<Drawable *> board;
-        for (int i = 0; i < map.size(); i++)
+        for (size_t i = 0; i < map.size(); i++)
                         board.push_back(&map[i]);
 
         return board;
