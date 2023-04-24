@@ -76,6 +76,10 @@ vector<string> Turtle::without_encounter(vector<string> game_board, int side)
     x = x + side;
     return game_board;
 }
+Vector2f Turtle::get_position()
+{
+    return Vector2f(x, y);
+}
 void Turtle::initialize(int &side, int status)
 {
     if (status == MOVE_LEFT)

@@ -16,5 +16,5 @@ public:
         game_board(/* args */);
         void set_board_game(string address_file);
         ~game_board();
-        vector<Drawable *> get_board();
+        vector<Sprite> get_board();
 };

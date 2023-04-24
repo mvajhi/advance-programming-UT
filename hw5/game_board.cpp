@@ -43,11 +43,11 @@ game_board::~game_board()
 {
 }
 
-vector<Drawable *> game_board::get_board()
+vector<Sprite> game_board::get_board()
 {
-        vector<Drawable *> board;
+        vector<Sprite> board;
         for (size_t i = 0; i < map.size(); i++)
-                        board.push_back(&map[i]);
+                        board.push_back(map[i]);
 
         return board;
 }

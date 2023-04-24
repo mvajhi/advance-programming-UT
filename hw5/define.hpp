@@ -9,6 +9,8 @@
 using namespace std;
 using namespace sf;
 
+#define BACKGROUND_COLOR 119, 181, 254, 255
+
 const int WINDOW_WIDTH = 900;
 const int WINDOW_HEIGHT = 600;
 

@@ -6,13 +6,12 @@ class window
 private:
         RenderWindow m_window;
 
-        void draw_a_shape(Drawable *shape);
-        void draw(vector<Drawable *> shapes);
-        void set_view(vector<Drawable *> shapes, Vector2f position);
+        void draw_a_shape(Sprite shape);
+        void draw(vector<Sprite> shapes);
+        void set_view(vector<Sprite> &shapes, Vector2f position);
 
 public:
         window(/* args */);
-        //!!WANING should send copy of shape
-        void update(vector<Drawable *> updated_shapes, Vector2f position);
+        void update(vector<Sprite> updated_shapes, Vector2f position);
         ~window();
 };
