@@ -13,7 +13,6 @@ void Window::draw(vector<Sprite> shapes)
 
 void Window::set_view(vector<Sprite> &shapes, Vector2f position)
 {
-        // TODO change pos
         Vector2f move_size = - Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2) - position;
         for (size_t i = 0; i < shapes.size(); i++)
         {
@@ -24,7 +23,6 @@ void Window::set_view(vector<Sprite> &shapes, Vector2f position)
 
 void Window::update(vector<Sprite> updated_shapes, Vector2f position)
 {
-        // TODO should return board with position
         set_view(updated_shapes, position);
         m_window.clear(Color(BACKGROUND_COLOR));
         draw(updated_shapes);

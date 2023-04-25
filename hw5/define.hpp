@@ -17,7 +17,12 @@ const int WINDOW_HEIGHT = 600;
 const int BLOCK_SIZE = 100;
 //!!WARNING image size should set
 const int IMG_FLOOR_SIZE = 100;
+const int IMG_COIN_SIZE = 100;
+const int IMG_DIMEND_SIZE = 100;
+
 const float FLOOR_SCALE = BLOCK_SIZE * 1.0 / IMG_FLOOR_SIZE;
+const float COIN_SCALE = BLOCK_SIZE * 1.0 / IMG_COIN_SIZE;
+const float DIMEND_SCALE = BLOCK_SIZE * 1.0 / IMG_DIMEND_SIZE;
 
 const string FLOOR_MAP_SYMBOLE = "#";
 
