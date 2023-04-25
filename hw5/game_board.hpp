@@ -1,7 +1,7 @@
 #pragma once
 #include "define.hpp"
 
-class game_board
+class Game_board
 {
 private:
         vector<string> text_map;
@@ -13,8 +13,8 @@ private:
         vector<Sprite> set_map();
 
 public:
-        game_board(/* args */);
+        Game_board(/* args */);
         void set_board_game(string address_file);
-        ~game_board();
+        ~Game_board();
         vector<Sprite> get_board();
 };

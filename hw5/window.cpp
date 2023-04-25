@@ -1,17 +1,17 @@
 #include "window.hpp"
 
-window::window(/* args */)
+Window::Window(/* args */)
 {
         m_window.create(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "game");
 }
 
-void window::draw(vector<Sprite> shapes)
+void Window::draw(vector<Sprite> shapes)
 {
         for (auto shape : shapes)
                 draw_a_shape(shape);
 }
 
-void window::set_view(vector<Sprite> &shapes, Vector2f position)
+void Window::set_view(vector<Sprite> &shapes, Vector2f position)
 {
         // TODO change pos
         Vector2f move_size = - Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2) - position;
@@ -22,7 +22,7 @@ void window::set_view(vector<Sprite> &shapes, Vector2f position)
         }
 }
 
-void window::update(vector<Sprite> updated_shapes, Vector2f position)
+void Window::update(vector<Sprite> updated_shapes, Vector2f position)
 {
         // TODO should return board with position
         set_view(updated_shapes, position);
@@ -31,11 +31,11 @@ void window::update(vector<Sprite> updated_shapes, Vector2f position)
         m_window.display();
 }
 
-void window::draw_a_shape(Sprite shape)
+void Window::draw_a_shape(Sprite shape)
 {
         m_window.draw(shape);
 }
 
-window::~window()
+Window::~Window()
 {
 }

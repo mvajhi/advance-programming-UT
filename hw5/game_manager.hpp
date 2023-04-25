@@ -4,18 +4,18 @@
 #include "window.hpp"
 #include "turtle.hpp"
 
-class game_manager
+class Game_manager
 {
 private:
-        game_board the_game_board;
-        window the_window;
+        Game_board the_game_board;
+        Window the_window;
         Turtle player;
 
         vector<Sprite> get_updated_window();
 
 public:
-        game_manager(/* args */);
+        Game_manager(/* args */);
         void update();
         void read_level1();
-        ~game_manager();
+        ~Game_manager();
 };

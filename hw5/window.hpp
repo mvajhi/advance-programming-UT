@@ -1,7 +1,7 @@
 #pragma once
 #include "define.hpp"
 
-class window
+class Window
 {
 private:
         RenderWindow m_window;
@@ -11,7 +11,7 @@ private:
         void set_view(vector<Sprite> &shapes, Vector2f position);
 
 public:
-        window(/* args */);
+        Window(/* args */);
         void update(vector<Sprite> updated_shapes, Vector2f position);
-        ~window();
+        ~Window();
 };
