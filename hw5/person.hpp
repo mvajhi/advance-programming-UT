@@ -18,6 +18,8 @@ protected:
     // TODO @mohammadamintavanai fix names
     // Vector2f v_point;
     // Vector2f position;
+    Texture t_person_shape;
+    Sprite person_shape;
     int v_x;
     int v_y;
     int x;
