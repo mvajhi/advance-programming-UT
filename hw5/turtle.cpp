@@ -115,6 +115,7 @@ vector<string> Turtle::without_encounter(vector<string> game_board, int side)
 }
 Vector2f Turtle::get_position()
 {
+    return person_shape.getPosition();
     return Vector2f(x, y);
 }
 void Turtle::initialize(int &side, int status)

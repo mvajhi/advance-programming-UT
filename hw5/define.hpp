@@ -13,24 +13,30 @@ using namespace sf;
 
 const int WINDOW_WIDTH = 900;
 const int WINDOW_HEIGHT = 600;
+const float VIEW_RATIO_WIDTH = (float)3 / 8;
+const float VIEW_RATIO_HEIGHT = (float)2 / 3;
 
 const int BLOCK_SIZE = 100;
 //!!WARNING image size should set
 const int IMG_FLOOR_SIZE = 100;
 const int IMG_COIN_SIZE = 100;
 const int IMG_DIMEND_SIZE = 100;
+const int IMG_PLAYER_SIZE = 85;
 
 const float FLOOR_SCALE = BLOCK_SIZE * 1.0 / IMG_FLOOR_SIZE;
 const float COIN_SCALE = BLOCK_SIZE * 1.0 / IMG_COIN_SIZE;
 const float DIMEND_SCALE = BLOCK_SIZE * 1.0 / IMG_DIMEND_SIZE;
+const float PLAYER_SCALE = BLOCK_SIZE * 1.0 / IMG_PLAYER_SIZE;
 
 const string FLOOR_MAP_SYMBOLE = "#";
+const string PLAYER_MAP_SYMBOLE = "P";
 
 const string ADDR_ASSSETS = "./assets/";
 const string ADDR_LEVELS = ADDR_ASSSETS + "levels/";
 const string ADDR_IMG = ADDR_ASSSETS + "img/";
 const string ADDR_LEVEL_1 = ADDR_LEVELS + "level1.map";
 const string ADDR_FLOOR = ADDR_IMG + "floor.png";
+const string ADDR_PLAYER = ADDR_IMG + "player.png";
 const int MOVE_RIGHT = 1;
 const int MOVE_LEFT = 2;
 const int MOVE_UP = 3;
