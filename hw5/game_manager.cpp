@@ -40,10 +40,13 @@ void Game_manager::read_level1()
 void Game_manager::handel_event(Event event)
 {
         if (event.type == Event::Closed)
-        {
-                // TODO end proccess
                 the_window.close();
-        }
+        else if (event.key.code == Keyboard::W)
+                // TODO
+        else if (event.key.code == Keyboard::A)
+                // TODO
+        else if (event.key.code == Keyboard::D)
+                // TODO
 }
 
 void Game_manager::proccess_events()
