@@ -49,8 +49,17 @@ vector<string> Turtle::move(vector<string> game_board, pair<int, int> portal_coo
     //{
     //    if(status==MOVE_UP)
     //    {
-    //        if(y<JUMP_HIGH)
+    //        if(y<JUMP_HIGH-1)
     //        {
+    //            if(encounter_floor_when_up(game_board)!=WITHOUT_ENCOUNTER_FLOOR)
+    //            {
+    //                game_board[x][y]=SPACE_SYMBOL;
+    //                game_board[x][y-encounter_floor_when_up(game_board)+1]=TURTLE_SYMBOL;
+    //                y=y-encounter_floor_when_up(game_board)+1;
+    //                v_x=0;
+    //                v_y=0;
+//
+    //            }
     //            game_board[x][y]=SPACE_SYMBOL;
     //            game_board[x][0]=TURTLE_SYMBOL;
     //            y=0;
@@ -125,7 +134,7 @@ int Turtle::encounter_floor_when_up(vector<string> game_board)
 {
     for(int high=1;high<JUMP_HIGH;high++)
     {
-        if(game_board[x][y+high]==FLOOR_MAP_SYMBOLE)
+        if(game_board[x][y-high]==FLOOR_MAP_SYMBOLE&&y-high>=0)
         {
             return high;
         }

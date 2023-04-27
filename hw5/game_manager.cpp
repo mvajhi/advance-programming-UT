@@ -3,6 +3,7 @@
 #include "define.hpp"
 #include "game_board.hpp"
 
+
 vector<Sprite> Game_manager::get_updated_window()
 {
         vector<Sprite> updated_window;

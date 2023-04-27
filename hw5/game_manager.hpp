@@ -1,14 +1,15 @@
 #pragma once
-#include "define.hpp"
-#include "game_board.hpp"
 #include "window.hpp"
+#include "game_board.hpp"
+#include "define.hpp"
 #include "turtle.hpp"
-
+#include "person.hpp"
 class Game_manager
 {
 private:
-        Game_board the_game_board;
         window the_window;
+        Game_board the_game_board;
+        
         Turtle player;
 
         vector<Sprite> get_updated_window();
