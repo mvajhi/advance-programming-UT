@@ -19,6 +19,10 @@ vector<string> Turtle::horizontal_move(vector<string> game_board, pair<int, int>
     }
     else
     {
+        if(game_board[x][y+1]==SPACE_SYMBOL)
+        {
+            
+        }
         if (game_board[x + side][y] == FIRST_ENEMY_SYMBOL || game_board[x + side][y] == SECOND_ENEMY_SYMBOL)
         {
             return encounter_enemy(game_board, side, portal_coordinate);
@@ -43,43 +47,70 @@ vector<string> Turtle::horizontal_move(vector<string> game_board, pair<int, int>
 vector<string> Turtle::move(vector<string> game_board, pair<int, int> portal_coordinate, int status)
 {
     
-    //if(status==MOVE_RIGHT||status==MOVE_LEFT)
+    if(status==MOVE_RIGHT||status==MOVE_LEFT)
         return horizontal_move(game_board,portal_coordinate,status);
-    //else
-    //{
-    //    if(status==MOVE_UP)
-    //    {
-    //        if(y<JUMP_HIGH-1)
-    //        {
-    //            if(encounter_floor_when_up(game_board)!=WITHOUT_ENCOUNTER_FLOOR)
-    //            {
-    //                game_board[x][y]=SPACE_SYMBOL;
-    //                game_board[x][y-encounter_floor_when_up(game_board)+1]=TURTLE_SYMBOL;
-    //                y=y-encounter_floor_when_up(game_board)+1;
-    //                v_x=0;
-    //                v_y=0;
-//
-    //            }
-    //            game_board[x][y]=SPACE_SYMBOL;
-    //            game_board[x][0]=TURTLE_SYMBOL;
-    //            y=0;
-    //            v_x=0;
-    //            v_y=0;
-    //            
-    //        }
-    //        else
-    //        {
-    //            if(encounter_floor_when_up(game_board))
-    //            {
-    //                game_board[x][y]=SPACE_SYMBOL;
-    //                game_board[x][y-encounter_floor_when_up(game_board)+1]=TURTLE_SYMBOL;
-    //                y=y-encounter_floor_when_up(game_board)+1;
-    //                return game_board;
-    //            }
-    //            return game_board;
-    //        }
-    //    }
-    //}
+    else
+    {
+        if(status==MOVE_UP)
+        {
+            if(game_board[x][y+1]==SPACE_SYMBOL)
+            {
+                return game_board
+            }
+            else
+            {
+                if(y<=JUMP_HIGH-1)
+                {
+                    if(encounter_floor_when_up(game_board)!=WITHOUT_ENCOUNTER_FLOOR)
+                    {
+                        game_board=encounter_diamon_or_star_when_go_up(encounter_floor_when_up(game_board),game_board);
+                        game_board[x][y]=SPACE_SYMBOL;
+                        game_board[x][y-encounter_floor_when_up(game_board)+1]=TURTLE_SYMBOL;
+                        y=y-encounter_floor_when_up(game_board)+1;
+                        v_x=0;
+                        v_y=0;
+                        return game_board;
+
+                    }
+                    else
+                    {
+                        game_board=encounter_diamon_or_star_when_go_up(y,game_board);
+                        game_board[x][y]=SPACE_SYMBOL;
+                        game_board[x][0]=TURTLE_SYMBOL;
+                        y=0;
+                        v_x=0;
+                        v_y=0;
+                        return game_board;
+                    }
+
+                }
+                else
+                {
+                    if(encounter_floor_when_up(game_board))
+                    {
+                        game_board[x][y]=SPACE_SYMBOL;
+                        game_board=encounter_diamon_or_star_when_go_up(encounter_floor_when_up(game_board),game_board);
+                        game_board[x][y-encounter_floor_when_up(game_board)+1]=TURTLE_SYMBOL;
+                        y=y-encounter_floor_when_up(game_board)+1;
+                        v_x=0;
+                        v_y=0;
+                        return game_board;
+                    }
+                    else
+                    {
+                        game_board[x][y]=SPACE_SYMBOL;
+                        game_board=encounter_diamon_or_star_when_go_up(JUMP_HIGH,game_board);
+                        game_board[x][y-JUMP_HIGH]=TURTLE_SYMBOL;
+                        y=y-JUMP_HIGH;
+                        v_x=0;
+                        v_y=0;
+                        return game_board;   
+                    }
+
+                }
+            }
+        }
+    }
     
 }
 vector<string> Turtle::encounter_wall(vector<string> game_board, int side)
@@ -140,6 +171,24 @@ int Turtle::encounter_floor_when_up(vector<string> game_board)
         }
     }
     return WITHOUT_ENCOUNTER_FLOOR;
+}
+vector<string> Turtle::encounter_diamon_or_star_when_go_up(int high,vector<string> game_board)
+{
+    for(int high_counter=1;high_counter<=high;high_counter++)
+    {
+        if(game_board[x][y-high_counter]==STAR_SYMBOL)
+        {
+            game_board[x][y-high_counter]==SPACE_SYMBOL;
+            score+=STAR_SCORE;
+            return game_board;
+        }
+        if(game_board[x][y-high_counter]==STAR_SYMBOL)
+        {
+            game_board[x][y-high_counter]==SPACE_SYMBOL;
+            score+=DIAMOND_SCORE;
+            return game_board;
+        }
+    }
 }
 
 
