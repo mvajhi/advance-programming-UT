@@ -43,33 +43,34 @@ vector<string> Turtle::horizontal_move(vector<string> game_board, pair<int, int>
 vector<string> Turtle::move(vector<string> game_board, pair<int, int> portal_coordinate, int status)
 {
     
-    if(status==MOVE_RIGHT||status==MOVE_LEFT)
+    //if(status==MOVE_RIGHT||status==MOVE_LEFT)
         return horizontal_move(game_board,portal_coordinate,status);
-    else
-    {
-        if(status==MOVE_UP)
-        {
-            if(y<JUMP_HIGH)
-            {
-                game_board[x][y]=SPACE_SYMBOL;
-                game_board[x][0]=TURTLE_SYMBOL;
-                y=0;
-                v_x=0;
-                v_y=0;
-            }
-            else
-            {
-                if(encounter_floor_when_up(game_board))
-                {
-                    game_board[x][y]=SPACE_SYMBOL;
-                    game_board[x][y-encounter_floor_when_up(game_board)+1]=TURTLE_SYMBOL;
-                    y=y-encounter_floor_when_up(game_board)+1;
-                    return game_board;
-                }
-                else
-            }
-        }
-    }
+    //else
+    //{
+    //    if(status==MOVE_UP)
+    //    {
+    //        if(y<JUMP_HIGH)
+    //        {
+    //            game_board[x][y]=SPACE_SYMBOL;
+    //            game_board[x][0]=TURTLE_SYMBOL;
+    //            y=0;
+    //            v_x=0;
+    //            v_y=0;
+    //            
+    //        }
+    //        else
+    //        {
+    //            if(encounter_floor_when_up(game_board))
+    //            {
+    //                game_board[x][y]=SPACE_SYMBOL;
+    //                game_board[x][y-encounter_floor_when_up(game_board)+1]=TURTLE_SYMBOL;
+    //                y=y-encounter_floor_when_up(game_board)+1;
+    //                return game_board;
+    //            }
+    //            return game_board;
+    //        }
+    //    }
+    //}
     
 }
 vector<string> Turtle::encounter_wall(vector<string> game_board, int side)
@@ -120,13 +121,13 @@ void Turtle::initialize(int &side, int status)
     v_x = 1;
     v_y = 0;
 }
-int encounter_floor_when_up(vector<string> game_board)
+int Turtle::encounter_floor_when_up(vector<string> game_board)
 {
     for(int high=1;high<JUMP_HIGH;high++)
     {
         if(game_board[x][y+high]==FLOOR_MAP_SYMBOLE)
         {
-            return high
+            return high;
         }
     }
     return WITHOUT_ENCOUNTER_FLOOR;
