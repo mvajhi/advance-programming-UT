@@ -22,7 +22,6 @@ vector<Sprite> Game_board::set_map()
                                 tmp_floor.setPosition(x * BLOCK_SIZE, y * BLOCK_SIZE);
                                 new_map.push_back(tmp_floor);
                         }
-
         return new_map;
 }
 

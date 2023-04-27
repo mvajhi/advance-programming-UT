@@ -1,5 +1,6 @@
 #include "window.hpp"
 #include "game_manager.hpp"
+#include "define.hpp"
 
 window::window(Game_manager *manager_pointer)
 {
@@ -15,7 +16,9 @@ void window::draw(vector<Sprite> shapes)
 
 void window::set_view(vector<Sprite> &shapes, Vector2f position)
 {
-        Vector2f move_size = -Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2) - position;
+        Vector2f move_size = Vector2f(WINDOW_WIDTH * VIEW_RATIO_WIDTH,
+                                      WINDOW_HEIGHT * VIEW_RATIO_HEIGHT) -
+                             position;
         for (size_t i = 0; i < shapes.size(); i++)
         {
                 Vector2f shpae_pos = shapes[i].getPosition();

@@ -8,12 +8,13 @@ vector<Sprite> Game_manager::get_updated_window()
 {
         vector<Sprite> updated_window;
         updated_window = the_game_board.get_board();
+        updated_window.push_back(player.get_shape());
 
         return updated_window;
 }
 
 Game_manager::Game_manager(/* args */) : the_window(this),
-        player(0 ,0)
+        player(10 ,-200)
 {
 }
 
@@ -26,7 +27,8 @@ void Game_manager::update()
         static float a = 0;
         a += 0.3;
 
-        the_window.update(updated_window, Vector2f(a, -200));
+        // the_window.update(updated_window, Vector2f(a, -200) /*camera_postion*/);
+        the_window.update(updated_window, camera_postion);
 }
 
 // TODO remove this function
