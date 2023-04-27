@@ -8,7 +8,7 @@ class Game_manager
 {
 private:
         Game_board the_game_board;
-        Window the_window;
+        window the_window;
         Turtle player;
 
         vector<Sprite> get_updated_window();

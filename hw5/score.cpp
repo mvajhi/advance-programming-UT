@@ -8,7 +8,7 @@ void Score::set_texture(string address, float scale)
 {
     symbole.loadFromFile(address);
     m_sprite.setTexture(symbole);
-    m_sprite.setScale(scale);
+    m_sprite.setScale(Vector2f(scale, scale));
 }
 
 Sprite Score::get_sprite()
