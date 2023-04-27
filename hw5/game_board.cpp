@@ -1,6 +1,6 @@
 #include "game_board.hpp"
 
-vector<string> game_board::read_map_file(string address_file)
+vector<string> Game_board::read_map_file(string address_file)
 {
         ifstream board_file(address_file);
         string line;
@@ -10,7 +10,7 @@ vector<string> game_board::read_map_file(string address_file)
         return output;
 }
 
-vector<Sprite> game_board::set_map()
+vector<Sprite> Game_board::set_map()
 {
         vector<Sprite> new_map;
         Sprite tmp_floor = floor;
@@ -26,28 +26,28 @@ vector<Sprite> game_board::set_map()
         return new_map;
 }
 
-game_board::game_board(/* args */)
+Game_board::Game_board(/* args */)
 {
         t_floor.loadFromFile(ADDR_FLOOR);
         floor.setTexture(t_floor);
         floor.setScale(FLOOR_SCALE, FLOOR_SCALE);
 }
 
-void game_board::set_board_game(string address_file)
+void Game_board::set_board_game(string address_file)
 {
         text_map = read_map_file(address_file);
         map = set_map();
 }
 
-game_board::~game_board()
+Game_board::~Game_board()
 {
 }
 
-vector<Drawable *> game_board::get_board()
+vector<Sprite> Game_board::get_board()
 {
-        vector<Drawable *> board;
+        vector<Sprite> board;
         for (size_t i = 0; i < map.size(); i++)
-                        board.push_back(&map[i]);
+                        board.push_back(map[i]);
 
         return board;
 }

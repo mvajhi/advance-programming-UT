@@ -7,7 +7,7 @@ using namespace sf;
 
 int main()
 {
-	game_manager the_game;
+	Game_manager the_game;
 	the_game.read_level1();
 
 	while (true)

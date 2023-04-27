@@ -2,18 +2,20 @@
 #include "define.hpp"
 #include "game_board.hpp"
 #include "window.hpp"
+#include "turtle.hpp"
 
-class game_manager
+class Game_manager
 {
 private:
-        game_board the_game_board;
+        Game_board the_game_board;
         window the_window;
+        Turtle player;
 
-        vector<Drawable *> get_updated_window();
+        vector<Sprite> get_updated_window();
 
 public:
-        game_manager(/* args */);
+        Game_manager(/* args */);
         void update();
         void read_level1();
-        ~game_manager();
+        ~Game_manager();
 };

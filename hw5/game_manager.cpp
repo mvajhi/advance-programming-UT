@@ -3,30 +3,37 @@
 #include "define.hpp"
 #include "game_board.hpp"
 
-vector<Drawable *> game_manager::get_updated_window()
+vector<Sprite> Game_manager::get_updated_window()
 {
-        vector<Drawable *> updated_window;
+        vector<Sprite> updated_window;
         updated_window = the_game_board.get_board();
 
         return updated_window;
 }
 
-game_manager::game_manager(/* args */) : the_window()
+Game_manager::Game_manager(/* args */) : the_window(),
+        player()
 {
 }
 
-void game_manager::update()
+void Game_manager::update()
 {
-        vector<Drawable *> updated_window = get_updated_window();
-        the_window.update(updated_window, Vector2f(0, 0));
+        vector<Sprite> updated_window = get_updated_window();
+
+        // TODO should change a,-200 with camera
+        Vector2f camera_postion = player.get_position();
+        static float a = 0;
+        a += 0.3;
+
+        the_window.update(updated_window, Vector2f(a, -200));
 }
 
 // TODO remove this function
-void game_manager::read_level1()
+void Game_manager::read_level1()
 {
         the_game_board.set_board_game(ADDR_LEVEL_1);
 }
 
-game_manager::~game_manager()
+Game_manager::~Game_manager()
 {
 }
