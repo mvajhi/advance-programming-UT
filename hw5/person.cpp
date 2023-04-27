@@ -14,6 +14,7 @@ Person::Person(int health_, int x_, int y_, int jump_high_, int v_x_, int v_y_)
     t_person_shape.loadFromFile(ADDR_PLAYER);
     person_shape.setTexture(t_person_shape);
     person_shape.setScale(PLAYER_SCALE, PLAYER_SCALE);
+    // TODO should read from file
     person_shape.setPosition(1900, 500);
 }
 
