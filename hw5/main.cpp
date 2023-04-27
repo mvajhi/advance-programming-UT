@@ -15,10 +15,12 @@ int main()
 		// TODO handle events
 		// Event event;
 		// while (window.pollEvent(event))
-		// {
+		// {void Window::Update(){
 		// 	if (event.type == Event::Closed)
 		// 		window.close();
 		// }
+
+		the_game.proccess_events();
 
 		the_game.update();
 	}

@@ -17,5 +17,7 @@ public:
         Game_manager(/* args */);
         void update();
         void read_level1();
+        void handel_event(Event event);
+        void proccess_events();
         ~Game_manager();
 };

@@ -1,7 +1,9 @@
 #include "window.hpp"
+#include "game_manager.hpp"
 
-window::window(/* args */)
+window::window(Game_manager *manager_pointer)
 {
+        manager = manager_pointer;
         m_window.create(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "game");
 }
 
@@ -13,7 +15,7 @@ void window::draw(vector<Sprite> shapes)
 
 void window::set_view(vector<Sprite> &shapes, Vector2f position)
 {
-        Vector2f move_size = - Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2) - position;
+        Vector2f move_size = -Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2) - position;
         for (size_t i = 0; i < shapes.size(); i++)
         {
                 Vector2f shpae_pos = shapes[i].getPosition();
@@ -27,6 +29,18 @@ void window::update(vector<Sprite> updated_shapes, Vector2f position)
         m_window.clear(Color(BACKGROUND_COLOR));
         draw(updated_shapes);
         m_window.display();
+}
+
+void window::get_events()
+{
+        Event event;
+        while (m_window.pollEvent(event))
+                manager->handel_event(event);
+}
+
+void window::close()
+{
+        m_window.close();
 }
 
 void window::draw_a_shape(Sprite shape)

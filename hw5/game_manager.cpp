@@ -11,7 +11,7 @@ vector<Sprite> Game_manager::get_updated_window()
         return updated_window;
 }
 
-Game_manager::Game_manager(/* args */) : the_window(),
+Game_manager::Game_manager(/* args */) : the_window(this),
         player()
 {
 }
@@ -32,6 +32,20 @@ void Game_manager::update()
 void Game_manager::read_level1()
 {
         the_game_board.set_board_game(ADDR_LEVEL_1);
+}
+
+void Game_manager::handel_event(Event event)
+{
+        if(event.type == Event::Closed)
+        {
+                // TODO end proccess
+                window.update()
+        }
+}
+
+void Game_manager::proccess_events()
+{
+        the_window.get_events();
 }
 
 Game_manager::~Game_manager()
