@@ -10,21 +10,16 @@ class Person
 public:
     // TODO @mohammadamintavanai fix name x_, y_ ,...
     // TODO @mohammadamintavanai some variable should change to float like speed
-    Person(int health_, int x_, int y_, int jump_high_ = JUMP_HIGH, int v_x_ = 0, int v_y_ = 0);
+    Person(int health_, Vector2f position_, Vector2f speed_, float jump_high_, string image_addr=ADDR_PLAYER);
     virtual vector<string> move(vector<string> game_board, pair<int, int> portal_coordinate, int status) = 0;
     Sprite get_shape();
 
 protected:
     // @mohammadamintavanai change xy with vector2f
     // TODO @mohammadamintavanai fix names
-    // Vector2f v_point;
-    // Vector2f position;
     Texture t_person_shape;
     Sprite person_shape;
-    int v_x;
-    int v_y;
-    int x;
-    int y;
-    int jump_high;
+    Vector2f speed;
+    float jump_high;
     int health;
 };
