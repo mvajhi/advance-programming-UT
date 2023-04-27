@@ -41,6 +41,8 @@ void window::get_events()
 void window::close()
 {
         m_window.close();
+        // TODO REMOVE THIS
+        exit(0);
 }
 
 void window::draw_a_shape(Sprite shape)
