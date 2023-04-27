@@ -12,7 +12,7 @@ vector<Sprite> Game_manager::get_updated_window()
 }
 
 Game_manager::Game_manager(/* args */) : the_window(this),
-        player()
+        player(0 ,0)
 {
 }
 
@@ -39,7 +39,7 @@ void Game_manager::handel_event(Event event)
         if(event.type == Event::Closed)
         {
                 // TODO end proccess
-                window.update()
+                the_window.close();
         }
 }
 

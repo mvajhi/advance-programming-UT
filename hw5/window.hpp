@@ -2,6 +2,8 @@
 #include "define.hpp"
 #include "game_manager.hpp"
 
+class Game_manager;
+
 class window
 {
 private:
