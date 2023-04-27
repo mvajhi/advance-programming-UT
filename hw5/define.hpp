@@ -41,3 +41,4 @@ const int STAR_SCORE=1;
 const int DIAMOND_SCORE=2;
 const int RIGHT=1;
 const int LEFT=2;
+const int WITHOUT_ENCOUNTER_FLOOR=0;   
