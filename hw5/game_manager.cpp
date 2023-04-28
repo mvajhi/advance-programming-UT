@@ -24,6 +24,8 @@ vector<string> Game_manager::read_map_file(string address_file)
 
 void Game_manager::proccess_new_block(Vector2i position, char value)
 {
+        position = convert_text_to_pixle_pos(position);
+
         if (value == FLOOR_MAP_SYMBOLE)
                 the_game_board.add_new_floor(position);
         // TODO
@@ -40,21 +42,51 @@ void Game_manager::proccess_text_map(vector<string> text_map)
                         proccess_new_block(Vector2i(x, y), text_map[y][x]);
 }
 
-Game_manager::Game_manager(/* args */) : the_window(this),
-        player (1, Vector2f(1500, 500), 5, 0, Vector2f(20, 0), ADDR_PLAYER)
+Vector2i Game_manager::convert_text_to_pixle_pos(Vector2i position)
+{
+        return Vector2i(position.x * BLOCK_SIZE, position.y * BLOCK_SIZE);
+}
+
+void Game_manager::update_menu()
 {
 
+        vector<Drawable *> buffer(1, &button);
+
+        the_window.update(buffer);
+}
+
+void Game_manager::handel_menu_event(Event event)
+{
+        if (event.type == sf::Event::MouseButtonPressed &&
+            button.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+        {
+                std::cout << "Hello, World!" << std::endl;
+                is_in_menu = false;
+        }
+}
+
+Game_manager::Game_manager(/* args */) : the_window(this), button(Vector2f(200, 25)),
+                                         player(1, Vector2f(1500, 500), 5, 0, Vector2f(20, 0), ADDR_PLAYER)
+{
+        button.setFillColor(sf::Color::Blue);
+        button.setPosition(300, 300);
 }
 
 void Game_manager::update()
 {
+        if (is_in_menu)
+        {
+                update_menu();
+                return;
+        }
+
         vector<Sprite> updated_window = get_updated_window();
 
         // TODO should change a,-200 with camera
         Vector2f camera_postion = player.get_position();
         static float a = 150;
         a += 0.3;
-        
+
         // the_window.update(updated_window, Vector2f(a, 600) /*camera_postion*/);
         the_window.update(updated_window, camera_postion);
 }
@@ -71,17 +103,27 @@ void Game_manager::handel_event(Event event)
 {
         if (event.type == Event::Closed)
                 the_window.close();
+        else if (is_in_menu)
+                handel_menu_event(event);
         else if (event.type == Event::KeyPressed)
                 if (event.key.code == Keyboard::W)
-                {player.move(MOVE_UP);
+                {       
+                        player.set_events({true,false,false});
+                        player.move(MOVE_UP);
                         
                         cout << "W" << endl;}
                 else if (event.key.code == Keyboard::A)
-                        {player.move(MOVE_LEFT);
-                        cout << "A" << endl;}
+                {
+                        player.set_events({false,true,false});
+                        player.move(MOVE_LEFT);
+                        cout << "A" << endl;
+                }
                 else if (event.key.code == Keyboard::D)
-                        {player.move(MOVE_RIGHT);
-                        cout << "D" << endl;}
+                {
+                        player.set_events({false,false,true});
+                        player.move(MOVE_RIGHT);
+                        cout << "D" << endl;
+                }
                 else
                         cout << "invalid key\n";
         else

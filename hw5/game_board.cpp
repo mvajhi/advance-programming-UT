@@ -10,7 +10,7 @@ Game_board::Game_board(/* args */)
 void Game_board::add_new_floor(Vector2i position)
 {
         Sprite tmp_floor = floor;
-        tmp_floor.setPosition(position.x * BLOCK_SIZE, position.y * BLOCK_SIZE);
+        tmp_floor.setPosition(position.x, position.y);
         map.push_back(tmp_floor);
 }
 

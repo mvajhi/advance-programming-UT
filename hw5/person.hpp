@@ -12,13 +12,10 @@ public:
     // TODO @mohammadamintavanai some variable should change to float like speed
     Person(int health_, Vector2f position_, float jump_high_, Vector2f speed_, string image_addr);
     void move(int order);
-    void set_pos(Vector2i pos){person_shape.setPosition((Vector2f)pos);}
-    
-
-    
-
+    void set_pos(Vector2i pos);
     Sprite get_shape();
     Vector2f get_position(){return person_shape.getPosition();}
+    virtual void update(Collision_report colisions)=0;
 protected:
     // @mohammadamintavanai change xy with vector2f
     // TODO @mohammadamintavanai fix names

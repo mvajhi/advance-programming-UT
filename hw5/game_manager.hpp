@@ -9,6 +9,8 @@ class Game_manager
 private:
         window the_window;
         Game_board the_game_board;
+        bool is_in_menu;
+        RectangleShape button;
 
         Turtle player;
 
@@ -16,7 +18,9 @@ private:
         vector<string> read_map_file(string address_file);
         void proccess_new_block(Vector2i position, char value);
         void proccess_text_map(vector<string> text_map);
-        
+        void update_menu();
+        void handel_menu_event(Event event);
+        Vector2i convert_text_to_pixle_pos(Vector2i position);
 
 public:
         Game_manager(/* args */);
