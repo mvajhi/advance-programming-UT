@@ -8,3 +8,8 @@ Turtle::Turtle(int health_, Vector2f position_, float jump_high_, int score_=0, 
 {
     score = score_;
 }
+
+Vector2f Turtle::get_move_size()
+{
+    return speed;
+}

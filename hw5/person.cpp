@@ -23,16 +23,8 @@ Person::Person(int health_, Vector2f position_, float jump_high_, Vector2f speed
 }
 void Person::move(int order)
 {
-    // float elapsed_time;
-    // auto start = std::chrono::system_clock::now();
     if (order == MOVE_RIGHT)
     {
-        // auto end = std::chrono::system_clock::now();
-        // std::chrono::duration<double> elapsed_seconds = end-start;
-        //
-        // elapsed_time=elapsed_seconds.count();
-        // cout << elapsed_time;
-
         t_person_shape.loadFromFile(ADDR_PLAYER_FLIP);
         person_shape.setTexture(t_person_shape);
         person_shape.setScale(PLAYER_SCALE, PLAYER_SCALE);

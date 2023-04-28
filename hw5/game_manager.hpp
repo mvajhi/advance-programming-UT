@@ -27,5 +27,6 @@ public:
         void read_level1();
         void handel_event(Event event);
         void proccess_events();
+        void make_and_send_report();
         ~Game_manager();
 };

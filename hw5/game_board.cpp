@@ -19,6 +19,16 @@ void Game_board::reset_map()
         map.clear();
 }
 
+vector<Vector2f> Game_board::get_floor_positions()
+{
+        vector<Vector2f> floor_pos;
+
+        for (auto i : map)
+                floor_pos.push_back(i.getPosition());
+
+        return floor_pos;
+}
+
 Game_board::~Game_board()
 {
 }

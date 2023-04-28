@@ -12,6 +12,8 @@ int main()
 
 	while (true)
 	{
+
+		the_game.make_and_send_report();
 		the_game.proccess_events();
 
 		the_game.update();

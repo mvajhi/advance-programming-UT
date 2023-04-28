@@ -16,7 +16,6 @@ using namespace sf;
 
 enum Collision
 {
-    without_collision,
     up,
     down,
     right,
@@ -25,11 +24,11 @@ enum Collision
 
 struct Collision_report
 {
-    Collision floor;
-    Collision enemy;
-    Collision player;
-    Collision baby;
-    Collision coin;
+    vector<Collision> floor;
+    vector<Collision> enemy;
+    vector<Collision> player;
+    vector<Collision> baby;
+    vector<Collision> coin;
 };
 
 const int WINDOW_WIDTH = 900;
