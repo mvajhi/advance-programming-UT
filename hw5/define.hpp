@@ -11,6 +11,24 @@ using namespace sf;
 
 #define BACKGROUND_COLOR 119, 181, 254, 255
 
+enum Collision
+{
+    without_collision,
+    up,
+    down,
+    right,
+    left
+};
+
+struct Collision_report
+{
+    Collision floor;
+    Collision enemy;
+    Collision player;
+    Collision baby;
+    Collision coin;
+};
+
 const int WINDOW_WIDTH = 900;
 const int WINDOW_HEIGHT = 600;
 const float VIEW_RATIO_WIDTH = (float)3 / 8;
