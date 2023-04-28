@@ -116,7 +116,7 @@ void Game_manager::proccess_events()
 
 void Game_manager::make_and_send_report()
 {
-        Collision_report new_report;
+        bool report[4] = {false, false, false, false};
 
         Vector2f player_pos = player.get_position();
         Vector2f move_size = player.get_move_size();
@@ -128,40 +128,41 @@ void Game_manager::make_and_send_report()
                 float x = i.x;
                 float y = i.y;
 
-                // x <= player_pos.x + move_size.x <= x + BLOCK_SIZE
                 if (player_pos.y <= y && y < player_pos.y + BLOCK_SIZE &&
                     x <= player_pos.x + move_size.x + BLOCK_SIZE && player_pos.x + move_size.x + BLOCK_SIZE < x + BLOCK_SIZE)
                 {
-                        cout << "right\n";
-                        // new_report.floor.push_back(right);
+                        // cout << "right\n";
+                        report[RIGHT] = true;
                 }
 
                 if (player_pos.x <= x && x < player_pos.x + BLOCK_SIZE && y <= player_pos.y + move_size.y + BLOCK_SIZE && player_pos.y + move_size.y + BLOCK_SIZE < y + BLOCK_SIZE)
                 {
-                        cout << "down\n";
-                        // new_report.floor.push_back(down);
+                        // cout << "down\n";
+                        report[DOWN] = true;
                 }
 
-                // x >= player_pos.x + move_size.x >= x - BLOCK_SIZE
                 if (player_pos.y <= y && y < player_pos.y + BLOCK_SIZE &&
                     x < player_pos.x - move_size.x && player_pos.x - move_size.x <= x + BLOCK_SIZE)
                 {
-                        cout << "left\n";
-                        // new_report.floor.push_back(left);
+                        // cout << "left\n";
+                        report[LEFT] = true;
                 }
 
                 if (player_pos.x <= x && x < player_pos.x + BLOCK_SIZE &&
                     y - BLOCK_SIZE < player_pos.y - move_size.y - BLOCK_SIZE && player_pos.y - move_size.y - BLOCK_SIZE <= y)
                 {
+                        // cout << "up\n";
+                        report[UP] = true;
+                        // new_report.floor.push_back(up);
                         // cout << "pos: " << player_pos.y + move_size.y << endl;
                         // cout << "move size: " << move_size.y << endl;
                         // cout << "\\\\\\\\\\\\\\\\\ny+b: " << y + BLOCK_SIZE << "\ny + 2b" << y + 2 * BLOCK_SIZE << "\\\\\\\\\\\n";
                         // cout << "\\\\\\\\\\\\\\\\\\\\\nmy pos:\n\tx: " << player_pos.x << "\n\ty: " << player_pos.y << "\n\\\\\\\\\\\\\\\\\\\\\n";
                         // cout << "\\\\\\\\\\\\\\\\\\\\\nup pos:\n\tx: " << x << "\n\ty: " << y << "\n\\\\\\\\\\\\\\\\\\\\\n";
-                        cout << "up\n";
-                        // new_report.floor.push_back(up);
                 }
         }
+
+        player.set_report(report);
 }
 
 Game_manager::~Game_manager()

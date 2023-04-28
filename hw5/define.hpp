@@ -77,8 +77,11 @@ const char DIAMON_SYMBOL = '^';
 const char STAR_SYMBOL = '*';
 const int STAR_SCORE = 1;
 const int DIAMOND_SCORE = 2;
-const int RIGHT = 1;
-const int LEFT = 2;
 const int WITHOUT_ENCOUNTER_FLOOR = 0;
 const int FLIP_TO_RIGHT=-1;
 const int FLIP_TO_LEFT=1;
+
+const int RIGHT = 0;
+const int LEFT = 1;
+const int UP = 2;
+const int DOWN = 3;

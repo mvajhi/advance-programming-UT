@@ -15,6 +15,7 @@ public:
     void set_pos(Vector2i pos);
     Sprite get_shape();
     Vector2f get_position(){return person_shape.getPosition();}
+    void set_report(bool new_report[]);
 protected:
     // @mohammadamintavanai change xy with vector2f
     // TODO @mohammadamintavanai fix names
@@ -27,4 +28,5 @@ protected:
     int health;
     sf::Clock m_clock;
 	float m_elapsed;
+    bool report_floor[4];
 };

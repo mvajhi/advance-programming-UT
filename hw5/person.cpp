@@ -8,6 +8,12 @@ Sprite Person::get_shape()
 {
     return person_shape;
 }
+void Person::set_report(bool new_report[])
+{
+    for (int i = 0; i < 4; i++)
+        report_floor[i] = new_report[i];
+}
+
 Person::Person(int health_, Vector2f position_, float jump_high_, Vector2f speed_, string image_addr)
 {
     health = health_;
@@ -23,7 +29,7 @@ Person::Person(int health_, Vector2f position_, float jump_high_, Vector2f speed
 }
 void Person::move(int order)
 {
-    if (order == MOVE_RIGHT)
+    if (order == MOVE_RIGHT && report_floor[RIGHT] == false)
     {
         t_person_shape.loadFromFile(ADDR_PLAYER_FLIP);
         person_shape.setTexture(t_person_shape);
@@ -31,7 +37,7 @@ void Person::move(int order)
 
         person_shape.setPosition(person_shape.getPosition().x + speed.x, person_shape.getPosition().y);
     }
-    if (order == MOVE_LEFT)
+    if (order == MOVE_LEFT && report_floor[LEFT] == false)
     {
         t_person_shape.loadFromFile(ADDR_PLAYER);
         person_shape.setTexture(t_person_shape);
