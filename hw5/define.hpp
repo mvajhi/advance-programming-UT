@@ -10,6 +10,9 @@ using namespace std;
 using namespace sf;
 
 #define BACKGROUND_COLOR 119, 181, 254, 255
+#define MENU_BACKGRUND Color::White
+#define BUTTON_COLOR Color::Cyan
+#define BUTTON_TEXT_COLOR Color::Black
 
 enum Collision
 {
@@ -37,6 +40,9 @@ struct Collision_report
 
 const int WINDOW_WIDTH = 900;
 const int WINDOW_HEIGHT = 600;
+const int BUTTON_WIDTH = 200;
+const int BUTTON_HEIGHT = 25;
+const int MENU_FONT_SIZE = 25;
 const float VIEW_RATIO_WIDTH = (float)3 / 8;
 const float VIEW_RATIO_HEIGHT = (float)2 / 3;
 const int GRAVITY=5;
@@ -58,6 +64,7 @@ const string FLOOR_MAP_SYMBOLE = "#";
 const string PLAYER_MAP_SYMBOLE = "P";
 
 const string ADDR_ASSSETS = "./assets/";
+const string ADDR_FONT = ADDR_ASSSETS + "arial.ttf";
 const string ADDR_LEVELS = ADDR_ASSSETS + "levels/";
 const string ADDR_IMG = ADDR_ASSSETS + "img/";
 const string ADDR_LEVEL_1 = ADDR_LEVELS + "level1.map";
