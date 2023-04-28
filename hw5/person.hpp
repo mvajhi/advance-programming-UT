@@ -12,6 +12,7 @@ public:
     // TODO @mohammadamintavanai some variable should change to float like speed
     Person(int health_, Vector2f position_, float jump_high_, Vector2f speed_, string image_addr);
     void move(int order);
+    void set_pos(Vector2i pos){person_shape.setPosition((Vector2f)pos);}
     
 
     

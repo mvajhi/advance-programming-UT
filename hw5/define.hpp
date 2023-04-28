@@ -55,6 +55,7 @@ const string ADDR_IMG = ADDR_ASSSETS + "img/";
 const string ADDR_LEVEL_1 = ADDR_LEVELS + "level1.map";
 const string ADDR_FLOOR = ADDR_IMG + "floor.png";
 const string ADDR_PLAYER = ADDR_IMG + "player.png";
+const string ADDR_PLAYER_FLIP=ADDR_IMG + "player_flip.png";
 const int MOVE_RIGHT = 1;
 const int MOVE_LEFT = 2;
 const int MOVE_UP = 3;

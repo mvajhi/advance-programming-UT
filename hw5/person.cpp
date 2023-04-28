@@ -37,7 +37,9 @@ void Person::move(int order)
         //elapsed_time=elapsed_seconds.count();
         //cout << elapsed_time;
         
-            person_shape.setScale(Vector2f(FLIP_TO_RIGHT,1.0));
+    t_person_shape.loadFromFile(ADDR_PLAYER_FLIP);
+    person_shape.setTexture(t_person_shape);
+    person_shape.setScale(PLAYER_SCALE, PLAYER_SCALE);
         
         person_shape.setPosition(person_shape.getPosition().x+speed.x,person_shape.getPosition().y);
 
@@ -46,10 +48,10 @@ void Person::move(int order)
     }
     if(order==MOVE_LEFT)
     {
-            person_shape.setOrigin(person_shape.getPosition().x-5,person_shape.getPosition().y-5);
-            person_shape.setScale(Vector2f(FLIP_TO_LEFT,1.0));
-            
-            person_shape.setOrigin(person_shape.getPosition().x+5,person_shape.getPosition().y+5);
+    t_person_shape.loadFromFile(ADDR_PLAYER);
+    person_shape.setTexture(t_person_shape);
+    person_shape.setScale(PLAYER_SCALE, PLAYER_SCALE);
+        
         person_shape.setPosition(person_shape.getPosition().x-speed.x,person_shape.getPosition().y);
     }
 }

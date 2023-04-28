@@ -27,8 +27,8 @@ void Game_manager::proccess_new_block(Vector2i position, char value)
         if (value == FLOOR_MAP_SYMBOLE)
                 the_game_board.add_new_floor(position);
         // TODO
-        // else if (value == PLAYER_MAP_SYMBOLE)
-        // TODO player.setpos(pos);
+         else if (value == PLAYER_MAP_SYMBOLE)
+        player.set_pos(position);
         // else if (value == PLAYER_MAP_SYMBOLE)
         // TODO
 }

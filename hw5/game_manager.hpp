@@ -16,6 +16,7 @@ private:
         vector<string> read_map_file(string address_file);
         void proccess_new_block(Vector2i position, char value);
         void proccess_text_map(vector<string> text_map);
+        
 
 public:
         Game_manager(/* args */);
