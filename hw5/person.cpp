@@ -18,3 +18,14 @@ Sprite Person::get_shape()
 {
     return person_shape;
 }
+void Person::move(int order)
+{
+    restart_clock();
+    srand(time(NULL));
+    if(order==MOVE_RIGHT)
+    {
+        float dilay=elapsed_time.asSeconds();
+        
+    }
+    float dilay=elapsed_time.asSeconds();
+}

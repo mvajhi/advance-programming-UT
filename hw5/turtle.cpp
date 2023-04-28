@@ -13,6 +13,32 @@ vector<string> Turtle::horizontal_move(vector<string> game_board, pair<int, int>
     int side;
     initialize(side, status);
     
+        
+            if(y<=JUMP_HIGH-1)
+                {
+                    if(encounter_floor_when_up(game_board)!=WITHOUT_ENCOUNTER_FLOOR)
+                    {
+                        game_board=encounter_diamon_or_star_when_go_up(encounter_floor_when_up(game_board),game_board);
+                        game_board[x][y]=SPACE_SYMBOL;
+                        game_board[x][y-encounter_floor_when_up(game_board)+1]=TURTLE_SYMBOL;
+                        y=y-encounter_floor_when_up(game_board)+1;
+                        v_x=0;
+                        v_y=0;
+                        return game_board;
+
+                    }
+                    else
+                    {
+                        game_board=encounter_diamon_or_star_when_go_up(y,game_board);
+                        game_board[x][y]=SPACE_SYMBOL;
+                        game_board[x][0]=TURTLE_SYMBOL;
+                        y=0;
+                        v_x=0;
+                        v_y=0;
+                        return game_board;
+                    }
+
+                }
     if ((((long unsigned int)x == game_board.size() - 1 || game_board[x + side][y] == FLOOR_MAP_SYMBOLE) && status == MOVE_RIGHT) ||
         ((x == 0 || game_board[x + side][y] == FLOOR_MAP_SYMBOLE) && status == MOVE_LEFT))
     {
@@ -20,18 +46,18 @@ vector<string> Turtle::horizontal_move(vector<string> game_board, pair<int, int>
     }
     else
     {
-        if(game_board[x][y+1]==SPACE_SYMBOL)
-        {
-            if(game_board[x+side][y]==FLOOR_MAP_SYMBOLE)
-            {
-                for(int high_counter=1;high_counter<v_y;high_counter++)
-                {
-                    if(game_board[x][v-y+high_counter]==FLOOR_MAP_SYMBOLE)
-                        int high=high_counter;
-                        
-                }
-            }
-        }
+        //if(game_board[x][y+1]==SPACE_SYMBOL)
+        //{
+        //    if(game_board[x+side][y]==FLOOR_MAP_SYMBOLE)
+        //    {
+        //        for(int high_counter=1;high_counter<v_y;high_counter++)
+        //        {
+        //            if(game_board[x][v-y+high_counter]==FLOOR_MAP_SYMBOLE)
+        //                int high=high_counter;
+//
+        //        }
+        //    }
+        //}
         if (game_board[x + side][y] == FIRST_ENEMY_SYMBOL || game_board[x + side][y] == SECOND_ENEMY_SYMBOL)
         {
             return encounter_enemy(game_board, side, portal_coordinate);
