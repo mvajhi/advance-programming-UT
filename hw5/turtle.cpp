@@ -8,29 +8,58 @@ Turtle::Turtle(int health_, Vector2f position_, float jump_high_, int score_=0, 
 {
     score = score_;
 }
-void Turtle::update(Collision_report colisions)
+void Turtle::move(Collision_report colisions)
 {
-    if(colisions.floor==without_collision)
+    if(person_shape.getPosition().y < 500)
     {
         speed.y-=GRAVITY;
-        if(speed.y<0)
-        {
-            while(true)
-            {
-                
-            }
-        }
-        move(MOVE_UP);
-
+        move_value.y = speed.y;
+    }
+    else if (person_shape.getPosition().y > 500)
+    {
+        speed.y = 0;
     }
     else
     {
-        if(colisions.floor==up&&events.up==true)
-        {
-            if()
-        }
+        move_value.y = speed.y;
     }
+    // else
+    // {
+    //     if(colisions.floor==up&&events.up==true)
+    //     {
+    //         if()
+    //     }
+    // }
 }
 Events Turtle::get_events(){return events;}
 void Turtle::set_events(Events events_){events=events_;}
 
+void Turtle::handel_input(int order)
+{
+    if(order==MOVE_UP && person_shape.getPosition().y == 500)
+    {
+        speed.y = 1000;
+    }  
+    
+}
+
+// void Person::move(int order)
+// {
+//     if (order == MOVE_RIGHT)
+//     {
+
+//         t_person_shape.loadFromFile(ADDR_PLAYER_FLIP);
+//         person_shape.setTexture(t_person_shape);
+//         person_shape.setScale(PLAYER_SCALE, PLAYER_SCALE);
+
+//         person_shape.setPosition(person_shape.getPosition().x + speed.x, person_shape.getPosition().y);
+//     }
+//     if (order == MOVE_LEFT)
+//     {
+//         t_person_shape.loadFromFile(ADDR_PLAYER);
+//         person_shape.setTexture(t_person_shape);
+//         person_shape.setScale(PLAYER_SCALE, PLAYER_SCALE);
+
+//         person_shape.setPosition(person_shape.getPosition().x - speed.x, person_shape.getPosition().y);
+//     }
+// }

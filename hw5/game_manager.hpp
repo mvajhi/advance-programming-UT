@@ -20,6 +20,7 @@ private:
         void proccess_new_block(Vector2i position, char value);
         void proccess_text_map(vector<string> text_map);
         Vector2i convert_text_to_pixle_pos(Vector2i position);
+        Sprite get_updated_player();
 
 public:
         Game_manager(/* args */);
