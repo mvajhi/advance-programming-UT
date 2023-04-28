@@ -7,7 +7,7 @@ vector<Sprite> Game_manager::get_updated_window()
 {
         vector<Sprite> updated_window;
         updated_window = the_game_board.get_board();
-        // updated_window.push_back(player.get_shape());
+        updated_window.push_back(player.get_shape());
 
         return updated_window;
 }
@@ -24,11 +24,15 @@ vector<string> Game_manager::read_map_file(string address_file)
 
 void Game_manager::proccess_new_block(Vector2i position, char value)
 {
+        position = convert_text_to_pixle_pos(position);
+
         if (value == FLOOR_MAP_SYMBOLE)
                 the_game_board.add_new_floor(position);
         // TODO
-        // else if (value == PLAYER_MAP_SYMBOLE)
-        // TODO player.setpos(pos);
+        else if (value == PLAYER_MAP_SYMBOLE)
+        {
+                player.set_pos(position);
+        }
         // else if (value == PLAYER_MAP_SYMBOLE)
         // TODO
 }
@@ -38,6 +42,11 @@ void Game_manager::proccess_text_map(vector<string> text_map)
         for (size_t y = 0; y < text_map.size(); y++)
                 for (size_t x = 0; x < text_map[y].length(); x++)
                         proccess_new_block(Vector2i(x, y), text_map[y][x]);
+}
+
+Vector2i Game_manager::convert_text_to_pixle_pos(Vector2i position)
+{
+        return Vector2i(position.x * BLOCK_SIZE, position.y * BLOCK_SIZE);
 }
 
 void Game_manager::update_menu()
@@ -58,12 +67,11 @@ void Game_manager::handel_menu_event(Event event)
         }
 }
 
-
-Game_manager::Game_manager(/* args */) : the_window(this), button(Vector2f(200, 25))
-//  player(10, -200)
+Game_manager::Game_manager(/* args */) : the_window(this), button(Vector2f(200, 25)),
+                                         player(1, Vector2f(1500, 500), 5, 0, Vector2f(20, 0), ADDR_PLAYER)
 {
-        button.setFillColor(sf::Color::Blue); 
-        button.setPosition(300, 300);         
+        button.setFillColor(sf::Color::Blue);
+        button.setPosition(300, 300);
 }
 
 void Game_manager::update()
@@ -77,12 +85,12 @@ void Game_manager::update()
         vector<Sprite> updated_window = get_updated_window();
 
         // TODO should change a,-200 with camera
-        // Vector2f camera_postion = player.get_position();
+        Vector2f camera_postion = player.get_position();
         static float a = 150;
         a += 0.3;
 
-        the_window.update(updated_window, Vector2f(a, 600) /*camera_postion*/);
-        // the_window.update(updated_window, camera_postion);
+        // the_window.update(updated_window, Vector2f(a, 600) /*camera_postion*/);
+        the_window.update(updated_window, camera_postion);
 }
 
 // TODO remove this function
@@ -101,14 +109,18 @@ void Game_manager::handel_event(Event event)
                 handel_menu_event(event);
         else if (event.type == Event::KeyPressed)
                 if (event.key.code == Keyboard::W)
-                        // TODO
+
                         cout << "W" << endl;
                 else if (event.key.code == Keyboard::A)
-                        // TODO
+                {
+                        player.move(MOVE_LEFT);
                         cout << "A" << endl;
+                }
                 else if (event.key.code == Keyboard::D)
-                        // TODO
+                {
+                        player.move(MOVE_RIGHT);
                         cout << "D" << endl;
+                }
                 else
                         cout << "invalid key\n";
         else

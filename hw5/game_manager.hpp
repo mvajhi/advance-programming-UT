@@ -2,8 +2,8 @@
 #include "window.hpp"
 #include "game_board.hpp"
 #include "define.hpp"
-// #include "turtle.hpp"
-// #include "person.hpp"
+#include "turtle.hpp"
+#include "person.hpp"
 class Game_manager
 {
 private:
@@ -12,7 +12,7 @@ private:
         bool is_in_menu;
         RectangleShape button;
 
-        // Turtle player;
+        Turtle player;
 
         vector<Sprite> get_updated_window();
         vector<string> read_map_file(string address_file);
@@ -20,6 +20,7 @@ private:
         void proccess_text_map(vector<string> text_map);
         void update_menu();
         void handel_menu_event(Event event);
+        Vector2i convert_text_to_pixle_pos(Vector2i position);
 
 public:
         Game_manager(/* args */);
