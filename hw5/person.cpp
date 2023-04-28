@@ -1,6 +1,18 @@
 #include "person.hpp"
+#include <chrono>
+#include <ctime>    
 
-Person::Person(int health_, Vector2f position_, Vector2f speed_, float jump_high_, string image_addr=ADDR_PLAYER)
+
+    
+    //auto end = std::chrono::system_clock::now();
+ 
+    
+
+Sprite Person::get_shape()
+{
+    return person_shape;
+}
+Person::Person(int health_, Vector2f position_,  float jump_high_,Vector2f speed_, string image_addr)
 {
     health = health_;
     speed = speed_;
@@ -13,19 +25,32 @@ Person::Person(int health_, Vector2f position_, Vector2f speed_, float jump_high
     // person_shape.setPosition(1900, 500);
     person_shape.setPosition(position_);
 }
-
-Sprite Person::get_shape()
-{
-    return person_shape;
-}
 void Person::move(int order)
 {
-    restart_clock();
-    srand(time(NULL));
+    //float elapsed_time;
+    //auto start = std::chrono::system_clock::now();
     if(order==MOVE_RIGHT)
     {
-        float dilay=elapsed_time.asSeconds();
+        //auto end = std::chrono::system_clock::now();
+        //std::chrono::duration<double> elapsed_seconds = end-start;
+        //
+        //elapsed_time=elapsed_seconds.count();
+        //cout << elapsed_time;
         
+            person_shape.setScale(Vector2f(FLIP_TO_RIGHT,1.0));
+        
+        person_shape.setPosition(person_shape.getPosition().x+speed.x,person_shape.getPosition().y);
+
+       
+
     }
-    float dilay=elapsed_time.asSeconds();
+    if(order==MOVE_LEFT)
+    {
+            person_shape.setOrigin(person_shape.getPosition().x-5,person_shape.getPosition().y-5);
+            person_shape.setScale(Vector2f(FLIP_TO_LEFT,1.0));
+            
+            person_shape.setOrigin(person_shape.getPosition().x+5,person_shape.getPosition().y+5);
+        person_shape.setPosition(person_shape.getPosition().x-speed.x,person_shape.getPosition().y);
+    }
 }
+

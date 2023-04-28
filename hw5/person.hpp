@@ -10,14 +10,14 @@ class Person
 public:
     // TODO @mohammadamintavanai fix name x_, y_ ,...
     // TODO @mohammadamintavanai some variable should change to float like speed
-    Person(int health_, Vector2f position_, Vector2f speed_, float jump_high_, string image_addr=ADDR_PLAYER);
+    Person(int health_, Vector2f position_, float jump_high_, Vector2f speed_, string image_addr);
     void move(int order);
-    void restart_clock(){elapsed_time = start_clock.restart()};
-    Time get_elapsed(){return elapsed_time;}
+    
 
     
-    Sprite get_shape();
 
+    Sprite get_shape();
+    Vector2f get_position(){return person_shape.getPosition();}
 protected:
     // @mohammadamintavanai change xy with vector2f
     // TODO @mohammadamintavanai fix names
@@ -28,4 +28,6 @@ protected:
     Vector2f speed;
     float jump_high;
     int health;
+    sf::Clock m_clock;
+	float m_elapsed;
 };
