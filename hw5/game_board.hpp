@@ -9,12 +9,10 @@ private:
         Sprite floor;
         vector<Sprite> map;
 
-        vector<string> read_map_file(string address_file);
-        vector<Sprite> set_map();
-
 public:
         Game_board(/* args */);
-        void set_board_game(string address_file);
+        void add_new_floor(Vector2i position);
+        void reset_map();
         ~Game_board();
         vector<Sprite> get_board();
 };

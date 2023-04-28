@@ -1,6 +1,6 @@
 #include "person.hpp"
 
-Person::Person(int health_, Vector2f position_, Vector2f speed_, float jump_high_, string image_addr=ADDR_PLAYER)
+Person::Person(int health_, Vector2f position_, Vector2f speed_, float jump_high_, string image_addr)
 {
     health = health_;
     speed = speed_;
