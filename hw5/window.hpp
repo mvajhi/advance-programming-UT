@@ -16,7 +16,9 @@ private:
 public:
         window(Game_manager *manager_pointer);
         void update(vector<Sprite> updated_shapes, Vector2f position);
+        void update(vector<Drawable *> updated_shapes);
         void get_events();
         void close();
+        RenderWindow *get_window();
         ~window();
 };

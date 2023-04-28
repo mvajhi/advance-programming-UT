@@ -34,6 +34,16 @@ void window::update(vector<Sprite> updated_shapes, Vector2f position)
         m_window.display();
 }
 
+void window::update(vector<Drawable *> updated_shapes)
+{
+        m_window.clear(sf::Color::White);
+        for (auto i : updated_shapes)
+        {
+        m_window.draw(*i); // دکمه را روی پنجره نمایش می‌دهیم
+        }
+        m_window.display();
+}
+
 void window::get_events()
 {
         Event event;
@@ -46,6 +56,11 @@ void window::close()
         m_window.close();
         // TODO REMOVE THIS
         exit(0);
+}
+
+RenderWindow *window::get_window()
+{
+        return &m_window;
 }
 
 void window::draw_a_shape(Sprite shape)

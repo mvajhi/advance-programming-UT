@@ -40,13 +40,40 @@ void Game_manager::proccess_text_map(vector<string> text_map)
                         proccess_new_block(Vector2i(x, y), text_map[y][x]);
 }
 
-Game_manager::Game_manager(/* args */) : the_window(this)
+void Game_manager::update_menu()
+{
+
+        vector<Drawable *> buffer(1, &button);
+
+        the_window.update(buffer);
+}
+
+void Game_manager::handel_menu_event(Event event)
+{
+        if (event.type == sf::Event::MouseButtonPressed &&
+            button.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+        {
+                std::cout << "Hello, World!" << std::endl;
+                is_in_menu = false;
+        }
+}
+
+
+Game_manager::Game_manager(/* args */) : the_window(this), button(Vector2f(200, 25))
 //  player(10, -200)
 {
+        button.setFillColor(sf::Color::Blue); 
+        button.setPosition(300, 300);         
 }
 
 void Game_manager::update()
 {
+        if (is_in_menu)
+        {
+                update_menu();
+                return;
+        }
+
         vector<Sprite> updated_window = get_updated_window();
 
         // TODO should change a,-200 with camera
@@ -70,6 +97,8 @@ void Game_manager::handel_event(Event event)
 {
         if (event.type == Event::Closed)
                 the_window.close();
+        else if (is_in_menu)
+                handel_menu_event(event);
         else if (event.type == Event::KeyPressed)
                 if (event.key.code == Keyboard::W)
                         // TODO
