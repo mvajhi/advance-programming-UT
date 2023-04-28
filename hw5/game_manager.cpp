@@ -49,36 +49,17 @@ Vector2i Game_manager::convert_text_to_pixle_pos(Vector2i position)
         return Vector2i(position.x * BLOCK_SIZE, position.y * BLOCK_SIZE);
 }
 
-void Game_manager::update_menu()
-{
 
-        vector<Drawable *> buffer(1, &button);
-
-        the_window.update(buffer);
-}
-
-void Game_manager::handel_menu_event(Event event)
-{
-        if (event.type == sf::Event::MouseButtonPressed &&
-            button.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
-        {
-                std::cout << "Hello, World!" << std::endl;
-                is_in_menu = false;
-        }
-}
-
-Game_manager::Game_manager(/* args */) : the_window(this), button(Vector2f(200, 25)),
+Game_manager::Game_manager(/* args */) : the_window(this),
                                          player(1, Vector2f(1500, 500), 5, 0, Vector2f(20, 0), ADDR_PLAYER)
 {
-        button.setFillColor(sf::Color::Blue);
-        button.setPosition(300, 300);
 }
 
 void Game_manager::update()
 {
-        if (is_in_menu)
+        if (the_menu.is_in_menu())
         {
-                update_menu();
+                the_menu.update_menu(the_window);
                 return;
         }
 
@@ -105,8 +86,8 @@ void Game_manager::handel_event(Event event)
 {
         if (event.type == Event::Closed)
                 the_window.close();
-        else if (is_in_menu)
-                handel_menu_event(event);
+        else if (the_menu.is_in_menu())
+                the_menu.handel_menu_event(event);
         else if (event.type == Event::KeyPressed)
                 if (event.key.code == Keyboard::W)
 

@@ -36,10 +36,10 @@ void window::update(vector<Sprite> updated_shapes, Vector2f position)
 
 void window::update(vector<Drawable *> updated_shapes)
 {
-        m_window.clear(sf::Color::White);
+        m_window.clear(MENU_BACKGRUND);
         for (auto i : updated_shapes)
         {
-        m_window.draw(*i); // دکمه را روی پنجره نمایش می‌دهیم
+                m_window.draw(*i); 
         }
         m_window.display();
 }
