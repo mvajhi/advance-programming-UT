@@ -15,5 +15,6 @@ public:
     void update_menu(window &the_window);
     void handel_menu_event(Event event);
     bool is_in_menu();
+    void show();
     ~Menu();
 };

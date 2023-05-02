@@ -20,6 +20,9 @@ private:
         void proccess_new_block(Vector2i position, char value);
         void proccess_text_map(vector<string> text_map);
         Vector2i convert_text_to_pixle_pos(Vector2i position);
+        int check_collision(Vector2f person_pos, Vector2f object_pos, Vector2f move_size = Vector2f(0, 0));
+        bool is_in_menus();
+        // void handel_menus_event(Event event);
 
 public:
         Game_manager(/* args */);

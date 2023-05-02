@@ -3,6 +3,7 @@
 #include "define.hpp"
 #include "game_board.hpp"
 #include <cmath>
+#include <map>
 
 vector<Sprite> Game_manager::get_updated_window()
 {
@@ -30,7 +31,7 @@ void Game_manager::proccess_new_block(Vector2i position, char value)
         if (value == FLOOR_MAP_SYMBOLE)
                 the_game_board.add_new_floor(position);
         // TODO
-         else if (value == PLAYER_MAP_SYMBOLE)
+        else if (value == PLAYER_MAP_SYMBOLE)
                 player.set_pos(position);
         // else if (value == PLAYER_MAP_SYMBOLE)
         // TODO
@@ -88,9 +89,11 @@ void Game_manager::handel_event(Event event)
                 the_menu.handel_menu_event(event);
         else if (event.type == Event::KeyPressed)
                 if (event.key.code == Keyboard::W)
-                {player.move(MOVE_UP);
-                        
-                        cout << "W" << endl;}
+                {
+                        player.move(MOVE_UP);
+
+                        cout << "W" << endl;
+                }
                 else if (event.key.code == Keyboard::A)
                 {
                         player.move(MOVE_LEFT);
@@ -101,6 +104,8 @@ void Game_manager::handel_event(Event event)
                         player.move(MOVE_RIGHT);
                         cout << "D" << endl;
                 }
+                else if (event.key.code == Keyboard::Escape)
+                        the_menu.show();
                 else
                         cout << "invalid key\n";
         else
@@ -117,48 +122,14 @@ void Game_manager::make_and_send_report()
 {
         bool report[4] = {false, false, false, false};
 
-        Vector2f player_pos = player.get_position();
-        Vector2f move_size = player.get_move_size();
-
         vector<Vector2f> floors = the_game_board.get_floor_positions();
 
         for (auto i : floors)
         {
-                float x = i.x;
-                float y = i.y;
+                int collision = check_collision(player.get_position(), i, player.get_move_size());
 
-                if (player_pos.y <= y && y < player_pos.y + BLOCK_SIZE &&
-                    x <= player_pos.x + move_size.x + BLOCK_SIZE && player_pos.x + move_size.x + BLOCK_SIZE < x + BLOCK_SIZE)
-                {
-                        // cout << "right\n";
-                        report[RIGHT] = true;
-                }
-
-                if (player_pos.x <= x && x < player_pos.x + BLOCK_SIZE && y <= player_pos.y + move_size.y + BLOCK_SIZE && player_pos.y + move_size.y + BLOCK_SIZE < y + BLOCK_SIZE)
-                {
-                        // cout << "down\n";
-                        report[DOWN] = true;
-                }
-
-                if (player_pos.y <= y && y < player_pos.y + BLOCK_SIZE &&
-                    x < player_pos.x - move_size.x && player_pos.x - move_size.x <= x + BLOCK_SIZE)
-                {
-                        // cout << "left\n";
-                        report[LEFT] = true;
-                }
-
-                if (player_pos.x <= x && x < player_pos.x + BLOCK_SIZE &&
-                    y - BLOCK_SIZE < player_pos.y - move_size.y - BLOCK_SIZE && player_pos.y - move_size.y - BLOCK_SIZE <= y)
-                {
-                        // cout << "up\n";
-                        report[UP] = true;
-                        // new_report.floor.push_back(up);
-                        // cout << "pos: " << player_pos.y + move_size.y << endl;
-                        // cout << "move size: " << move_size.y << endl;
-                        // cout << "\\\\\\\\\\\\\\\\\ny+b: " << y + BLOCK_SIZE << "\ny + 2b" << y + 2 * BLOCK_SIZE << "\\\\\\\\\\\n";
-                        // cout << "\\\\\\\\\\\\\\\\\\\\\nmy pos:\n\tx: " << player_pos.x << "\n\ty: " << player_pos.y << "\n\\\\\\\\\\\\\\\\\\\\\n";
-                        // cout << "\\\\\\\\\\\\\\\\\\\\\nup pos:\n\tx: " << x << "\n\ty: " << y << "\n\\\\\\\\\\\\\\\\\\\\\n";
-                }
+                if (collision != NO_COLLISION)
+                        report[collision] = true;
         }
 
         player.set_report(report);
@@ -166,4 +137,54 @@ void Game_manager::make_and_send_report()
 
 Game_manager::~Game_manager()
 {
+}
+
+int Game_manager::check_collision(Vector2f person_pos, Vector2f object_pos, Vector2f move_size)
+{
+        float x = object_pos.x;
+        float y = object_pos.y;
+
+        if (person_pos.y <= y && y < person_pos.y + BLOCK_SIZE &&
+            x <= person_pos.x + move_size.x + BLOCK_SIZE && person_pos.x + move_size.x + BLOCK_SIZE < x + BLOCK_SIZE)
+        {
+                // cout << "right\n";
+                // report[RIGHT] = true;
+                return RIGHT;
+        }
+
+        if (person_pos.x <= x && x < person_pos.x + BLOCK_SIZE && y <= person_pos.y + move_size.y + BLOCK_SIZE && person_pos.y + move_size.y + BLOCK_SIZE < y + BLOCK_SIZE)
+        {
+                // cout << "down\n";
+                // report[DOWN] = true;
+                return DOWN;
+        }
+
+        if (person_pos.y <= y && y < person_pos.y + BLOCK_SIZE &&
+            x < person_pos.x - move_size.x && person_pos.x - move_size.x <= x + BLOCK_SIZE)
+        {
+                // cout << "left\n";
+                // report[LEFT] = true;
+                return LEFT;
+        }
+
+        if (person_pos.x <= x && x < person_pos.x + BLOCK_SIZE &&
+            y - BLOCK_SIZE < person_pos.y - move_size.y - BLOCK_SIZE && person_pos.y - move_size.y - BLOCK_SIZE <= y)
+        {
+                // cout << "up\n";
+                // report[UP] = true;
+                // new_report.floor.push_back(up);
+                // cout << "pos: " << player_pos.y + move_size.y << endl;
+                // cout << "move size: " << move_size.y << endl;
+                // cout << "\\\\\\\\\\\\\\\\\ny+b: " << y + BLOCK_SIZE << "\ny + 2b" << y + 2 * BLOCK_SIZE << "\\\\\\\\\\\n";
+                // cout << "\\\\\\\\\\\\\\\\\\\\\nmy pos:\n\tx: " << player_pos.x << "\n\ty: " << player_pos.y << "\n\\\\\\\\\\\\\\\\\\\\\n";
+                // cout << "\\\\\\\\\\\\\\\\\\\\\nup pos:\n\tx: " << x << "\n\ty: " << y << "\n\\\\\\\\\\\\\\\\\\\\\n";
+                return UP;
+        }
+
+        return NO_COLLISION;
+}
+
+bool Game_manager::is_in_menus()
+{
+        return the_menu.is_in_menu();
 }

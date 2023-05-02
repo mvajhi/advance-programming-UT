@@ -85,3 +85,4 @@ const int RIGHT = 0;
 const int LEFT = 1;
 const int UP = 2;
 const int DOWN = 3;
+const int NO_COLLISION = -1;

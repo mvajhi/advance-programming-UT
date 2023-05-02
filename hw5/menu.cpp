@@ -33,3 +33,8 @@ bool Menu::is_in_menu()
 {
     return is_active;
 }
+
+void Menu::show()
+{
+    is_active = true;
+}
