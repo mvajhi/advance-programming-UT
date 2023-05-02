@@ -45,6 +45,11 @@ void Person::move(int order)
 
         person_shape.setPosition(person_shape.getPosition().x - speed.x, person_shape.getPosition().y);
     }
+    if(order==MOVE_UP)
+    {
+        speed.y+=300;
+        person_shape.setPosition(person_shape.getPosition().x,person_shape.getPosition().y-speed.y);
+    }
 }
 
 void Person::set_pos(Vector2i pos)

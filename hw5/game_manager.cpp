@@ -30,10 +30,8 @@ void Game_manager::proccess_new_block(Vector2i position, char value)
         if (value == FLOOR_MAP_SYMBOLE)
                 the_game_board.add_new_floor(position);
         // TODO
-        else if (value == PLAYER_MAP_SYMBOLE)
-        {
+         else if (value == PLAYER_MAP_SYMBOLE)
                 player.set_pos(position);
-        }
         // else if (value == PLAYER_MAP_SYMBOLE)
         // TODO
 }
@@ -90,8 +88,9 @@ void Game_manager::handel_event(Event event)
                 the_menu.handel_menu_event(event);
         else if (event.type == Event::KeyPressed)
                 if (event.key.code == Keyboard::W)
-
-                        cout << "W" << endl;
+                {player.move(MOVE_UP);
+                        
+                        cout << "W" << endl;}
                 else if (event.key.code == Keyboard::A)
                 {
                         player.move(MOVE_LEFT);
