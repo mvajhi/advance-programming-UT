@@ -21,6 +21,12 @@ enum Collision
     right,
     left
 };
+struct Events
+{
+    bool up=false;
+    bool right=false;
+    bool left=false; 
+};
 
 struct Collision_report
 {
@@ -38,6 +44,8 @@ const int BUTTON_HEIGHT = 25;
 const int MENU_FONT_SIZE = 25;
 const float VIEW_RATIO_WIDTH = (float)3 / 8;
 const float VIEW_RATIO_HEIGHT = (float)2 / 3;
+const int GRAVITY=5;
+const int STEP_UNIT_CHECKING=10;
 
 const int BLOCK_SIZE = 100;
 //!!WARNING image size should set

@@ -9,7 +9,8 @@ vector<Sprite> Game_manager::get_updated_window()
 {
         vector<Sprite> updated_window;
         updated_window = the_game_board.get_board();
-        updated_window.push_back(player.get_shape());
+        Sprite updated_player = get_updated_player();
+        updated_window.push_back(updated_player);
 
         return updated_window;
 }
@@ -116,6 +117,7 @@ void Game_manager::handel_event(Event event)
 void Game_manager::proccess_events()
 {
         the_window.get_events();
+        player.move({down, without_collision, without_collision, without_collision, without_collision});
 }
 
 void Game_manager::make_and_send_report()

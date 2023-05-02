@@ -27,7 +27,7 @@ Person::Person(int health_, Vector2f position_, float jump_high_, Vector2f speed
     // person_shape.setPosition(1900, 500);
     person_shape.setPosition(position_);
 }
-void Person::move(int order)
+void Person::update()
 {
     if (order == MOVE_RIGHT && report_floor[RIGHT] == false)
     {
