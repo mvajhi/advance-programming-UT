@@ -148,7 +148,7 @@ int Game_manager::check_collision(Vector2f person_pos, Vector2f object_pos, Vect
             x <= person_pos.x + move_size.x + BLOCK_SIZE && person_pos.x + move_size.x + BLOCK_SIZE < x + BLOCK_SIZE)
         {
                 // cout << "right\n";
-                // report[RIGHT] = true;
+                // report[RIGHT] = tre;
                 return RIGHT;
         }
 
