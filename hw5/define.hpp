@@ -86,3 +86,4 @@ const int LEFT = 1;
 const int UP = 2;
 const int DOWN = 3;
 const int NO_COLLISION = -1;
+const float GRAVITY=0.003;
