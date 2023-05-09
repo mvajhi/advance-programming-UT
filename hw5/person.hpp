@@ -16,6 +16,8 @@ public:
     Sprite get_shape();
     Vector2f get_position(){return person_shape.getPosition();}
     void set_report(bool new_report[]);
+    void fall();
+    void jump();
 protected:
     // @mohammadamintavanai change xy with vector2f
     // TODO @mohammadamintavanai fix names
