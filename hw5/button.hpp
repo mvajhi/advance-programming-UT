@@ -1,19 +1,26 @@
 #pragma once
+
 #include "define.hpp"
+
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <functional>
 
 class Button
 {
-private:
-    RectangleShape button;
-    Font font;
-    Text text;
-
 public:
-    Button(string text_content, Vector2f position);
-    void set_position(Vector2f position);
-    Vector2f get_position();
-    vector<Drawable *> get_shape();
-    bool is_into(Vector2f position);
+    Button(RectangleShape shape, Text text, function<void()> on_click, Color button_color);
 
-    ~Button();
+    vector<Drawable *> get_drawable();
+    bool contains(float x, float y);
+    void mouse_inside();
+    void mouse_outside();
+    void click();
+
+private:
+    RectangleShape shape;
+    Text text;
+    function<void()> on_click;
+    Color button_color;
+    Color hover_color;
 };

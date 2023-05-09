@@ -1,23 +1,18 @@
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include "game_manager.hpp"
-
-using namespace std;
-using namespace sf;
+#include "define.hpp"
+#include "game.hpp"
 
 int main()
 {
-	Game_manager the_game;
-	the_game.read_level1();
+    Game game;
 
-	while (true)
-	{
+    game.read_level();
+    while (game.get_window().isOpen())
+    {
+        game.pre_update();
+        game.update();
+        game.render();
+    }
 
-		the_game.make_and_send_report();
-		the_game.proccess_events();
 
-		the_game.update();
-	}
-
-	return 0;
+    return 0;
 }

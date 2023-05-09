@@ -1,73 +1,39 @@
 #include "window.hpp"
-#include "game_manager.hpp"
-#include "define.hpp"
+#include "game.hpp"
 
-window::window(Game_manager *manager_pointer)
+window::window(int page_width, int page_hight, string page_name, Game *game)
+    : the_window(VideoMode(page_width, page_hight), page_name, Style::Close | Style::Titlebar)
 {
-        manager = manager_pointer;
-        m_window.create(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "game");
+    the_game = game;
+    the_window.setFramerateLimit(MAX_FRAME);
 }
 
-void window::draw(vector<Sprite> shapes)
+RenderWindow &window::get_window()
 {
-        for (auto shape : shapes)
-                draw_a_shape(shape);
-}
-
-void window::set_view(vector<Sprite> &shapes, Vector2f position)
-{
-        Vector2f move_size = Vector2f(WINDOW_WIDTH * VIEW_RATIO_WIDTH,
-                                      WINDOW_HEIGHT * VIEW_RATIO_HEIGHT) -
-                             position;
-        for (size_t i = 0; i < shapes.size(); i++)
-        {
-                Vector2f shpae_pos = shapes[i].getPosition();
-                shapes[i].setPosition(shpae_pos + move_size);
-        }
-}
-
-void window::update(vector<Sprite> updated_shapes, Vector2f position)
-{
-        set_view(updated_shapes, position);
-        m_window.clear(Color(BACKGROUND_COLOR));
-        draw(updated_shapes);
-        m_window.display();
-}
-
-void window::update(vector<Drawable *> updated_shapes)
-{
-        m_window.clear(MENU_BACKGRUND);
-        for (auto i : updated_shapes)
-        {
-                m_window.draw(*i); 
-        }
-        m_window.display();
+    return the_window;
 }
 
 void window::get_events()
 {
-        Event event;
-        while (m_window.pollEvent(event))
-                manager->handel_event(event);
+    Event event;
+    while (the_window.pollEvent(event))
+        the_game->handel_event(event);
 }
 
 void window::close()
 {
-        m_window.close();
-        // TODO REMOVE THIS
-        exit(0);
+    the_window.close();
 }
 
-RenderWindow *window::get_window()
+void window::render(vector<Drawable *> output, Vector2f camera_position)
 {
-        return &m_window;
-}
+    camera_position = Vector2f(camera_position.x, camera_position.y);
 
-void window::draw_a_shape(Sprite shape)
-{
-        m_window.draw(shape);
-}
+    the_window.clear(GAME_BACK_COLOR);
 
-window::~window()
-{
+    for (auto i : output)
+        the_window.draw(*i);
+    the_window.setView(View(camera_position, Vector2f(WINDOW_W, WINDOW_H)));
+
+    the_window.display();
 }
