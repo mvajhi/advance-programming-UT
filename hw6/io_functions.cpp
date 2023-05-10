@@ -55,10 +55,12 @@ Mission_input convert_mission_input(vector<string> input)
     output.id = stoi(input[ID_INDEX]);
     output.reward = stoi(input[REWARD_INDEX]);
     output.target = stol(input[TARGET_INDEX]);
-
     output.time.start = stol(input[START_TIME_INDEX]);
     output.time.end = stol(input[END_TIME_INDEX]);
-    if (output.time.start > output.time.end)
+
+    if (output.time.start > output.time.end ||
+        output.reward < 0 ||
+        output.target < 0)
         throw INVALID_INPUT_MASSAGE;
 
     // cout

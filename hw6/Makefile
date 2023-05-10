@@ -1,6 +1,6 @@
 CC=g++
 CFLAGS=-c -Wall --std=c++11 
-LDFLAGS=-lsfml-graphics -lsfml-window -lsfml-system
+LDFLAGS= 
 
 BIN_DIR =./bin
 EXECUTABLE = $(BIN_DIR)/main
