@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -24,6 +25,7 @@ struct Mission_input
 // return
 const string SUCCESS_MASSAGE = "OK";
 const string INVALID_INPUT_MASSAGE = "INVALID_ARGUMENTS";
+const string DUPLICATE_MISSION_ID_MASSAGE = "DUPLICATE_MISSION_ID";
 
 // index
 const int ID_INDEX = 1;
