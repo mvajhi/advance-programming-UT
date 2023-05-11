@@ -55,18 +55,9 @@ string proccess(vector<string> input, Manager &manager)
 
 Mission_input convert_mission_input(vector<string> input)
 {
-    Mission_input output;
-
-    output.id = stoi(input[ID_INDEX]);
-    output.reward = stoi(input[REWARD_INDEX]);
-    output.target = stol(input[TARGET_INDEX]);
-    output.time.start = stol(input[START_TIME_INDEX]);
-    output.time.end = stol(input[END_TIME_INDEX]);
-
-    if (output.time.start > output.time.end ||
-        output.reward < 0 ||
-        output.target < 0)
-        throw INVALID_INPUT_MASSAGE;
+    Mission_input output = create_mission_input(input);
+    
+    check_mission_input(output);
 
     // cout
     //     << "id: " << output.id << "\n"
@@ -76,6 +67,27 @@ Mission_input convert_mission_input(vector<string> input)
     //     << "end: " << output.time.end << "\n";
 
     return output;
+}
+
+Mission_input create_mission_input(vector<string> input)
+{
+    Mission_input output;
+
+    output.id = stoi(input[ID_INDEX]);
+    output.reward = stoi(input[REWARD_INDEX]);
+    output.target = stol(input[TARGET_INDEX]);
+    output.time.start = stol(input[START_TIME_INDEX]);
+    output.time.end = stol(input[END_TIME_INDEX]);
+
+    return output;
+}
+
+void check_mission_input(Mission_input input)
+{
+    if (input.time.start > input.time.end ||
+        input.reward < 0 ||
+        input.target < 0)
+        throw INVALID_INPUT_MASSAGE;
 }
 
 Assign_input convert_assign_input(vector<string> input)
