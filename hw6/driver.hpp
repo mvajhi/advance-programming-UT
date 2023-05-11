@@ -7,9 +7,9 @@ class Driver
 {
 private:
     int id;
-    map<int, Mission *> missions;
+    map<int, shared_ptr<Mission>> missions;
     // vector<Travel> travels;
 public:
     Driver(int id_);
-    void assign_mission(int mission_id, Mission *new_mission);
+    void assign_mission(int mission_id, shared_ptr<Mission> new_mission);
 };

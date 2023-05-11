@@ -7,11 +7,10 @@
 class Manager
 {
 private:
-    map<int ,Mission *> missions;
-    map<int, Driver *> drivers;
+    map<int ,shared_ptr<Mission>> missions;
+    map<int, shared_ptr<Driver>> drivers;
 public:
     Manager();
-    ~Manager();
     void add_time_mission(Mission_input input);
     void add_distance_mission(Mission_input input);
     void add_count_mission(Mission_input input);

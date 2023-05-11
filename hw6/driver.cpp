@@ -5,7 +5,7 @@ Driver::Driver(int id_)
     id = id_;
 }
 
-void Driver::assign_mission(int mission_id, Mission *new_mission)
+void Driver::assign_mission(int mission_id, shared_ptr<Mission> new_mission)
 {
     if (missions.count(mission_id) != 0)
         throw DUPLICATE_DRIVER_MISSION_MASSAGE;
