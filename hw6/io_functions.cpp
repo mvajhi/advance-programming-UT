@@ -39,6 +39,11 @@ string proccess(vector<string> input, Manager &manager)
             manager.add_count_mission(convert_mission_input(input));
             return SUCCESS_MASSAGE + "\n";
         }
+        else if (input[0] == ASSIGN_MISSION)
+        {
+            manager.assign_mission(convert_assign_input(input));
+            return SUCCESS_MASSAGE + "\n";
+        }
     }
     catch (const string &error)
     {
@@ -70,5 +75,13 @@ Mission_input convert_mission_input(vector<string> input)
     //     << "start: " << output.time.start << "\n"
     //     << "end: " << output.time.end << "\n";
 
+    return output;
+}
+
+Assign_input convert_assign_input(vector<string> input)
+{
+    Assign_input output;
+    output.mission_id = stoi(input[1]);
+    output.driver_id = stoi(input[2]);
     return output;
 }

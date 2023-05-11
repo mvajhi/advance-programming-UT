@@ -25,3 +25,21 @@ public:
     bool is_successful();
 };
 
+class Distance_mission : public Mission
+{
+private:
+    long min_destance_to_earn;
+public:
+    Distance_mission(int id_, Time_range time_, int reward_, long taget_to_earn);
+    bool is_successful();
+};
+
+class Count_mission : public Mission
+{
+private:
+    int min_count_to_earn;
+public:
+    Count_mission(int id_, Time_range time_, int reward_, long taget_to_earn);
+    bool is_successful();
+};
+

@@ -31,3 +31,25 @@ bool Time_mission::is_successful()
 {
     return false;
 }
+
+Distance_mission::Distance_mission(int id_, Time_range time_, int reward_, long taget_to_earn)
+    : Mission(id_, time_, reward_)
+{
+    min_destance_to_earn = taget_to_earn;
+}
+
+bool Distance_mission::is_successful()
+{
+    return false;
+}
+
+Count_mission::Count_mission(int id_, Time_range time_, int reward_, long taget_to_earn)
+    : Mission(id_, time_, reward_)
+{
+     min_count_to_earn = taget_to_earn;
+}
+
+bool Count_mission::is_successful()
+{
+     return false;
+}
