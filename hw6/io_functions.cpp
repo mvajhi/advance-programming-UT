@@ -44,6 +44,10 @@ string proccess(vector<string> input, Manager &manager)
             manager.assign_mission(convert_assign_input(input));
             return SUCCESS_MASSAGE + "\n";
         }
+        else
+        {
+            return manager.full_report();
+        }
     }
     catch (const string &error)
     {

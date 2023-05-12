@@ -4,18 +4,17 @@ Manager::Manager()
 {
 }
 
+void Manager::check_duplicate_mission(int id)
+{
+    if (missions.count(id) != 0)
+        throw DUPLICATE_MISSION_ID_MASSAGE;
+}
+
 void Manager::add_time_mission(Mission_input input)
 {
-    if (missions.count(input.id) != 0)
-        throw DUPLICATE_MISSION_ID_MASSAGE;
-
+    check_duplicate_mission(input.id);
     shared_ptr<Mission> new_mission = make_shared<Time_mission>(input.id, input.time, input.reward, input.target);
     missions.insert(make_pair(input.id, new_mission));
-
-    // cout
-    //     << "reward: " << missions[1]->get_reward() << "\n"
-    //     << "start: " << missions[1]->get_time_range().start << "\n"
-    //     << "end: " << missions[1]->get_time_range().end << "\n";
 }
 
 void Manager::add_distance_mission(Mission_input input)
@@ -35,4 +34,16 @@ void Manager::assign_mission(Assign_input input)
         drivers.insert(make_pair(input.driver_id, make_shared<Driver>(input.driver_id)));
 
     drivers[input.driver_id]->assign_mission(input.mission_id, missions[input.mission_id]);
+}
+
+string Manager::full_report()
+{
+    string output;
+    output = "full report\n\tmissions:\n";
+    for (auto i :missions)
+    {
+        output += i.second->report();
+        output += "\t\t----------------------\n";
+    }
+    return output;
 }
