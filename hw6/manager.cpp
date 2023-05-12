@@ -64,25 +64,3 @@ shared_ptr<Reporter> Manager::record_ride(Travel_input input)
     return make_shared<new_completed_mission_reporter>(new_completed_missions, input.driver_id);
 }
 
-string Manager::full_report()
-{
-    string output;
-    output = "////////////////////////////////////////////////////\n";
-    output += "full report\n\tmissions:\n";
-    for (auto i : missions)
-    {
-        output += i.second->report();
-        output += "\t\t----------------------\n";
-    }
-    // output += "\t//////////////////////////////////////\n";
-    output += "\tdrivers:\n";
-    for (auto i : drivers)
-    {
-        output += i.second->report();
-        output += "\t\t----------------------\n";
-    }
-
-    output += "////////////////////////////////////////////////////\n";
-
-    return output;
-}

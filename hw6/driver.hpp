@@ -23,5 +23,4 @@ public:
     Driver(int id_);
     void assign_mission(int mission_id, shared_ptr<Mission> mission);
     vector<shared_ptr<Mission_with_status>> record_ride(Time_range time, long distance);
-    string report();
 };

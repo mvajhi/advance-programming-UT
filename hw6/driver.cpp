@@ -94,17 +94,3 @@ vector<shared_ptr<Mission_with_status>> Driver::record_ride(Time_range time, lon
     return new_completed_missions;
 }
 
-string Driver::report()
-{
-    string output;
-    output = "\t\tid: " + to_string(id) + "\n";
-    output += "\t\tmy mission:\n";
-    for (auto i : missions)
-    {
-        output += "\t\t\tid: " + to_string(i->detail->get_id()) + "\n";
-        // output += "\t\t\tstatus: " + to_string(i.second->is_successful()) + "\n";
-        output += "\t\t\t----------\n";
-    }
-
-    return output;
-}

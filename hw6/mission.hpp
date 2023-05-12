@@ -12,7 +12,6 @@ public:
     Mission(int id_, Time_range time_, int reward_);
     virtual ~Mission();
     virtual bool is_successful(Total_travels_report report) = 0;
-    virtual string report();
 
     // geter
     Time_range get_time_range();
@@ -27,7 +26,6 @@ private:
 public:
     Time_mission(int id_, Time_range time_, int reward_, long taget_to_earn);
     bool is_successful(Total_travels_report report);
-    virtual string report();
 };
 
 class Distance_mission : public Mission
@@ -37,7 +35,6 @@ private:
 public:
     Distance_mission(int id_, Time_range time_, int reward_, long taget_to_earn);
     bool is_successful(Total_travels_report report);
-    virtual string report();
 };
 
 class Count_mission : public Mission
@@ -47,6 +44,5 @@ private:
 public:
     Count_mission(int id_, Time_range time_, int reward_, long taget_to_earn);
     bool is_successful(Total_travels_report report);
-    virtual string report();
 };
 

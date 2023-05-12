@@ -34,8 +34,6 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             return manager.assign_mission(convert_assign_input(input));
         else if (input[0] == NEW_TRAVEL)
             return manager.record_ride(convert_travel_input(input));
-        else if (input[0] == REPORT)
-            return make_shared<Massage_reporter>(manager.full_report());
     }
     catch (const string &error)
     {
@@ -50,13 +48,6 @@ Mission_input convert_mission_input(vector<string> input)
     Mission_input output = create_mission_input(input);
 
     check_mission_input(output);
-
-    // cout
-    //     << "id: " << output.id << "\n"
-    //     << "reward: " << output.reward << "\n"
-    //     << "target: " << output.target << "\n"
-    //     << "start: " << output.time.start << "\n"
-    //     << "end: " << output.time.end << "\n";
 
     return output;
 }
