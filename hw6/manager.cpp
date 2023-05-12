@@ -19,10 +19,16 @@ void Manager::add_time_mission(Mission_input input)
 
 void Manager::add_distance_mission(Mission_input input)
 {
+    check_duplicate_mission(input.id);
+    shared_ptr<Mission> new_mission = make_shared<Distance_mission>(input.id, input.time, input.reward, input.target);
+    missions.insert(make_pair(input.id, new_mission));
 }
 
 void Manager::add_count_mission(Mission_input input)
 {
+    check_duplicate_mission(input.id);
+    shared_ptr<Mission> new_mission = make_shared<Count_mission>(input.id, input.time, input.reward, input.target);
+    missions.insert(make_pair(input.id, new_mission));
 }
 
 void Manager::assign_mission(Assign_input input)

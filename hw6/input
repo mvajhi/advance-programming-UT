@@ -1,12 +1,7 @@
-add_time_mission 1 5 3 4 5
-add_distance_mission 1 5 3 4 5
-add_count_mission 1 5 3 4 5
 add_time_mission 1 2 3 4 5
-add_time_mission 1 2 3 4 5
-add_distance_mission 1 2 3 4 5
-add_count_mission 1 2 3 4 5
-add_time_mission 1 2 3 4 5
+add_distance_mission 2 2 3 4 5
+add_count_mission 3 2 3 4 5
 assign_mission 1 1
-assign_mission 1 1
-assign_mission 9 1
+assign_mission 1 3
+assign_mission 9 2
 report
