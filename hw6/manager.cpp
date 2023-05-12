@@ -45,11 +45,22 @@ void Manager::assign_mission(Assign_input input)
 string Manager::full_report()
 {
     string output;
-    output = "full report\n\tmissions:\n";
-    for (auto i :missions)
+    output = "////////////////////////////////////////////////////\n";
+    output += "full report\n\tmissions:\n";
+    for (auto i : missions)
     {
         output += i.second->report();
         output += "\t\t----------------------\n";
     }
+    // output += "\t//////////////////////////////////////\n";
+    output += "\tdrivers:\n";
+    for (auto i : drivers)
+    {
+        output += i.second->report();
+        output += "\t\t----------------------\n";
+    }
+
+    output += "////////////////////////////////////////////////////\n";
+
     return output;
 }
