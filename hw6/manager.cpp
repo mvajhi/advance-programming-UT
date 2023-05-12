@@ -53,6 +53,11 @@ void Manager::record_ride(Travel_input input)
         drivers[input.driver_id]->record_ride(input.time, input.distance);
 }
 
+shared_ptr<Reporter> Manager::report_completed_mission(int driver_id)
+{
+    return make_shared<Driver_completed_mission_reporter>(drivers[driver_id]->report_completed_mission(), driver_id);
+}
+
 string Manager::full_report()
 {
     string output;

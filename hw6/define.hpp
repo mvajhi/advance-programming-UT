@@ -8,6 +8,7 @@
 using namespace std;
 
 typedef long int Time;
+class Mission;
 
 struct Time_range
 {
@@ -34,6 +35,20 @@ struct Travel_input
     int driver_id;
     Time_range time;
     long distance;
+};
+
+struct mission_with_status
+{
+    shared_ptr<Mission> detail;
+    Time complete_time;
+    bool is_complete;
+};
+
+struct Total_travels_report
+{
+    int count;
+    long distance;
+    long time_lenght;
 };
 
 

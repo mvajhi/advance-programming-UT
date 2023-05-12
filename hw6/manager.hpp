@@ -3,6 +3,7 @@
 #include "define.hpp"
 #include "mission.hpp"
 #include "driver.hpp"
+#include "reporter.hpp"
 
 class Manager
 {
@@ -21,6 +22,7 @@ public:
     void add_count_mission(Mission_input input);
     void assign_mission(Assign_input input);
     void record_ride(Travel_input input);
+    shared_ptr<Reporter> report_completed_mission(int driver_id);
 
     // TODO rm this
     string full_report();

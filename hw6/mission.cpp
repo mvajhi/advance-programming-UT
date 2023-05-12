@@ -21,6 +21,11 @@ int Mission::get_reward()
     return reward;
 }
 
+int Mission::get_id()
+{
+    return id;
+}
+
 string Mission::report()
 {
     string output;
@@ -41,9 +46,9 @@ Time_mission::Time_mission(int id_, Time_range time_, int reward_, long taget_to
     min_time_to_earn = taget_to_earn;
 }
 
-bool Time_mission::is_successful()
+bool Time_mission::is_successful(Total_travels_report report)
 {
-    return false;
+    return min_time_to_earn <= report.time_lenght;
 }
 
 string Time_mission::report()
@@ -60,9 +65,9 @@ Distance_mission::Distance_mission(int id_, Time_range time_, int reward_, long 
     min_destance_to_earn = taget_to_earn;
 }
 
-bool Distance_mission::is_successful()
+bool Distance_mission::is_successful(Total_travels_report report)
 {
-    return false;
+    return min_destance_to_earn <= report.distance;
 }
 
 string Distance_mission::report()
@@ -79,9 +84,9 @@ Count_mission::Count_mission(int id_, Time_range time_, int reward_, long taget_
     min_count_to_earn = taget_to_earn;
 }
 
-bool Count_mission::is_successful()
+bool Count_mission::is_successful(Total_travels_report report)
 {
-    return false;
+    return min_count_to_earn <= report.count;
 }
 
 string Count_mission::report()

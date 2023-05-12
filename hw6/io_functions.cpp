@@ -47,7 +47,7 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
         else if (input[0] == NEW_TRAVEL)
         {
             manager.record_ride(convert_travel_input(input));
-            return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+            return manager.report_completed_mission(convert_travel_input(input).driver_id);
         }
         else if (input[0] == REPORT)
         {

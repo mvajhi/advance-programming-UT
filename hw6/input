@@ -8,3 +8,11 @@ assign_mission 1 3
 assign_mission 9 2
 record_ride 1 2 1 3
 report
+add_count_mission 5 0 10 3 1382
+add_distance_mission 6 0 10 25 2023
+assign_mission 5 5
+assign_mission 6 5
+record_ride 0 1 5 10
+record_ride 1 8 5 20
+record_ride 2 10 5 10
+record_ride 4 9 5 30
