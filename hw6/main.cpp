@@ -1,6 +1,7 @@
 #include "define.hpp"
 #include "io_functions.hpp"
 #include "manager.hpp"
+#include "reporter.hpp"
 
 int main()
 {
