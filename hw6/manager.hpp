@@ -17,10 +17,10 @@ private:
 
 public:
     Manager();
-    void add_time_mission(Mission_input input);
-    void add_distance_mission(Mission_input input);
-    void add_count_mission(Mission_input input);
-    void assign_mission(Assign_input input);
+    shared_ptr<Reporter> add_time_mission(Mission_input input);
+    shared_ptr<Reporter> add_distance_mission(Mission_input input);
+    shared_ptr<Reporter> add_count_mission(Mission_input input);
+    shared_ptr<Reporter> assign_mission(Assign_input input);
     shared_ptr<Reporter> record_ride(Travel_input input);
 
     // TODO rm this

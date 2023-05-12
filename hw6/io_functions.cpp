@@ -25,33 +25,17 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
     try
     {
         if (input[0] == ADD_TIME_MISSION)
-        {
-            manager.add_time_mission(convert_mission_input(input));
-            return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
-        }
+            return manager.add_time_mission(convert_mission_input(input));
         else if (input[0] == ADD_DISTANCE_MISSION)
-        {
-            manager.add_distance_mission(convert_mission_input(input));
-            return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
-        }
+            return manager.add_distance_mission(convert_mission_input(input));
         else if (input[0] == ADD_COUNT_MISSION)
-        {
-            manager.add_count_mission(convert_mission_input(input));
-            return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
-        }
+            return manager.add_count_mission(convert_mission_input(input));
         else if (input[0] == ASSIGN_MISSION)
-        {
-            manager.assign_mission(convert_assign_input(input));
-            return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
-        }
+            return manager.assign_mission(convert_assign_input(input));
         else if (input[0] == NEW_TRAVEL)
-        {
             return manager.record_ride(convert_travel_input(input));
-        }
         else if (input[0] == REPORT)
-        {
             return make_shared<Massage_reporter>(manager.full_report());
-        }
     }
     catch (const string &error)
     {

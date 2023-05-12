@@ -16,28 +16,37 @@ void Manager::check_mission_exist(int id)
         throw MISSION_NOT_FOUND_MASSAGE;
 }
 
-void Manager::add_time_mission(Mission_input input)
+shared_ptr<Reporter> Manager::add_time_mission(Mission_input input)
 {
     check_duplicate_mission(input.id);
+
     shared_ptr<Mission> new_mission = make_shared<Time_mission>(input.id, input.time, input.reward, input.target);
     missions.insert(make_pair(input.id, new_mission));
+
+    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }
 
-void Manager::add_distance_mission(Mission_input input)
+shared_ptr<Reporter> Manager::add_distance_mission(Mission_input input)
 {
     check_duplicate_mission(input.id);
+
     shared_ptr<Mission> new_mission = make_shared<Distance_mission>(input.id, input.time, input.reward, input.target);
     missions.insert(make_pair(input.id, new_mission));
+
+    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }
 
-void Manager::add_count_mission(Mission_input input)
+shared_ptr<Reporter> Manager::add_count_mission(Mission_input input)
 {
     check_duplicate_mission(input.id);
+
     shared_ptr<Mission> new_mission = make_shared<Count_mission>(input.id, input.time, input.reward, input.target);
     missions.insert(make_pair(input.id, new_mission));
+
+    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }
 
-void Manager::assign_mission(Assign_input input)
+shared_ptr<Reporter> Manager::assign_mission(Assign_input input)
 {
     check_mission_exist(input.mission_id);
 
@@ -45,6 +54,8 @@ void Manager::assign_mission(Assign_input input)
         drivers.insert(make_pair(input.driver_id, make_shared<Driver>(input.driver_id)));
 
     drivers[input.driver_id]->assign_mission(input.mission_id, missions[input.mission_id]);
+
+    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }
 
 shared_ptr<Reporter> Manager::record_ride(Travel_input input)
