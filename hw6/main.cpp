@@ -10,11 +10,12 @@ int main()
 
     while (getline(cin, line))
     {
+        //input
         vector<string> separated_line = separate_line(line);
         // proccess
-        string output = proccess(separated_line, manager);
+        shared_ptr<Reporter> report = proccess(separated_line, manager);
         // output
-        cout << output;
+        report->cli_report();
     }
 
     return 0;

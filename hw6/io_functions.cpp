@@ -20,47 +20,47 @@ vector<string> separate_line(string line, char separator)
     return output;
 }
 
-string proccess(vector<string> input, Manager &manager)
+shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
 {
     try
     {
         if (input[0] == ADD_TIME_MISSION)
         {
             manager.add_time_mission(convert_mission_input(input));
-            return SUCCESS_MASSAGE + "\n";
+            return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
         }
         else if (input[0] == ADD_DISTANCE_MISSION)
         {
             manager.add_distance_mission(convert_mission_input(input));
-            return SUCCESS_MASSAGE + "\n";
+            return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
         }
         else if (input[0] == ADD_COUNT_MISSION)
         {
             manager.add_count_mission(convert_mission_input(input));
-            return SUCCESS_MASSAGE + "\n";
+            return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
         }
         else if (input[0] == ASSIGN_MISSION)
         {
             manager.assign_mission(convert_assign_input(input));
-            return SUCCESS_MASSAGE + "\n";
+            return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
         }
         else if (input[0] == REPORT)
         {
-            return manager.full_report();
+            return make_shared<Massage_reporter>(manager.full_report());
         }
     }
     catch (const string &error)
     {
-        return error + "\n";
+        return make_shared<Massage_reporter>(error + "\n");
     }
 
-    return "bug  I/O  " + to_string(__LINE__);
+    return make_shared<Massage_reporter>("bug  I/O  " + to_string(__LINE__));
 }
 
 Mission_input convert_mission_input(vector<string> input)
 {
     Mission_input output = create_mission_input(input);
-    
+
     check_mission_input(output);
 
     // cout
