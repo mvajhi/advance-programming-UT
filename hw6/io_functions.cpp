@@ -34,6 +34,8 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             return manager.assign_mission(convert_assign_input(input));
         else if (input[0] == NEW_TRAVEL)
             return manager.record_ride(convert_travel_input(input));
+        else
+            return make_shared<Massage_reporter>(INVALID_INPUT_MASSAGE + "\n");
     }
     catch (const string &error)
     {
@@ -73,7 +75,7 @@ void check_mission_input(Mission_input input)
         throw INVALID_INPUT_MASSAGE;
 }
 
-Travel_input convert_travel_input(vector<string> input)
+Travel_input create_travel_input(vector<string> input)
 {
     Travel_input output;
 
@@ -81,9 +83,21 @@ Travel_input convert_travel_input(vector<string> input)
     output.distance = stol(input[DISTANCE_TRAVEL_INDEX]);
     output.time.start = stol(input[START_TIME_TRAVEL_INDEX]);
     output.time.end = stol(input[END_TIME_TRAVEL_INDEX]);
-    
-    if (output.time.start > output.time.end)
+
+    return output;
+}
+
+void check_travel_input(Travel_input input)
+{
+    if (input.time.start > input.time.end)
         throw INVALID_INPUT_MASSAGE;
+}
+
+Travel_input convert_travel_input(vector<string> input)
+{
+    Travel_input output = create_travel_input(input);
+
+    check_travel_input(output);
 
     return output;
 }
@@ -91,7 +105,9 @@ Travel_input convert_travel_input(vector<string> input)
 Assign_input convert_assign_input(vector<string> input)
 {
     Assign_input output;
+
     output.mission_id = stoi(input[MISSION_ID_ASSIGN_INDEX]);
     output.driver_id = stoi(input[DRIVER_ID_ASSIGN_INDEX]);
+
     return output;
 }
