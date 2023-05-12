@@ -49,3 +49,4 @@ const string ADD_TIME_MISSION = "add_time_mission";
 const string ADD_DISTANCE_MISSION = "add_distance_mission";
 const string ADD_COUNT_MISSION = "add_count_mission";
 const string ASSIGN_MISSION = "assign_mission";
+const string REPORT = "report";
