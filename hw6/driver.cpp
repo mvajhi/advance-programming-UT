@@ -13,6 +13,11 @@ void Driver::assign_mission(int mission_id, shared_ptr<Mission> new_mission)
     missions.insert(make_pair(mission_id, new_mission));
 }
 
+void Driver::record_ride(Time_range time, long distance)
+{
+    travels.push_back(make_shared<Travel>(time, distance));
+}
+
 string Driver::report()
 {
     string output;
@@ -24,5 +29,8 @@ string Driver::report()
         output += "\t\t\tstatus: " + to_string(i.second->is_successful()) + "\n";
         output += "\t\t\t----------\n";
     }
+
+    output += "\t\tcount travel: " + to_string(travels.size()) + "\n";
+
     return output;
 }

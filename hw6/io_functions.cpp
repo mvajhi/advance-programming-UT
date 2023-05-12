@@ -44,6 +44,11 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             manager.assign_mission(convert_assign_input(input));
             return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
         }
+        else if (input[0] == NEW_TRAVEL)
+        {
+            manager.record_ride(convert_travel_input(input));
+            return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+        }
         else if (input[0] == REPORT)
         {
             return make_shared<Massage_reporter>(manager.full_report());
@@ -77,11 +82,11 @@ Mission_input create_mission_input(vector<string> input)
 {
     Mission_input output;
 
-    output.id = stoi(input[ID_INDEX]);
-    output.reward = stoi(input[REWARD_INDEX]);
-    output.target = stol(input[TARGET_INDEX]);
-    output.time.start = stol(input[START_TIME_INDEX]);
-    output.time.end = stol(input[END_TIME_INDEX]);
+    output.id = stoi(input[ID_MISSION_INDEX]);
+    output.reward = stoi(input[REWARD_MISSION_INDEX]);
+    output.target = stol(input[TARGET_MISSION_INDEX]);
+    output.time.start = stol(input[START_TIME_MISSION_INDEX]);
+    output.time.end = stol(input[END_TIME_MISSION_INDEX]);
 
     return output;
 }
@@ -94,10 +99,25 @@ void check_mission_input(Mission_input input)
         throw INVALID_INPUT_MASSAGE;
 }
 
+Travel_input convert_travel_input(vector<string> input)
+{
+    Travel_input output;
+
+    output.driver_id = stoi(input[DRIVER_ID_TRAVEL_INDEX]);
+    output.distance = stol(input[DISTANCE_TRAVEL_INDEX]);
+    output.time.start = stol(input[START_TIME_TRAVEL_INDEX]);
+    output.time.end = stol(input[END_TIME_TRAVEL_INDEX]);
+    
+    if (output.time.start > output.time.end)
+        throw INVALID_INPUT_MASSAGE;
+
+    return output;
+}
+
 Assign_input convert_assign_input(vector<string> input)
 {
     Assign_input output;
-    output.mission_id = stoi(input[1]);
-    output.driver_id = stoi(input[2]);
+    output.mission_id = stoi(input[MISSION_ID_ASSIGN_INDEX]);
+    output.driver_id = stoi(input[DRIVER_ID_ASSIGN_INDEX]);
     return output;
 }

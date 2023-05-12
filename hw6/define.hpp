@@ -29,6 +29,13 @@ struct Assign_input
     int mission_id;
 };
 
+struct Travel_input
+{
+    int driver_id;
+    Time_range time;
+    long distance;
+};
+
 
 // return
 const string SUCCESS_MASSAGE = "OK";
@@ -38,11 +45,21 @@ const string DUPLICATE_DRIVER_MISSION_MASSAGE = "DUPLICATE_DRIVER_MISSION";
 const string MISSION_NOT_FOUND_MASSAGE = "MISSION_NOT_FOUND";
 
 // index
-const int ID_INDEX = 1;
-const int START_TIME_INDEX = 2;
-const int END_TIME_INDEX = 3;
-const int TARGET_INDEX = 4;
-const int REWARD_INDEX = 5;
+const int ID_MISSION_INDEX = 1;
+const int START_TIME_MISSION_INDEX = 2;
+const int END_TIME_MISSION_INDEX = 3;
+const int TARGET_MISSION_INDEX = 4;
+const int REWARD_MISSION_INDEX = 5;
+
+const int MISSION_ID_ASSIGN_INDEX = 1;
+const int DRIVER_ID_ASSIGN_INDEX = 2;
+
+const int START_TIME_TRAVEL_INDEX = 1;
+const int END_TIME_TRAVEL_INDEX = 2;
+const int DRIVER_ID_TRAVEL_INDEX = 3;
+const int DISTANCE_TRAVEL_INDEX = 4;
+
+
 
 // CLI input command
 const string ADD_TIME_MISSION = "add_time_mission";
@@ -50,3 +67,4 @@ const string ADD_DISTANCE_MISSION = "add_distance_mission";
 const string ADD_COUNT_MISSION = "add_count_mission";
 const string ASSIGN_MISSION = "assign_mission";
 const string REPORT = "report";
+const string NEW_TRAVEL = "record_ride";
