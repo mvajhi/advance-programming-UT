@@ -52,7 +52,6 @@ struct Mission_with_status
     bool is_complete;
 };
 
-
 // return
 const string SUCCESS_MASSAGE = "OK";
 const string INVALID_INPUT_MASSAGE = "INVALID_ARGUMENTS";
@@ -75,7 +74,10 @@ const int END_TIME_TRAVEL_INDEX = 2;
 const int DRIVER_ID_TRAVEL_INDEX = 3;
 const int DISTANCE_TRAVEL_INDEX = 4;
 
-
+// arg count
+const size_t MISSION_ARG_COUNT = 5;
+const size_t ASSIGN_ARG_COUNT = 2;
+const size_t TRAVEL_ARG_COUNT = 4;
 
 // CLI input command
 const string ADD_TIME_MISSION = "add_time_mission";

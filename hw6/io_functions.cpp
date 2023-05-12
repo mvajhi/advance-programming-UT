@@ -24,7 +24,9 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
 {
     try
     {
-        if (input[0] == ADD_TIME_MISSION)
+        if (input.size() == 0)
+            return make_shared<Massage_reporter>(INVALID_INPUT_MASSAGE + "\n");
+        else if (input[0] == ADD_TIME_MISSION)
             return manager.add_time_mission(convert_mission_input(input));
         else if (input[0] == ADD_DISTANCE_MISSION)
             return manager.add_distance_mission(convert_mission_input(input));
@@ -45,8 +47,16 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
     return make_shared<Massage_reporter>("bug  I/O  " + to_string(__LINE__));
 }
 
+void check_arg_count(vector<string> input, size_t count)
+{
+    if (input.size() == count)
+        throw INVALID_INPUT_MASSAGE;
+}
+
 Mission_input convert_mission_input(vector<string> input)
 {
+    check_arg_count(input, MISSION_ARG_COUNT);
+
     Mission_input output = create_mission_input(input);
 
     check_mission_input(output);
@@ -95,6 +105,8 @@ void check_travel_input(Travel_input input)
 
 Travel_input convert_travel_input(vector<string> input)
 {
+    check_arg_count(input, TRAVEL_ARG_COUNT);
+
     Travel_input output = create_travel_input(input);
 
     check_travel_input(output);
@@ -104,6 +116,8 @@ Travel_input convert_travel_input(vector<string> input)
 
 Assign_input convert_assign_input(vector<string> input)
 {
+    check_arg_count(input, ASSIGN_ARG_COUNT);
+
     Assign_input output;
 
     output.mission_id = stoi(input[MISSION_ID_ASSIGN_INDEX]);
