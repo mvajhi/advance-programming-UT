@@ -37,18 +37,19 @@ struct Travel_input
     long distance;
 };
 
-struct mission_with_status
-{
-    shared_ptr<Mission> detail;
-    Time complete_time;
-    bool is_complete;
-};
-
 struct Total_travels_report
 {
     int count;
     long distance;
     long time_lenght;
+};
+
+struct Mission_with_status
+{
+    shared_ptr<Mission> detail;
+    Total_travels_report driver_report;
+    Time complete_time;
+    bool is_complete;
 };
 
 

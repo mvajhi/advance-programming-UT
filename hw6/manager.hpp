@@ -21,8 +21,7 @@ public:
     void add_distance_mission(Mission_input input);
     void add_count_mission(Mission_input input);
     void assign_mission(Assign_input input);
-    void record_ride(Travel_input input);
-    shared_ptr<Reporter> report_completed_mission(int driver_id);
+    shared_ptr<Reporter> record_ride(Travel_input input);
 
     // TODO rm this
     string full_report();

@@ -47,15 +47,10 @@ void Manager::assign_mission(Assign_input input)
     drivers[input.driver_id]->assign_mission(input.mission_id, missions[input.mission_id]);
 }
 
-void Manager::record_ride(Travel_input input)
+shared_ptr<Reporter> Manager::record_ride(Travel_input input)
 {
-    if (drivers.count(input.driver_id) != 0)
-        drivers[input.driver_id]->record_ride(input.time, input.distance);
-}
-
-shared_ptr<Reporter> Manager::report_completed_mission(int driver_id)
-{
-    return make_shared<Driver_completed_mission_reporter>(drivers[driver_id]->report_completed_mission(), driver_id);
+    vector<shared_ptr<Mission_with_status>> new_completed_missions = drivers[input.driver_id]->record_ride(input.time, input.distance);
+    return make_shared<new_completed_mission_reporter>(new_completed_missions, input.driver_id);
 }
 
 string Manager::full_report()

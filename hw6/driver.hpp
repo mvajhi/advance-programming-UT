@@ -8,16 +8,20 @@ class Driver
 {
 private:
     int id;
-    map<int, shared_ptr<Mission>> missions;
-    vector<shared_ptr<Travel>> travels;
+    vector<shared_ptr<Mission_with_status>> missions;
 
-    mission_with_status check_mission_status(shared_ptr<Mission> mission);
+    bool is_mission_duplicate(int id);
+    bool is_travel_inside_mission(shared_ptr<Mission_with_status> mission, shared_ptr<Travel> travel);
+    void update_a_mission_data(shared_ptr<Mission_with_status> &mission, shared_ptr<Travel> travel);
+    void update_missions_data(shared_ptr<Travel> travel);
+    vector<shared_ptr<Mission_with_status>> find_new_completed_missions();
+    void close_missions_completed(vector<shared_ptr<Mission_with_status>> new_completed_missions, shared_ptr<Travel> travel);
+    void close_missions_completed(shared_ptr<Mission_with_status> new_completed_mission, shared_ptr<Travel> travel);
+    vector<shared_ptr<Mission_with_status>> update_missions(shared_ptr<Travel> travel);
 
 public:
     Driver(int id_);
-    void assign_mission(int mission_id, shared_ptr<Mission> new_mission);
-    void record_ride(Time_range time, long distance);
-    vector<mission_with_status> report_all_mission();
-    vector<mission_with_status> report_completed_mission();
+    void assign_mission(int mission_id, shared_ptr<Mission> mission);
+    vector<shared_ptr<Mission_with_status>> record_ride(Time_range time, long distance);
     string report();
 };
