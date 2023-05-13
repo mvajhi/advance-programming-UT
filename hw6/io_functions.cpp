@@ -36,6 +36,8 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             return manager.assign_mission(convert_assign_input(input));
         else if (input[0] == NEW_TRAVEL)
             return manager.record_ride(convert_travel_input(input));
+        else if (input[0] == REPORT_DRIVER)
+            return manager.report_driver(convert_report_input(input));
         else
             return make_shared<Massage_reporter>(INVALID_INPUT_MASSAGE + "\n");
     }
@@ -123,5 +125,15 @@ Assign_input convert_assign_input(vector<string> input)
     output.mission_id = stoi(input[MISSION_ID_ASSIGN_INDEX]);
     output.driver_id = stoi(input[DRIVER_ID_ASSIGN_INDEX]);
 
+    return output;
+}
+
+Driver_report_input convert_report_input(vector<string> input)
+{
+    check_arg_count(input, REPORT_ARG_COUNT);
+    
+    Driver_report_input output;
+    output.driver_id = stoi(input[DRIVER_ID_REPORT_INDEX]);
+    
     return output;
 }

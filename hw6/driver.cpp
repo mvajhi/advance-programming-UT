@@ -94,3 +94,7 @@ vector<shared_ptr<Mission_with_status>> Driver::record_ride(Time_range time, lon
     return new_completed_missions;
 }
 
+vector<shared_ptr<Mission_with_status>> Driver::get_all_missions()
+{
+    return missions;
+}

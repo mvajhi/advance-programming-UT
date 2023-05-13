@@ -61,6 +61,15 @@ shared_ptr<Reporter> Manager::assign_mission(Assign_input input)
 shared_ptr<Reporter> Manager::record_ride(Travel_input input)
 {
     vector<shared_ptr<Mission_with_status>> new_completed_missions = drivers[input.driver_id]->record_ride(input.time, input.distance);
-    return make_shared<new_completed_mission_reporter>(new_completed_missions, input.driver_id);
+    return make_shared<new_completed_missions_reporter>(new_completed_missions, input.driver_id);
 }
 
+shared_ptr<Reporter> Manager::report_driver(Driver_report_input input)
+{
+    if (drivers.count(input.driver_id) == 0 || drivers[input.driver_id]->get_all_missions().size() == 0)
+        return make_shared<Massage_reporter>(DRIVER_WITHOUT_MISSION_MASSAGE + "\n");
+    
+    vector<shared_ptr<Mission_with_status>> all_missions = drivers[input.driver_id]->get_all_missions();
+    
+    return make_shared<all_missions_reporter>(all_missions, input.driver_id);
+}

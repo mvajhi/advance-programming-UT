@@ -18,12 +18,22 @@ public:
     void cli_report();
 };
 
-class new_completed_mission_reporter : public Reporter
+class new_completed_missions_reporter : public Reporter
 {
 private:
     vector<shared_ptr<Mission_with_status>> completed_missions;
     int driver_id;
 public:
-    new_completed_mission_reporter(vector<shared_ptr<Mission_with_status>> completed_mission_, int driver_id_);
+    new_completed_missions_reporter(vector<shared_ptr<Mission_with_status>> completed_mission_, int driver_id_);
+    void cli_report();
+};
+
+class all_missions_reporter : public Reporter
+{
+private:
+    vector<shared_ptr<Mission_with_status>> missions;
+    int driver_id;
+public:
+    all_missions_reporter(vector<shared_ptr<Mission_with_status>> mission_, int driver_id_);
     void cli_report();
 };

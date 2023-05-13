@@ -52,12 +52,19 @@ struct Mission_with_status
     bool is_complete;
 };
 
+struct Driver_report_input
+{
+    int driver_id;
+};
+
+
 // return
 const string SUCCESS_MASSAGE = "OK";
 const string INVALID_INPUT_MASSAGE = "INVALID_ARGUMENTS";
 const string DUPLICATE_MISSION_ID_MASSAGE = "DUPLICATE_MISSION_ID";
 const string DUPLICATE_DRIVER_MISSION_MASSAGE = "DUPLICATE_DRIVER_MISSION";
 const string MISSION_NOT_FOUND_MASSAGE = "MISSION_NOT_FOUND";
+const string DRIVER_WITHOUT_MISSION_MASSAGE = "DRIVER_MISSION_NOT_FOUND";
 
 // index
 const int ID_MISSION_INDEX = 1;
@@ -74,10 +81,13 @@ const int END_TIME_TRAVEL_INDEX = 2;
 const int DRIVER_ID_TRAVEL_INDEX = 3;
 const int DISTANCE_TRAVEL_INDEX = 4;
 
+const int DRIVER_ID_REPORT_INDEX = 1;
+
 // arg count
 const size_t MISSION_ARG_COUNT = 5;
 const size_t ASSIGN_ARG_COUNT = 2;
 const size_t TRAVEL_ARG_COUNT = 4;
+const size_t REPORT_ARG_COUNT = 1;
 
 // CLI input command
 const string ADD_TIME_MISSION = "add_time_mission";
@@ -85,3 +95,8 @@ const string ADD_DISTANCE_MISSION = "add_distance_mission";
 const string ADD_COUNT_MISSION = "add_count_mission";
 const string ASSIGN_MISSION = "assign_mission";
 const string NEW_TRAVEL = "record_ride";
+const string REPORT_DRIVER = "show_missions_status";
+
+const string COMPLETE_MISSION_STATUS_CLI_MASSAGE = "completed";
+const string INCOMPLETE_MISSION_STATUS_CLI_MASSAGE = "ongoing";
+const string DEFAULT_INCOMPLETE_END_TIME_MISSION_CLI_MASSAGE = "-1";

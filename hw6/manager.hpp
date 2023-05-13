@@ -22,4 +22,5 @@ public:
     shared_ptr<Reporter> add_count_mission(Mission_input input);
     shared_ptr<Reporter> assign_mission(Assign_input input);
     shared_ptr<Reporter> record_ride(Travel_input input);
+    shared_ptr<Reporter> report_driver(Driver_report_input input);
 };

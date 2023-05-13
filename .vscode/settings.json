@@ -42,7 +42,10 @@
                 "memory": "cpp",
                 "valarray": "cpp",
                 "thread": "cpp",
-                "span": "cpp"
+                "span": "cpp",
+                "bitset": "cpp",
+                "ranges": "cpp",
+                "regex": "cpp"
         },
         "C_Cpp.errorSquiggles": "disabled"
 }

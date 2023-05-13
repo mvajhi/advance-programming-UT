@@ -16,3 +16,5 @@ record_ride 0 1 5 10
 record_ride 1 8 5 20
 record_ride 2 10 5 10
 record_ride 4 9 5 30
+show_missions_status 5
+show_missions_status 8
