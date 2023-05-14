@@ -2,6 +2,7 @@
 
 #include "define.hpp"
 #include "mission.hpp"
+#include <algorithm>
 
 class Reporter
 {

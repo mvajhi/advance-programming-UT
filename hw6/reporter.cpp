@@ -16,9 +16,14 @@ new_completed_missions_reporter::new_completed_missions_reporter(vector<shared_p
     driver_id = driver_id_;
 }
 
+bool sort_mission_logic(shared_ptr<Mission_with_status> m1, shared_ptr<Mission_with_status> m2)
+{
+    return m1->detail->get_time_range().start < m2->detail->get_time_range().start;
+}
+
 void new_completed_missions_reporter::cli_report()
 {
-    // TODO sorting
+    sort(completed_missions.begin(), completed_missions.end(), sort_mission_logic);
     cout << "completed missions for driver " << driver_id << ":";
     for (auto mission : completed_missions)
     {
@@ -41,7 +46,7 @@ all_missions_reporter::all_missions_reporter(vector<shared_ptr<Mission_with_stat
 
 void all_missions_reporter::cli_report()
 {
-    // TODO sorting
+    sort(missions.begin(), missions.end(), sort_mission_logic);
     cout << "missions status for driver " << driver_id << ":";
     for (auto mission : missions)
     {

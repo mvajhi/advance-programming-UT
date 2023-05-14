@@ -45,7 +45,10 @@
                 "span": "cpp",
                 "bitset": "cpp",
                 "ranges": "cpp",
-                "regex": "cpp"
+                "regex": "cpp",
+                "forward_list": "cpp",
+                "list": "cpp",
+                "unordered_set": "cpp"
         },
         "C_Cpp.errorSquiggles": "disabled"
 }
