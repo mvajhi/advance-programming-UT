@@ -20,7 +20,7 @@ shared_ptr<Reporter> Manager::add_time_mission(Mission_input input)
 {
     check_duplicate_mission(input.id);
 
-    shared_ptr<Mission> new_mission = make_shared<Time_mission>(input.id, input.time, input.reward, input.target);
+    shared_ptr<Mission> new_mission = make_shared<Time_mission>(input.id, input.time, input.reward, input.target * HOUR);
     missions.insert(make_pair(input.id, new_mission));
 
     return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");

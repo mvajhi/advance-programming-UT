@@ -30,12 +30,12 @@ void new_completed_missions_reporter::cli_report()
         cout << endl;
         cout << "mission: " << mission->detail->get_id() << endl;
         cout << "start timestamp: " << mission->detail->get_time_range().start << endl;
-        cout << "end timestamp: " << mission->detail->get_time_range().end << endl;
+        cout << "end timestamp: " << mission->complete_time << endl;
         cout << "reward: " << mission->detail->get_reward() << endl;
     }
 
     if (completed_missions.size() == 0)
-        cout << "\n\n";
+        cout << "\n";
 }
 
 all_missions_reporter::all_missions_reporter(vector<shared_ptr<Mission_with_status>> mission_, int driver_id_)

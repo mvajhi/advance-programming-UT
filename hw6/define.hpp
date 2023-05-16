@@ -7,7 +7,7 @@
 
 using namespace std;
 
-typedef long int Time;
+typedef unsigned long long int Time;
 class Mission;
 
 struct Time_range
@@ -100,3 +100,5 @@ const string REPORT_DRIVER = "show_missions_status";
 const string COMPLETE_MISSION_STATUS_CLI_MASSAGE = "completed";
 const string INCOMPLETE_MISSION_STATUS_CLI_MASSAGE = "ongoing";
 const string DEFAULT_INCOMPLETE_END_TIME_MISSION_CLI_MASSAGE = "-1";
+
+const int HOUR = 60;

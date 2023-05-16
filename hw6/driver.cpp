@@ -81,7 +81,7 @@ void Driver::assign_mission(int mission_id, shared_ptr<Mission> mission)
     new_mission.detail = mission;
     new_mission.driver_report.count = 0;
     new_mission.driver_report.distance = 0;
-    new_mission.driver_report.distance = 0;
+    new_mission.driver_report.time_lenght = 0;
     new_mission.is_complete = false;
 
     missions.push_back(make_shared<Mission_with_status>(new_mission));
