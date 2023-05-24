@@ -46,3 +46,39 @@ void check_arg_count(vector<string> input, size_t count)
 void import_files(Manager &manager)
 {
 }
+
+
+Team read_team(string line)
+{
+    Team new_team;
+    vector<string> players = separate_line(line,ROLE_SEPARATOR);
+    new_team.team_name = players[TEAM_NAME_INDEX];
+    new_team.gk =separate_line(players[GK_INDEX],PLAYER_SEPARATOR);
+    new_team.df =separate_line(players[DF_INDEX],PLAYER_SEPARATOR);
+    new_team.mf =separate_line(players[MF_INDEX],PLAYER_SEPARATOR);
+    new_team.fw =separate_line(players[FW_INDEX],PLAYER_SEPARATOR);
+    return new_team;
+
+
+}
+
+League import_league()
+{
+    string line;
+
+    League preamier_league;
+    ifstream file(LEAGUE_ADDRESS);
+    if (!file.is_open())
+    {
+        cout << " problem in opening file"<<endl;
+    }
+    getline(file,line);
+    while(getline(file,line))
+    {
+        Team new_pl_team = read_team(line);
+        shared_ptr<Team> new_team = make_shared<Team>(new_pl_team);
+        preamier_league.teams.insert(make_pair(new_team->team_name,new_team));
+    }
+    return preamier_league;
+
+}
