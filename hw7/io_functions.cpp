@@ -98,7 +98,7 @@ League import_league()
 {
     string line;
 
-    League preamier_league;
+    League premier_league;
     ifstream file(LEAGUE_ADDRESS);
     if (!file.is_open())
     {
@@ -109,8 +109,8 @@ League import_league()
     {
         Team new_pl_team = read_team(line);
         shared_ptr<Team> new_team = make_shared<Team>(new_pl_team);
-        preamier_league.teams.insert(make_pair(new_team->team_name,new_team));
+        premier_league.teams.insert(make_pair(new_team->team_name,new_team));
     }
-    return preamier_league;
+    return premier_league;
 
 }
