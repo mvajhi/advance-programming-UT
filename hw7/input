@@ -1,0 +1,7 @@
+POST signup ? team_name hi password 1234 
+POST signup ? team_name hi password 1234 
+POST login ? team_name hi password 1234 
+POST logout 
+POST login ? team_name hj password 1234 
+POST login ? team_name hi password 234 
+POST login ? team_name hi password 1234 
