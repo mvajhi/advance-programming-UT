@@ -7,8 +7,8 @@
 class Match
 {
 private:
-    pair<Team, int> team1;
-    pair<Team, int> team2;
+    pair<shared_ptr<Team>, int> team1;
+    pair<shared_ptr<Team>, int> team2;
 
 public:
     Match();

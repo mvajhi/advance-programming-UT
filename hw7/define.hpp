@@ -85,3 +85,8 @@ const int TEAM_NAME_INDEX = 0;
 // files address
 const string DATA_ADDRESS = "./data";
 const string LEAGUE_ADDRESS = DATA_ADDRESS + "/premier_league.csv";
+
+const string GK = "gk";
+const string DF = "df";
+const string MF = "mf";
+const string FW = "fw";

@@ -75,3 +75,8 @@ shared_ptr<Reporter> Manager::logout()
 
     return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }
+
+void Manager::import_real_teams(League_data input)
+{
+    real_game_manager.import_teams(input);
+}

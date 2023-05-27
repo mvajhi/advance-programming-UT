@@ -13,8 +13,9 @@ private:
     map<int, Player_status> weeks_games;
 
 public:
-    Player();
+    Player(string name_, string role_);
     int get_score(int week);
     bool can_play(int week);
     string get_role();
+    string get_name();
 };

@@ -51,6 +51,7 @@ void check_arg_count(vector<string> input, size_t count)
 
 void import_files(Manager &manager)
 {
+    manager.import_real_teams(import_league());
 }
 
 User_login_info convert_to_login_info(vector<string> input)

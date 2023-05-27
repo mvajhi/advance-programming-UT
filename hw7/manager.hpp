@@ -3,10 +3,12 @@
 #include "define.hpp"
 #include "reporter.hpp"
 #include "user.hpp"
+#include "real_game_manager.hpp"
 
 class Manager
 {
 private:
+    Real_game_manager real_game_manager;
     map<string, shared_ptr<User>> users;
     shared_ptr<User> user_logged;
 
@@ -19,4 +21,5 @@ public:
     shared_ptr<Reporter> signup(User_login_info input);
     shared_ptr<Reporter> login(User_login_info input);
     shared_ptr<Reporter> logout();
+    void import_real_teams(League_data input);
 };
