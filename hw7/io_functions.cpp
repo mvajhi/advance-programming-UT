@@ -94,11 +94,11 @@ Team read_team(string line)
 
 }
 
-League import_league()
+League_data import_league()
 {
     string line;
 
-    League premier_league;
+    League_data premier_league;
     ifstream file(LEAGUE_ADDRESS);
     if (!file.is_open())
     {

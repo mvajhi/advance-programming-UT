@@ -10,4 +10,4 @@ void check_arg_count(vector<string> input, size_t count);
 User_login_info convert_to_login_info(vector<string> input);
 bool are_commands_some(vector<string> input, string command);
 Team read_team(string line);
-League import_league();
+League_data import_league();
