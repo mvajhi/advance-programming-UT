@@ -56,9 +56,9 @@ void import_files(Manager &manager)
 User_login_info convert_to_login_info(vector<string> input)
 {
     User_login_info output;
-    
+
     if (input.size() != LOGIN_COMMAND_SIZE)
-        throw make_shared<Massage_reporter> (BAD_REQUEST_MASSAGE + "\n");
+        throw make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 
     output.username = input[USERNAME_INDEX];
     output.password = input[PASSWORD_INDEX];
@@ -76,22 +76,20 @@ bool are_commands_some(vector<string> input, string command)
     for (size_t i = 0; i < separated_command.size(); i++)
         if (input[i] != separated_command[i])
             return false;
-    
+
     return true;
 }
 
-Team read_team(string line)
+Team_data read_team(string line)
 {
-    Team new_team;
-    vector<string> players = separate_line(line,ROLE_SEPARATOR);
+    Team_data new_team;
+    vector<string> players = separate_line(line, ROLE_SEPARATOR);
     new_team.team_name = players[TEAM_NAME_INDEX];
-    new_team.gk =separate_line(players[GK_INDEX],PLAYER_SEPARATOR);
-    new_team.df =separate_line(players[DF_INDEX],PLAYER_SEPARATOR);
-    new_team.mf =separate_line(players[MF_INDEX],PLAYER_SEPARATOR);
-    new_team.fw =separate_line(players[FW_INDEX],PLAYER_SEPARATOR);
+    new_team.gk = separate_line(players[GK_INDEX], PLAYER_SEPARATOR);
+    new_team.df = separate_line(players[DF_INDEX], PLAYER_SEPARATOR);
+    new_team.mf = separate_line(players[MF_INDEX], PLAYER_SEPARATOR);
+    new_team.fw = separate_line(players[FW_INDEX], PLAYER_SEPARATOR);
     return new_team;
-
-
 }
 
 League_data import_league()
@@ -102,15 +100,14 @@ League_data import_league()
     ifstream file(LEAGUE_ADDRESS);
     if (!file.is_open())
     {
-        cout << " problem in opening file"<<endl;
+        cout << " problem in opening file" << endl;
     }
-    getline(file,line);
-    while(getline(file,line))
+    getline(file, line);
+    while (getline(file, line))
     {
-        Team new_pl_team = read_team(line);
-        shared_ptr<Team> new_team = make_shared<Team>(new_pl_team);
-        premier_league.teams.insert(make_pair(new_team->team_name,new_team));
+        Team_data new_pl_team = read_team(line);
+        shared_ptr<Team_data> new_team = make_shared<Team_data>(new_pl_team);
+        premier_league.teams.insert(make_pair(new_team->team_name, new_team));
     }
     return premier_league;
-
 }

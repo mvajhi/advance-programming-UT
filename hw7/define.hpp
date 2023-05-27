@@ -10,7 +10,7 @@
 
 using namespace std;
 
-struct Team
+struct Team_data
 {
     string team_name;
     vector<string> gk;
@@ -20,14 +20,36 @@ struct Team
 };
 struct League_data
 {
-    map<string,shared_ptr<Team> > teams;
-
+    map<string, shared_ptr<Team_data>> teams;
 };
 
 struct User_login_info
 {
     string username;
     string password;
+};
+
+struct Player_status
+{
+    bool is_played;
+    int score;
+    bool red_card;
+    int yellow_card;
+    bool injured;
+};
+
+struct Game_input
+{
+    pair<string, Player_status> players_status;
+    pair<string, int> team1;
+    pair<string, int> team2;
+};
+
+struct Team_status
+{
+    int score;
+    int ga;
+    int gf;
 };
 
 // status massage
@@ -41,7 +63,6 @@ const string SIGNUP_COMMAND = "POST signup ?";
 const string LOGIN_COMMAND = "POST login ?";
 const string LOGOUT_COMMAND = "POST logout";
 
-
 // commands size
 const int LOGIN_COMMAND_SIZE = 7;
 
@@ -50,7 +71,7 @@ const int USERNAME_INDEX = 4;
 const int PASSWORD_INDEX = 6;
 
 // file
-const char ROLE_SEPARATOR =',';
+const char ROLE_SEPARATOR = ',';
 const char PLAYER_SEPARATOR = ';';
 
 // file index
@@ -61,5 +82,5 @@ const int FW_INDEX = 4;
 const int TEAM_NAME_INDEX = 0;
 
 // files address
-const string DATA_ADDRESS ="./data";
+const string DATA_ADDRESS = "./data";
 const string LEAGUE_ADDRESS = DATA_ADDRESS + "/premier_league.csv";

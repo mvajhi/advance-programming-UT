@@ -11,7 +11,7 @@ int main()
 
     while (getline(cin, line))
     {
-        //input
+        // input
         vector<string> separated_line = separate_line(line);
         // proccess
         shared_ptr<Reporter> report = proccess(separated_line, manager);
