@@ -18,6 +18,7 @@ struct Team_data
     vector<string> mf;
     vector<string> fw;
 };
+
 struct League_data
 {
     map<string, shared_ptr<Team_data>> teams;

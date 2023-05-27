@@ -12,6 +12,6 @@ void Real_game_manager::add_week(vector<Game_input> games)
 {
 }
 
-void Real_game_manager::add_league(map<int, vector<Game_input>> league_week_data)
+void Real_game_manager::add_league_weeks(map<int, vector<Game_input>> league_week_data)
 {
 }
