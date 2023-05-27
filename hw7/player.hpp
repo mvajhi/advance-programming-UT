@@ -18,4 +18,5 @@ public:
     bool can_play(int week);
     string get_role();
     string get_name();
+    void add_new_match(Player_status status, int week);
 };

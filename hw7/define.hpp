@@ -41,7 +41,7 @@ struct Player_status
 
 struct Game_input
 {
-    pair<string, Player_status> players_status;
+    map<string, Player_status> players_status;
     pair<string, int> team1;
     pair<string, int> team2;
 };
@@ -90,3 +90,7 @@ const string GK = "gk";
 const string DF = "df";
 const string MF = "mf";
 const string FW = "fw";
+
+const int WIN_SCORE = 3;
+const int DRAW_SCORE = 1;
+const int LOSE_SCORE = 0;

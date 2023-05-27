@@ -25,3 +25,8 @@ string Player::get_name()
 {
     return name;
 }
+
+void Player::add_new_match(Player_status status, int week)
+{
+    weeks_games.insert(make_pair(week, status));
+}
