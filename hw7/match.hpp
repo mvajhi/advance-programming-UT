@@ -10,7 +10,8 @@ private:
     pair<shared_ptr<Team>, int> team1;
     pair<shared_ptr<Team>, int> team2;
 
+    friend class Match_reporter;
+
 public:
     Match();
-    shared_ptr<Reporter> get_summery();
 };

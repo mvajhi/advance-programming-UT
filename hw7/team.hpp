@@ -15,4 +15,5 @@ public:
     Team(string name_, map<string, vector<shared_ptr<Player>>> players_);
     Team_status get_status(int week);
     vector<shared_ptr<Player>> get_players(bool is_sort, bool have_role, string role);
+    string get_name();
 };

@@ -18,8 +18,13 @@ private:
 
 public:
     Manager();
+
+    shared_ptr<Reporter> get_week_matches_report(int week);
+
+    // SSO
     shared_ptr<Reporter> signup(User_login_info input);
     shared_ptr<Reporter> login(User_login_info input);
     shared_ptr<Reporter> logout();
+
     void import_real_teams(League_data input);
 };

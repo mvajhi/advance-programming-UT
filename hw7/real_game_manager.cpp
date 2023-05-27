@@ -78,3 +78,8 @@ void Real_game_manager::import_teams(League_data input)
         add_new_team(team_data.second);
     }
 }
+
+shared_ptr<Match_reporter> Real_game_manager::get_matches_report(int week)
+{
+    return make_shared<Match_reporter>(weeks_matches[week]);
+}

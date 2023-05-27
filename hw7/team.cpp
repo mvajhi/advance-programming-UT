@@ -32,3 +32,8 @@ vector<shared_ptr<Player>> Team::get_players(bool is_sort, bool have_role, strin
 {
     return vector<shared_ptr<Player>>();
 }
+
+string Team::get_name()
+{
+    return name;
+}

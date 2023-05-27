@@ -41,6 +41,14 @@ void Manager::check_can_login(User_login_info input)
         throw PERMISSION_DENIED_MASSAGE;
 }
 
+shared_ptr<Reporter> Manager::get_week_matches_report(int week)
+{
+    // TODO check week
+    auto report = real_game_manager.get_matches_report(week);
+    // TODO check for not found
+    return report;
+}
+
 shared_ptr<Reporter> Manager::signup(User_login_info input)
 {
     if (!can_signup(input))
