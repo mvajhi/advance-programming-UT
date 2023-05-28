@@ -25,12 +25,26 @@ Team::Team(string name_, map<string, vector<shared_ptr<Player>>> players_)
 
 Team_status Team::get_status(int week)
 {
-    return Team_status();
+    if (weeks_status.count(week) != 0)
+        return weeks_status[week];
+
+    Team_status not_played_week;
+    not_played_week.ga = 0;
+    not_played_week.gf = 0;
+    not_played_week.score = 0;
+
+    return not_played_week;
 }
 
 vector<shared_ptr<Player>> Team::get_players(bool is_sort, bool have_role, string role)
 {
-    return vector<shared_ptr<Player>>();
+    vector<shared_ptr<Player>> output;
+
+    //! possible bug
+    for (auto i : players)
+        sort(output.end(), i.second.begin(), i.second.end());
+
+    return output;
 }
 
 string Team::get_name()
