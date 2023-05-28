@@ -15,6 +15,8 @@ private:
     bool can_signup(User_login_info input);
     shared_ptr<User> add_new_user(User_login_info input);
     void check_can_login(User_login_info input);
+    void check_can_logout();
+    bool is_user_logged();
 
 public:
     Manager();

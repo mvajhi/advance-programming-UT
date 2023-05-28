@@ -7,7 +7,7 @@ Manager::Manager()
 bool Manager::can_signup(User_login_info input)
 {
     // check no one login
-    if (user_logged != nullptr)
+    if (!is_user_logged())
         return false;
 
     // check name
@@ -29,7 +29,7 @@ shared_ptr<User> Manager::add_new_user(User_login_info input)
 void Manager::check_can_login(User_login_info input)
 {
     // check no one login
-    if (user_logged != nullptr)
+    if (!is_user_logged())
         throw BAD_REQUEST_MASSAGE;
 
     // check name
@@ -39,6 +39,18 @@ void Manager::check_can_login(User_login_info input)
     // check password
     if (!users[input.username]->is_password_valid(input.password))
         throw PERMISSION_DENIED_MASSAGE;
+}
+
+void Manager::check_can_logout()
+{
+    // no user logged
+    if (is_user_logged())
+        throw PERMISSION_DENIED_MASSAGE;
+}
+
+bool Manager::is_user_logged()
+{
+    return user_logged == nullptr;
 }
 
 shared_ptr<Reporter> Manager::get_week_matches_report(int week)
@@ -79,9 +91,18 @@ shared_ptr<Reporter> Manager::login(User_login_info input)
 
 shared_ptr<Reporter> Manager::logout()
 {
-    user_logged = nullptr;
+    try
+    {
+        check_can_logout();
 
-    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+        user_logged = nullptr;
+
+        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+    }
+    catch (const string &error)
+    {
+        return make_shared<Massage_reporter>(error + "\n");
+    }
 }
 
 void Manager::import_real_teams(League_data input)
