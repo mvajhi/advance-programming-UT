@@ -11,6 +11,10 @@ private:
     string role;
     shared_ptr<Team> team;
     map<int, Player_status> weeks_games;
+    int sum_yellow_card;
+
+    bool have_red_card(int week);
+    bool is_injured(int week);
 
 public:
     Player(string name_, string role_);

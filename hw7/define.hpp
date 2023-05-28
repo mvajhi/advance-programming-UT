@@ -91,6 +91,10 @@ const string DF = "df";
 const string MF = "mf";
 const string FW = "fw";
 
+// real game role
 const int WIN_SCORE = 3;
 const int DRAW_SCORE = 1;
 const int LOSE_SCORE = 0;
+const int NUM_WEEK_DONT_PLAY_FOR_RED_CARD = 1;
+const int NUM_WEEK_DONT_PLAY_FOR_INJURED = 3;
+const int MAX_YELLOW_CARD = 3;

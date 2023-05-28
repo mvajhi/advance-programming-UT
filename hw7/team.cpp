@@ -42,7 +42,7 @@ vector<shared_ptr<Player>> Team::get_players(bool is_sort, bool have_role, strin
 
     //! possible bug
     for (auto i : players)
-        sort(output.end(), i.second.begin(), i.second.end());
+        output.insert(output.end(), i.second.begin(), i.second.end());
 
     return output;
 }
