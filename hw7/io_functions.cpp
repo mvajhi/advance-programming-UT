@@ -112,3 +112,106 @@ League_data import_league()
     }
     return premier_league;
 }
+
+Player_status initialize_status(double score)
+{
+    Player_status target;
+    target.injured = false;
+    target.is_played = true;
+    target.red_card = false;
+    target.score = score;
+    target.yellow_card = 0;
+    return target;
+}
+
+map<string, Player_status> get_score_from_csv(vector<string> scores)
+{
+    map<string, Player_status> players_status;
+    Player_status target_player_status;
+    for (string player_score : scores)
+    {
+        vector<string> info = separate_line(player_score, TEAM_SEPARATOR);
+        target_player_status = initialize_status(stod(info[SCORE_POINT_INDEX]));
+        players_status.insert(make_pair(info[TEAM_NAME_INDEX], target_player_status));
+    }
+    return players_status;
+}
+
+vector<string> choose_score_subset(vector<string> game_info)
+{
+    vector<string> subset;
+    for (size_t i = RED_CARD_INDEX + 1; i < game_info.size(); i++)
+    {
+        subset.push_back(game_info[i]);
+    }
+    return subset;
+}
+
+// string get_team_names
+void update_with_yellow_card(map<string, Player_status> &player_scores, vector<string> yellow_cards)
+{
+    for (string player : yellow_cards)
+        player_scores[player].yellow_card++;
+}
+
+void update_with_red_card(map<string, Player_status> &player_scores, vector<string> red_cards)
+{
+    for (string player : red_cards)
+        player_scores[player].red_card = true;
+}
+
+void update_with_injured_players(map<string, Player_status> &player_scores, vector<string> injured_players)
+{
+    for (string player : injured_players)
+        player_scores[player].injured = true;
+}
+
+Game_input read_game_information(string line)
+{
+    vector<string> game_info = separate_line(line, ROLE_SEPARATOR);
+    vector<string> team_names = separate_line(game_info[TEAM_NAME_INDEX], TEAM_SEPARATOR);
+    vector<string> team_results = separate_line(game_info[RESULT_INDEX], TEAM_SEPARATOR);
+    vector<string> injured_players = separate_line(game_info[INJURED_PLAYER_INDEX], PLAYER_SEPARATOR);
+    vector<string> yellow_card_players = separate_line(game_info[YELLOW_CARD_INDEX], PLAYER_SEPARATOR);
+    vector<string> red_card_players = separate_line(game_info[RED_CARD_INDEX], PLAYER_SEPARATOR);
+    vector<string> scores_vec = choose_score_subset(game_info);
+
+    ///////////
+    map<string, Player_status> player_scores = get_score_from_csv(scores_vec);
+    update_with_injured_players(player_scores, injured_players);
+    update_with_yellow_card(player_scores, yellow_card_players);
+    update_with_red_card(player_scores, red_card_players);
+    /////////////
+
+    Game_input game_details;
+    game_details.team1.first = team_names[TEAM1_INDEX];
+    game_details.team2.first = team_names[TEAM2_INDEX];
+    game_details.team1.second = stoi(team_results[TEAM1_INDEX]);
+    game_details.team2.second = stoi(team_results[TEAM2_INDEX]);
+    game_details.players_status = player_scores;
+    return game_details;
+}
+
+Week_state import_week_state(int week_num)
+{
+    string line;
+    Week_state new_week;
+    vector<Game_input> weeks_games;
+    ifstream file(WEEK_ADDRESS + to_string(week_num) + CSV_FORMAT);
+    if (!file.is_open())
+        cout << "problem in opening file" << endl;
+
+    getline(file, line);
+    while (getline(file, line))
+        weeks_games.push_back(read_game_information(line));
+    new_week.weeks_games = weeks_games;
+    return new_week;
+}
+
+map<int, vector<Game_input>> import_league_weeks()
+{
+    map<int, vector<Game_input>> leagues_weeks;
+    for (int week_num = FIRST_WEEK; week_num <= FINAL_WEEK; week_num++)
+        leagues_weeks.insert(make_pair(week_num, import_week_state(week_num).weeks_games));
+    return leagues_weeks;
+}

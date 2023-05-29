@@ -33,7 +33,7 @@ struct User_login_info
 struct Player_status
 {
     bool is_played;
-    int score;
+    double score;
     bool red_card;
     int yellow_card;
     bool injured;
@@ -51,6 +51,11 @@ struct Team_status
     int score;
     int ga;
     int gf;
+};
+
+struct Week_state
+{
+    vector<Game_input> weeks_games;
 };
 
 // status massage
@@ -74,6 +79,7 @@ const int PASSWORD_INDEX = 6;
 // file
 const char ROLE_SEPARATOR = ',';
 const char PLAYER_SEPARATOR = ';';
+const char TEAM_SEPARATOR = ':';
 
 // file index
 const int GK_INDEX = 1;
@@ -81,10 +87,22 @@ const int DF_INDEX = 2;
 const int MF_INDEX = 3;
 const int FW_INDEX = 4;
 const int TEAM_NAME_INDEX = 0;
+const int TEAM1_INDEX = 0;
+const int TEAM2_INDEX = 1;
+const int RESULT_INDEX = 1;
+const int INJURED_PLAYER_INDEX = 2;
+const int YELLOW_CARD_INDEX = 3;
+const int RED_CARD_INDEX = 4;
+const int SCORES_INDEX = 5;
+const int SCORE_POINT_INDEX = 1;
+const int FIRST_WEEK = 1;
+const int FINAL_WEEK = 19;
 
 // files address
 const string DATA_ADDRESS = "./data";
 const string LEAGUE_ADDRESS = DATA_ADDRESS + "/premier_league.csv";
+const string WEEK_ADDRESS = DATA_ADDRESS + "/weeks_stats" + "/week_";
+const string CSV_FORMAT = ".csv";
 
 const string GK = "gk";
 const string DF = "df";
