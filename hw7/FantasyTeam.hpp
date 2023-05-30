@@ -14,6 +14,7 @@ public:
     bool have_this_player(string name);
     void add_player(Player* target_player); /* in here we can use string of name isntead of a Player*/
     void remove_player(string name);
+    void show_fantasy_team();
 
 };
 #endif //ADVANCE_PROGRAMMING_UT_FANTASYTEAM_HPP

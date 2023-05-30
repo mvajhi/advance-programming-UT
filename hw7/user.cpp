@@ -15,3 +15,8 @@ string User::get_name()
 {
     return name;
 }
+
+FantasyTeam* User::get_team(int week)
+{
+    return user_teams[week];
+}
