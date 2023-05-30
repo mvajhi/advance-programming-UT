@@ -58,6 +58,11 @@ struct Week_state
     vector<Game_input> weeks_games;
 };
 
+struct Transfer_state
+{
+    bool is_fool_team;
+    int count_transfer;
+};
 // status massage
 const string SUCCESS_MASSAGE = "OK";
 const string BAD_REQUEST_MASSAGE = "Bad Request";
