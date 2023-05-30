@@ -32,7 +32,7 @@ Player::Player(string name_, string role_)
     sum_yellow_card = 0;
 }
 
-int Player::get_score(int week)
+double Player::get_score(int week)
 {
     if (weeks_games.count(week) != 0)
         return weeks_games[week].score;

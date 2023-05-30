@@ -21,6 +21,7 @@ private:
     void add_new_match(Game_input new_game, int week);
     void update_teams(Game_input new_game, int week);
     void update_players(Game_input new_game, int week);
+    vector<shared_ptr<Player>> get_all_players_in_post(string post);
 
 public:
     Real_game_manager();
@@ -29,4 +30,5 @@ public:
     void add_league_weeks(map<int, vector<Game_input>> league_week_data);
     void import_teams(League_data input);
     shared_ptr<Match_reporter> get_matches_report(int week);
+    vector<shared_ptr<Player>> get_best_players_in_post(int week, string post, int count);
 };

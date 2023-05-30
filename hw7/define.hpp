@@ -58,11 +58,6 @@ struct Week_state
     vector<Game_input> weeks_games;
 };
 
-struct Transfer_state
-{
-    bool is_fool_team;
-    int count_transfer;
-};
 // status massage
 const string SUCCESS_MASSAGE = "OK";
 const string BAD_REQUEST_MASSAGE = "Bad Request";
@@ -73,9 +68,11 @@ const string NOT_FOUND_MASSAGE = "Not Found";
 const string SIGNUP_COMMAND = "POST signup ?";
 const string LOGIN_COMMAND = "POST login ?";
 const string LOGOUT_COMMAND = "POST logout";
+const string BEST_TEAM_COMMAND = "GET team_of_the_week ?";
 
 // commands size
 const int LOGIN_COMMAND_SIZE = 7;
+const int BEST_TEAM_COMMAND_SIZE = 5;
 
 // commands index
 const int USERNAME_INDEX = 4;
@@ -104,9 +101,9 @@ const int FIRST_WEEK = 1;
 const int FINAL_WEEK = 19;
 
 // files address
-const string DATA_ADDRESS = "./data";
-const string LEAGUE_ADDRESS = DATA_ADDRESS + "/premier_league.csv";
-const string WEEK_ADDRESS = DATA_ADDRESS + "/weeks_stats" + "/week_";
+const string DATA_ADDRESS = "C:\\Users\\sayyed ali\\CLionProjects\\advance-programming-UT\\hw7\\data";
+const string LEAGUE_ADDRESS = DATA_ADDRESS + "\\premier_league.csv";
+const string WEEK_ADDRESS = DATA_ADDRESS + "\\weeks_stats" + "\\week_";
 const string CSV_FORMAT = ".csv";
 
 const string GK = "gk";

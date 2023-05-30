@@ -18,7 +18,7 @@ private:
 
 public:
     Player(string name_, string role_);
-    int get_score(int week);
+    double get_score(int week);
     bool can_play(int week);
     string get_role();
     string get_name();

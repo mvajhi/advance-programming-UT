@@ -21,7 +21,7 @@ void FantasyTeam::remove_player(string name)
         {
             if (player->get_name() == name)
             {
-                players[role.first].erase();
+//                players[role.first].erase();
             }
         }
     }

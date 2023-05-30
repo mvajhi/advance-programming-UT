@@ -94,6 +94,17 @@ void Real_game_manager::update_players(Game_input new_game, int week)
         players[i.first]->add_new_match(i.second, week);
 }
 
+vector<shared_ptr<Player>> Real_game_manager::get_all_players_in_post(string post)
+{
+    vector<shared_ptr<Player>> output;
+
+    for (auto player : players)
+        if (player.second->get_role() == post)
+            output.push_back(player.second);
+
+    return output;
+}
+
 Real_game_manager::Real_game_manager()
 {
 }
@@ -129,4 +140,14 @@ void Real_game_manager::import_teams(League_data input)
 shared_ptr<Match_reporter> Real_game_manager::get_matches_report(int week)
 {
     return make_shared<Match_reporter>(weeks_matches[week]);
+}
+
+vector<shared_ptr<Player>> Real_game_manager::get_best_players_in_post(int week, string post, int count)
+{
+    vector<shared_ptr<Player>> all_players = get_all_players_in_post(post);
+
+    sort(all_players.begin(), all_players.end(), [week](shared_ptr<Player> p1, shared_ptr<Player> p2)
+         { return p1->get_score(week) > p2->get_score(week); });
+
+    return vector<shared_ptr<Player>>(all_players.begin(), all_players.begin() + count);
 }

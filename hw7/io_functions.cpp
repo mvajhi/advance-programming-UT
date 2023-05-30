@@ -52,6 +52,7 @@ void check_arg_count(vector<string> input, size_t count)
 void import_files(Manager &manager)
 {
     manager.import_real_teams(import_league());
+    manager.import_real_weeks(import_league_weeks());
 }
 
 User_login_info convert_to_login_info(vector<string> input)
@@ -122,6 +123,13 @@ Player_status initialize_status(double score)
     target.score = score;
     target.yellow_card = 0;
     return target;
+}
+
+int convert_to_best_team_input(vector<string> input, Manager &manager)
+{
+    if (input.size() < BEST_TEAM_COMMAND_SIZE)
+        return manager.get_week();
+    return stoi(input[BEST_TEAM_COMMAND_SIZE - 1]);
 }
 
 map<string, Player_status> get_score_from_csv(vector<string> scores)

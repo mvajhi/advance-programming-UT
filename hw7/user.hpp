@@ -8,7 +8,7 @@ private:
     string name;
     string password;
     map<int , shared_ptr<FantasyTeam>> user_teams;
-    map<int , Transfer_State> transfers_state;
+//    map<int , Transfer_State> transfers_state;
 
 public:
     User(string user_name, string user_pass);

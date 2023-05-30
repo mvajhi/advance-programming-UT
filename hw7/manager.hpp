@@ -28,5 +28,11 @@ public:
     shared_ptr<Reporter> login(User_login_info input);
     shared_ptr<Reporter> logout();
 
+    // output
+    shared_ptr<Reporter> get_best_team(int week);
+    int get_week();
+
+
     void import_real_teams(League_data input);
+    void import_real_weeks(map<int, std::vector<Game_input>> input);
 };
