@@ -20,3 +20,13 @@ FantasyTeam* User::get_team(int week)
 {
     return user_teams[week];
 }
+
+double User::get_total_score(int week_num)
+{
+    double result = 0;
+    for (int i = FIRST_WEEK ;i<=week_num ;i++)
+    {
+        result += user_teams[i]->get_score(i);
+    }
+    return result;
+}

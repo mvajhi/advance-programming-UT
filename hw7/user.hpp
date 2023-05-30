@@ -14,7 +14,7 @@ public:
     User(string user_name, string user_pass);
     bool is_password_valid(string pass);
     string get_name();
-    int get_total_score();
+    double get_total_score(int week_num);
     FantasyTeam* get_team(int week);
     void buy_player(string name);
     void sell_player(string name);
