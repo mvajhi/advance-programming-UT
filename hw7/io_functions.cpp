@@ -32,6 +32,8 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             return manager.login(convert_to_login_info(input));
         else if (are_commands_some(input, LOGOUT_COMMAND))
             return manager.logout();
+        else if (are_commands_some(input, BEST_TEAM_COMMAND))
+            return manager.get_best_team(convert_to_best_team_input(input, manager));
         else
             return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + " else\n");
     }
@@ -122,6 +124,13 @@ Player_status initialize_status(double score)
     target.score = score;
     target.yellow_card = 0;
     return target;
+}
+
+int convert_to_best_team_input(vector<string> input, Manager &manager)
+{
+    if (input.size() < BEST_TEAM_COMMAND_SIZE)
+        return manager.get_week();
+    return stoi(input[BEST_TEAM_COMMAND_SIZE - 1]);
 }
 
 map<string, Player_status> get_score_from_csv(vector<string> scores)

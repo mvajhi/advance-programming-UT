@@ -20,3 +20,4 @@ void update_with_yellow_card(map<string, Player_status>&player_scores , vector<s
 vector<string> choose_score_subset(vector<string> game_info);
 map<string, Player_status> get_score_from_csv(vector<string> scores);
 Player_status initialize_status(double score);
+int convert_to_best_team_input(vector<string> input, Manager &manager);

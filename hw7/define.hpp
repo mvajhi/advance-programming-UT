@@ -68,9 +68,11 @@ const string NOT_FOUND_MASSAGE = "Not Found";
 const string SIGNUP_COMMAND = "POST signup ?";
 const string LOGIN_COMMAND = "POST login ?";
 const string LOGOUT_COMMAND = "POST logout";
+const string BEST_TEAM_COMMAND = "GET team_of_the_week ?";
 
 // commands size
 const int LOGIN_COMMAND_SIZE = 7;
+const int BEST_TEAM_COMMAND_SIZE = 5;
 
 // commands index
 const int USERNAME_INDEX = 4;

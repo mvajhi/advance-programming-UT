@@ -105,6 +105,17 @@ shared_ptr<Reporter> Manager::logout()
     }
 }
 
+shared_ptr<Reporter> Manager::get_best_team(int week)
+{
+    return make_shared<Massage_reporter>(to_string(week) + "  OMG\n");
+}
+
+int Manager::get_week()
+{
+    // TODO
+    return 1;
+}
+
 void Manager::import_real_teams(League_data input)
 {
     real_game_manager.import_teams(input);
