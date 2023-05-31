@@ -39,4 +39,32 @@ double FantasyTeam::get_score(int week_num)
     return result;
 }
 
+bool FantasyTeam::can_add_player(string post)
+{
+    if(post == GK)
+    {
+        if (players[GK].size() == GK_ALLOWED_SIZE)
+            return false;
+        return true;
+    }
+    else if (post == DF)
+    {
+        if (players[DF].size() == DF_ALLOWED_SIZE)
+            return false;
+        return true;
+    }
+    else if (post == MF)
+    {
+        if(players[MF].size() == MF_ALLOWED_SIZE)
+            return false;
+        return true;
+    }
+    else if (post == FW)
+    {
+        if(players[FW].size() == FW_ALLOWED_SIZE)
+            return false;
+        return true;
+    }
+}
+
 
