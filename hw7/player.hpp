@@ -13,8 +13,10 @@ private:
     map<int, Player_status> weeks_games;
     int sum_yellow_card;
 
-    bool have_red_card(int week);
-    bool is_injured(int week);
+    static bool have_red_card(Player_status status);
+    static bool is_injured(Player_status status);
+    bool check_pre_weeks_status(int week, size_t pre_weeks_check, bool (*have_this_state)(Player_status));
+    void update_card_status(Player_status &status);
 
 public:
     Player(string name_, string role_);

@@ -1,28 +1,40 @@
 #include "player.hpp"
 
-bool Player::have_red_card(int week)
+bool Player::have_red_card(Player_status status)
 {
-    for (size_t i = 0; i < NUM_WEEK_DONT_PLAY_FOR_RED_CARD; i++)
+    return status.red_card;
+}
+
+bool Player::is_injured(Player_status status)
+{
+    return status.injured;
+}
+
+bool Player::check_pre_weeks_status(int week, size_t pre_weeks_check, bool (*have_this_state)(Player_status))
+{
+    for (size_t i = 0; i < pre_weeks_check; i++)
     {
         if (weeks_games.count(week - i - 1) == 0)
             continue;
-        if (weeks_games[week - i - 1].red_card == true)
+        if ((*have_this_state)(weeks_games[week - i - 1]))
             return true;
     }
 
     return false;
 }
 
-bool Player::is_injured(int week)
+void Player::update_card_status(Player_status &status)
 {
-    for (size_t i = 0; i < NUM_WEEK_DONT_PLAY_FOR_INJURED; i++)
+    sum_yellow_card += status.yellow_card;
+
+    if (status.red_card == true)
+        sum_yellow_card = 0;
+
+    if (sum_yellow_card == MAX_YELLOW_CARD)
     {
-        if (weeks_games.count(week - i - 1) == 0)
-            continue;
-        if (weeks_games[week - i - 1].injured == true)
-            return true;
+        sum_yellow_card = 0;
+        status.red_card = true;
     }
-    return false;
 }
 
 Player::Player(string name_, string role_)
@@ -41,8 +53,8 @@ double Player::get_score(int week)
 
 bool Player::can_play(int week)
 {
-    return !(have_red_card(week) ||
-             is_injured(week));
+    return !(check_pre_weeks_status(week, NUM_WEEK_DONT_PLAY_FOR_RED_CARD, have_red_card) ||
+             check_pre_weeks_status(week, NUM_WEEK_DONT_PLAY_FOR_INJURED, is_injured));
 }
 
 string Player::get_role()
@@ -60,16 +72,7 @@ void Player::add_new_match(Player_status status, int week)
     // // TODO rm
     // cout << "score " << name << " in week " << week << " is " << status.score << endl;
 
-    sum_yellow_card += status.yellow_card;
-
-    if (status.red_card == true)
-        sum_yellow_card = 0;
-
-    if (sum_yellow_card == MAX_YELLOW_CARD)
-    {
-        sum_yellow_card = 0;
-        status.red_card = true;
-    }
+    update_card_status(status);
 
     weeks_games.insert(make_pair(week, status));
 }
