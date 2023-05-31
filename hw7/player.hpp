@@ -17,6 +17,7 @@ private:
     static bool is_injured(Player_status status);
     bool check_pre_weeks_status(int week, size_t pre_weeks_check, bool (*have_this_state)(Player_status));
     void update_card_status(Player_status &status);
+    bool is_played(int week);
 
 public:
     Player(string name_, string role_);
@@ -25,4 +26,5 @@ public:
     string get_role();
     string get_name();
     void add_new_match(Player_status status, int week);
+    double get_avg_score(int week);
 };

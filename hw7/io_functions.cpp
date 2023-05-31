@@ -34,8 +34,8 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             return manager.logout();
         else if (are_commands_some(input, BEST_TEAM_COMMAND))
             return manager.get_best_team(convert_to_best_team_input(input, manager));
-        else if (are_commands_some(input, TEAM_DETAIL_COMMAND))
-            return make_shared<Massage_reporter>("good try\n");
+        else if (are_commands_some(input, TEAM_PLAYERS_COMMAND))
+            return manager.get_team_players(convert_to_team_players_input(input, manager));
         else
             return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + " else\n");
     }
@@ -134,6 +134,45 @@ int convert_to_best_team_input(vector<string> input, Manager &manager)
     if (input.size() < BEST_TEAM_COMMAND_SIZE)
         return manager.get_week();
     return stoi(input[BEST_TEAM_COMMAND_SIZE - 1]);
+}
+
+Team_players_input convert_to_team_players_input(vector<string> input, Manager &manager)
+{
+    // TODO check input
+    Team_players_input output;
+    output.name = replace_char(input[TEAM_NAME_COMMAND_INDEX], TEAM_NAME_SEPARATOR, ' ');
+    output.week = manager.get_week();
+
+    if (input.size() <= TEAM_PLAYERS_COMMAND_SIZE)
+    {
+        output.is_sort_with_rank = false;
+        output.just_special_post = false;
+        return output;
+    }
+
+    output.is_sort_with_rank = find(input.begin(), input.end(), SORT_BY_SCORE_COMMAND) != input.end();
+    output.just_special_post = is_a_post(input[POST_COMMAND_INDEX]);
+    output.post = input[POST_COMMAND_INDEX];
+
+    return output;
+}
+
+bool is_a_post(string input)
+{
+    vector<string> posts = {GK, DF, MF, FW};
+    return find(posts.begin(), posts.end(), input) != posts.end();
+}
+
+string replace_char(string input, char str_char, char final_char)
+{
+    string output = "";
+    vector<string> separated = separate_line(input, str_char);
+
+    for (auto i : separated)
+        output += i + final_char;
+    output.pop_back();
+
+    return output;
 }
 
 map<string, Player_status> get_score_from_csv(vector<string> scores)

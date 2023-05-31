@@ -56,3 +56,33 @@ void Best_team_reporter::cli_report()
     cout << "Midfielder: " << convert_player_to_cli_output(MF) << endl;
     cout << "Forward: " << convert_player_to_cli_output(FW) << endl;
 }
+
+string Team_player_reporter::convert_player_to_string(shared_ptr<Player> player)
+{
+    string output = "";
+    double score = player->get_avg_score(week);
+    score = round(score * 10) / 10;
+    string score_str = to_string(score);
+    size_t decimal_pos = score_str.find('.');
+    if (decimal_pos != string::npos && score_str.size() > decimal_pos + 2)
+        score_str = score_str.substr(0, decimal_pos + 2);
+
+    output += "name: " + player->get_name() + " | ";
+    output += "role: " + player->get_role() + " | ";
+    output += "score: " + score_str;
+
+    return output;
+}
+
+Team_player_reporter::Team_player_reporter(vector<shared_ptr<Player>> players_, int week_)
+{
+    players = players_;
+    week = week_;
+}
+
+void Team_player_reporter::cli_report()
+{
+    cout << "list of players:\n";
+    for (size_t i = 0; i < players.size(); i++)
+        cout << i + 1 << ". " << convert_player_to_string(players[i]) << endl;
+}

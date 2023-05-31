@@ -30,6 +30,7 @@ public:
 
     // output
     shared_ptr<Reporter> get_best_team(int week);
+    shared_ptr<Reporter> get_team_players(Team_players_input input);
     int get_week();
 
     void import_real_teams(League_data input);

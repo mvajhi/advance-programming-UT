@@ -36,13 +36,27 @@ Team_status Team::get_status(int week)
     return not_played_week;
 }
 
-vector<shared_ptr<Player>> Team::get_players(bool is_sort, bool have_role, string role)
+vector<shared_ptr<Player>> Team::get_players(bool is_sort, bool have_role, string role, int week_for_sort)
 {
     vector<shared_ptr<Player>> output;
 
     //! possible bug
-    for (auto i : players)
-        output.insert(output.end(), i.second.begin(), i.second.end());
+    if (have_role)
+        output = players[role];
+    else
+        for (auto i : players)
+            output.insert(output.end(), i.second.begin(), i.second.end());
+
+    if (is_sort)
+        sort(output.begin(), output.end(), [week_for_sort](shared_ptr<Player> p1, shared_ptr<Player> p2)
+             {
+            if (p1->get_avg_score(week_for_sort) == p2->get_avg_score(week_for_sort))
+                return p1->get_name().compare(p2->get_name()) < 0;
+            else
+                return p1->get_avg_score(week_for_sort) > p2->get_avg_score(week_for_sort); });
+    else
+        sort(output.begin(), output.end(), [](shared_ptr<Player> p1, shared_ptr<Player> p2)
+             { return p1->get_name().compare(p2->get_name()) < 0; });
 
     return output;
 }

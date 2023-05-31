@@ -117,6 +117,28 @@ shared_ptr<Reporter> Manager::get_best_team(int week)
     return make_shared<Best_team_reporter>(best_team, week);
 }
 
+shared_ptr<Reporter> Manager::get_team_players(Team_players_input input)
+{
+    try
+    {
+        // TODO rm
+        // cout << "name: " << input.name << endl;
+        // cout << "sort: " << input.is_sort_with_rank << endl;
+        // cout << "have post: " << input.just_special_post << endl;
+        // cout << "post: " << input.post << endl;
+        // cout << "\\\\\\\\\\\\\\\\\\\\\\\\\n";
+        
+        // TODO
+        // check_team_players(input);
+
+        return real_game_manager.get_team_player_report(input);
+    }
+    catch (const string &error)
+    {
+        return make_shared<Massage_reporter>(error + "\n");
+    }
+}
+
 int Manager::get_week()
 {
     // TODO

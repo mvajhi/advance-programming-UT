@@ -14,7 +14,7 @@ private:
 public:
     Team(string name_, map<string, vector<shared_ptr<Player>>> players_);
     Team_status get_status(int week);
-    vector<shared_ptr<Player>> get_players(bool is_sort, bool have_role, string role);
+    vector<shared_ptr<Player>> get_players(bool is_sort, bool have_role, string role, int week_for_sort = 0);
     string get_name();
     void add_new_match(int week, int score, int ga, int gf);
 };

@@ -23,8 +23,14 @@ bool Player::check_pre_weeks_status(int week, size_t pre_weeks_check, bool (*hav
     return false;
 }
 
+bool Player::is_played(int week)
+{
+    return weeks_games.count(week) != 0 && weeks_games[week].is_played;
+}
+
 void Player::update_card_status(Player_status &status)
 {
+
     sum_yellow_card += status.yellow_card;
 
     if (status.red_card == true)
@@ -65,6 +71,23 @@ string Player::get_role()
 string Player::get_name()
 {
     return name;
+}
+
+double Player::get_avg_score(int week)
+{
+    double sum = 0;
+    double count = 0;
+
+    for (size_t i = 1; i <= week; i++)
+        if (is_played(i))
+        {
+            sum += get_score(i);
+            count++;
+        }
+
+    if (count == 0)
+        return 0.0;
+    return sum / count;
 }
 
 void Player::add_new_match(Player_status status, int week)

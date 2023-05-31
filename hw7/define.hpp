@@ -53,6 +53,16 @@ struct Team_status
     int gf;
 };
 
+struct Team_players_input
+{
+    string name;
+    bool just_special_post;
+    string post;
+    bool is_sort_with_rank;
+    int week;
+};
+
+
 struct Week_state
 {
     vector<Game_input> weeks_games;
@@ -69,20 +79,26 @@ const string SIGNUP_COMMAND = "POST signup ?";
 const string LOGIN_COMMAND = "POST login ?";
 const string LOGOUT_COMMAND = "POST logout";
 const string BEST_TEAM_COMMAND = "GET team_of_the_week ?";
-const string TEAM_DETAIL_COMMAND = "GET players ?";
+const string TEAM_PLAYERS_COMMAND = "GET players ?";
+const string SORT_BY_SCORE_COMMAND = "rank";
 
 // commands size
 const int LOGIN_COMMAND_SIZE = 7;
 const int BEST_TEAM_COMMAND_SIZE = 5;
+const int TEAM_PLAYERS_COMMAND_SIZE = 5;
+const int POST_COMMAND_SIZE = 2;
 
 // commands index
 const int USERNAME_INDEX = 4;
 const int PASSWORD_INDEX = 6;
+const int TEAM_NAME_COMMAND_INDEX = 4;
+const int POST_COMMAND_INDEX = 5;
 
 // file
 const char ROLE_SEPARATOR = ',';
 const char PLAYER_SEPARATOR = ';';
 const char TEAM_SEPARATOR = ':';
+const char TEAM_NAME_SEPARATOR = '_';
 
 // file index
 const int GK_INDEX = 1;

@@ -142,6 +142,14 @@ shared_ptr<Match_reporter> Real_game_manager::get_matches_report(int week)
     return make_shared<Match_reporter>(weeks_matches[week]);
 }
 
+shared_ptr<Team_player_reporter> Real_game_manager::get_team_player_report(Team_players_input input)
+{
+    return make_shared<Team_player_reporter>(teams[input.name]->get_players(input.is_sort_with_rank,
+                                                                            input.just_special_post,
+                                                                            input.post, input.week),
+                                             input.week);
+}
+
 vector<shared_ptr<Player>> Real_game_manager::get_best_players_in_post(int week, string post, int count)
 {
     vector<shared_ptr<Player>> all_players = get_all_players_in_post(post);

@@ -43,3 +43,16 @@ public:
     Best_team_reporter(map<string, vector<shared_ptr<Player>>> players_, int week_);
     void cli_report();
 };
+
+class Team_player_reporter : public Reporter
+{
+private:
+    vector<shared_ptr<Player>> players;
+    int week;
+
+    string convert_player_to_string(shared_ptr<Player> player);
+
+public:
+    Team_player_reporter(vector<shared_ptr<Player>> players_, int week_);
+    void cli_report();
+};
