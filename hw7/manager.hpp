@@ -18,6 +18,8 @@ private:
     void check_can_login(User_login_info input);
     void check_can_logout();
     bool is_user_logged();
+public:
+    Manager();
     shared_ptr<Reporter> get_week_matches_report(int week);
     // SSO
     shared_ptr<Reporter> signup(User_login_info input);
@@ -26,7 +28,7 @@ private:
 
     // output
     shared_ptr<Reporter> get_best_team(int week);
-    vector<User_ranking_data> get_users_ranking();
+    shared_ptr<Reporter> get_users_ranking();
 
     int get_week();
 
