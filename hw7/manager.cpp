@@ -166,7 +166,7 @@ bool compare_users(User_ranking_data a, User_ranking_data b)
     else
         return 0;
 }
-vector<User_ranking_data> Manager::get_users_ranking()
+shared_ptr<Reporter> Manager::get_users_ranking()
 {
     User_ranking_data user_date;
     vector<User_ranking_data> collection;
@@ -177,5 +177,5 @@ vector<User_ranking_data> Manager::get_users_ranking()
         collection.push_back(user_date);
     }
     sort(collection.begin(), collection.end(), compare_users);
-    return collection;
+    return make_shared<Massage_reporter>("TODO\n");
 }
