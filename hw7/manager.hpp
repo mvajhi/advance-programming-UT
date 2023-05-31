@@ -32,7 +32,6 @@ public:
     shared_ptr<Reporter> get_best_team(int week);
     shared_ptr<Reporter> get_team_players(Team_players_input input);
     shared_ptr<Reporter> get_team_list(int week);
-    vector<User_ranking_data> get_users_ranking();
     shared_ptr<Reporter> get_users_ranking();
 
     int get_week();
