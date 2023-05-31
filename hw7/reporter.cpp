@@ -108,3 +108,24 @@ void Team_list_reporter::cli_report()
     for (size_t i = 0; i < teams.size(); i++)
         cout << i + 1 << ". " << convert_team_to_string(teams[i]) << endl;
 }
+
+string User_ranks_report::convert_collection_to_string(User_ranking_data user)
+{
+    string output = "";
+
+    output += "team_name: " + user.name + " | ";
+    output += "point: " + float_to_string(user.point);
+
+    return output;
+}
+
+User_ranks_report::User_ranks_report(vector<User_ranking_data> collection_)
+{
+    collection = collection_;
+}
+
+void User_ranks_report::cli_report()
+{
+    for (size_t i = 0; i < collection.size(); i++)
+        cout << i + 1 << ". " << convert_collection_to_string(collection[i]) << endl;
+}

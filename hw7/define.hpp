@@ -62,7 +62,6 @@ struct Team_players_input
     int week;
 };
 
-
 struct Week_state
 {
     vector<Game_input> weeks_games;

@@ -70,3 +70,15 @@ public:
     Team_list_reporter(vector<shared_ptr<Team>> teams_, int week_);
     void cli_report();
 };
+
+class User_ranks_report : public Reporter
+{
+private:
+    vector<User_ranking_data> collection;
+
+    string convert_collection_to_string(User_ranking_data user);
+
+public:
+    User_ranks_report(vector<User_ranking_data> collection_);
+    void cli_report();
+};
