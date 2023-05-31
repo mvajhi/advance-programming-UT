@@ -109,10 +109,10 @@ shared_ptr<Reporter> Manager::get_best_team(int week)
 {
     map<string, vector<shared_ptr<Player>>> best_team;
 
-    best_team.insert(make_pair(GK,real_game_manager.get_best_players_in_post(week, GK, 1)));
-    best_team.insert(make_pair(DF,real_game_manager.get_best_players_in_post(week, DF, 2)));
-    best_team.insert(make_pair(MF,real_game_manager.get_best_players_in_post(week, MF, 1)));
-    best_team.insert(make_pair(FW,real_game_manager.get_best_players_in_post(week, FW, 1)));
+    best_team.insert(make_pair(GK, real_game_manager.get_best_players_in_post(week, GK, 1)));
+    best_team.insert(make_pair(DF, real_game_manager.get_best_players_in_post(week, DF, 2)));
+    best_team.insert(make_pair(MF, real_game_manager.get_best_players_in_post(week, MF, 1)));
+    best_team.insert(make_pair(FW, real_game_manager.get_best_players_in_post(week, FW, 1)));
 
     return make_shared<Best_team_reporter>(best_team, week);
 }

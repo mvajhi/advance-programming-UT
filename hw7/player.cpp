@@ -6,7 +6,7 @@ bool Player::have_red_card(int week)
     {
         if (weeks_games.count(week - i - 1) == 0)
             continue;
-        if(weeks_games[week - i - 1].red_card == true)
+        if (weeks_games[week - i - 1].red_card == true)
             return true;
     }
 
@@ -19,7 +19,7 @@ bool Player::is_injured(int week)
     {
         if (weeks_games.count(week - i - 1) == 0)
             continue;
-        if(weeks_games[week - i - 1].injured == true)
+        if (weeks_games[week - i - 1].injured == true)
             return true;
     }
     return false;
@@ -59,7 +59,7 @@ void Player::add_new_match(Player_status status, int week)
 {
     // // TODO rm
     // cout << "score " << name << " in week " << week << " is " << status.score << endl;
-    
+
     sum_yellow_card += status.yellow_card;
 
     if (status.red_card == true)

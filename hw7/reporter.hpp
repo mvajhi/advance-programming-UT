@@ -38,7 +38,7 @@ private:
     int week;
 
     string convert_player_to_cli_output(string role, int index = 0);
-    
+
 public:
     Best_team_reporter(map<string, vector<shared_ptr<Player>>> players_, int week_);
     void cli_report();

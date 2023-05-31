@@ -146,12 +146,12 @@ vector<shared_ptr<Player>> Real_game_manager::get_best_players_in_post(int week,
 {
     vector<shared_ptr<Player>> all_players = get_all_players_in_post(post);
 
-    sort(all_players.begin(), all_players.end(), [week](shared_ptr<Player> p1, shared_ptr<Player> p2)
-         { //! possible bug in sort by name
-            if (p1->get_score(week) == p2->get_score(week))
-                return p1->get_name().compare(p2->get_name()) < 0;
-            else
-                return p1->get_score(week) > p2->get_score(week); });
+    sort(all_players.begin(), all_players.end(), [week](shared_ptr<Player> p1, shared_ptr<Player> p2) { //! possible bug in sort by name
+        if (p1->get_score(week) == p2->get_score(week))
+            return p1->get_name().compare(p2->get_name()) < 0;
+        else
+            return p1->get_score(week) > p2->get_score(week);
+    });
 
     return vector<shared_ptr<Player>>(all_players.begin(), all_players.begin() + count);
 }
