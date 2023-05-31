@@ -34,6 +34,8 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             return manager.logout();
         else if (are_commands_some(input, BEST_TEAM_COMMAND))
             return manager.get_best_team(convert_to_best_team_input(input, manager));
+        else if (are_commands_some(input, USERS_RANKING))
+            return manager.get_users_ranking();
         else
             return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + " else\n");
     }

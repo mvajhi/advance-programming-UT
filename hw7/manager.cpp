@@ -132,3 +132,23 @@ void Manager::import_real_weeks(map<int, std::vector<Game_input>> input)
 {
     real_game_manager.add_league_weeks(input);
 }
+bool compare_users(User_ranking_data a, User_ranking_data b)
+{
+    if ((a.point < b.point) || ((a.point == b.point) && (a.name[0] < b.name[0])))
+        return 1;
+    else
+        return 0;
+}
+vector<User_ranking_data> Manager::get_users_ranking()
+{
+    User_ranking_data user_date;
+    vector<User_ranking_data> collection;
+    for(auto user: users)
+    {
+        user_date.name = user.first;
+        user_date.point = user.second->get_total_score(get_week());
+        collection.push_back(user_date);
+    }
+    sort(collection.begin(), collection.end(), compare_users);
+    return collection;
+}

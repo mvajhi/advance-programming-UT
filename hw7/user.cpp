@@ -30,3 +30,13 @@ double User::get_total_score(int week_num)
     }
     return result;
 }
+
+void User::sell_player(string name)
+{
+
+}
+
+void User::buy_player(string name)
+{
+
+}
