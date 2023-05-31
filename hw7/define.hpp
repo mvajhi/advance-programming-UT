@@ -118,3 +118,10 @@ const int LOSE_SCORE = 0;
 const int NUM_WEEK_DONT_PLAY_FOR_RED_CARD = 1;
 const int NUM_WEEK_DONT_PLAY_FOR_INJURED = 3;
 const int MAX_YELLOW_CARD = 3;
+
+// allowed size of each post index
+const int GK_ALLOWED_SIZE = 1;
+const int DF_ALLOWED_SIZE = 2;
+const int MF_ALLOWED_SIZE = 1;
+const int FW_ALLOWED_SIZE = 1;
+
