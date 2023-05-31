@@ -17,9 +17,9 @@ bool Manager::can_signup(User_login_info input)
     return true;
 }
 
-shared_ptr<User> Manager::add_new_user(User_login_info input)
+shared_ptr<NormalUser> Manager::add_new_user(User_login_info input)
 {
-    auto new_user = make_shared<User>(input.username, input.password);
+    auto new_user = make_shared<NormalUser>(input.username, input.password);
 
     users.insert(make_pair(input.username, new_user));
 
