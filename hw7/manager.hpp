@@ -34,4 +34,5 @@ public:
 
 
     void import_real_teams(League_data input);
+    void import_real_weeks(map<int, std::vector<Game_input>> input);
 };

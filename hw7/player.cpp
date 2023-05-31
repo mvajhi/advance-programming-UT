@@ -32,7 +32,7 @@ Player::Player(string name_, string role_)
     sum_yellow_card = 0;
 }
 
-int Player::get_score(int week)
+double Player::get_score(int week)
 {
     if (weeks_games.count(week) != 0)
         return weeks_games[week].score;
@@ -57,6 +57,9 @@ string Player::get_name()
 
 void Player::add_new_match(Player_status status, int week)
 {
+    // // TODO rm
+    // cout << "score " << name << " in week " << week << " is " << status.score << endl;
+    
     sum_yellow_card += status.yellow_card;
 
     if (status.red_card == true)

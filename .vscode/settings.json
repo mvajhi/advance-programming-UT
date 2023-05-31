@@ -2,4 +2,9 @@
         "makefile.extensionOutputFolder": "./.vscode",
         "makefile.makePath": "/usr/bin/make",
         "C_Cpp.default.configurationProvider": "ms-vscode.makefile-tools",
+        "files.associations": {
+                "cmath": "cpp",
+                "chrono": "cpp",
+                "ostream": "cpp"
+        },
 }

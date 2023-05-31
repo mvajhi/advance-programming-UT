@@ -1,12 +1,12 @@
 #include "io_functions.hpp"
 
-vector<string> separate_line(string line, char separator)
+vector<string> separate_line(string line, char separator, bool ignore_tmp)
 {
     vector<string> output;
     string word = "";
 
     for (size_t i = 0; i < line.size(); i++)
-        if (line[i] == separator && word != "")
+        if (line[i] == separator && (!ignore_tmp || word != ""))
         {
             output.push_back(word);
             word = "";
@@ -54,6 +54,7 @@ void check_arg_count(vector<string> input, size_t count)
 void import_files(Manager &manager)
 {
     manager.import_real_teams(import_league());
+    manager.import_real_weeks(import_league_weeks());
 }
 
 User_login_info convert_to_login_info(vector<string> input)
@@ -149,7 +150,7 @@ map<string, Player_status> get_score_from_csv(vector<string> scores)
 vector<string> choose_score_subset(vector<string> game_info)
 {
     vector<string> subset;
-    for (size_t i = RED_CARD_INDEX + 1; i < game_info.size(); i++)
+    for (size_t i = 0; i < game_info.size(); i++)
     {
         subset.push_back(game_info[i]);
     }
@@ -177,13 +178,30 @@ void update_with_injured_players(map<string, Player_status> &player_scores, vect
 
 Game_input read_game_information(string line)
 {
-    vector<string> game_info = separate_line(line, ROLE_SEPARATOR);
+    vector<string> game_info = separate_line(line, ROLE_SEPARATOR, false);
     vector<string> team_names = separate_line(game_info[TEAM_NAME_INDEX], TEAM_SEPARATOR);
     vector<string> team_results = separate_line(game_info[RESULT_INDEX], TEAM_SEPARATOR);
     vector<string> injured_players = separate_line(game_info[INJURED_PLAYER_INDEX], PLAYER_SEPARATOR);
     vector<string> yellow_card_players = separate_line(game_info[YELLOW_CARD_INDEX], PLAYER_SEPARATOR);
     vector<string> red_card_players = separate_line(game_info[RED_CARD_INDEX], PLAYER_SEPARATOR);
-    vector<string> scores_vec = choose_score_subset(game_info);
+    vector<string> score_players = separate_line(game_info[SCORES_INDEX], PLAYER_SEPARATOR);
+    vector<string> scores_vec = choose_score_subset(score_players);
+    // // TODO
+    // cout << line << endl;
+    // for (auto i : game_info)
+    //     cout << "GAM??    " << i << endl;
+    // for (auto i : team_names)
+    //     cout << "TNA??    " << i << endl;
+    // for (auto i : team_results)
+    //     cout << "TRE??    " << i << endl;
+    // for (auto i : injured_players)
+    //     cout << "INP??    " << i << endl;
+    // for (auto i : yellow_card_players)
+    //     cout << "YCP??    " << i << endl;
+    // for (auto i : red_card_players)
+    //     cout << "RCP??    " << i << endl;
+    // for (auto i : scores_vec)
+    //     cout << "SCO??    " << i << endl;
 
     ///////////
     map<string, Player_status> player_scores = get_score_from_csv(scores_vec);
@@ -214,6 +232,12 @@ Week_state import_week_state(int week_num)
     while (getline(file, line))
         weeks_games.push_back(read_game_information(line));
     new_week.weeks_games = weeks_games;
+
+    // // TODO rm
+    // // for (auto i : leagues_weeks)
+    // for (auto j : weeks_games)
+    // for (auto k : j.players_status)
+    // cout << "what???   " << k.first << "\t\tis " << k.second.score << " in week " << week_num << endl;
     return new_week;
 }
 
@@ -222,5 +246,11 @@ map<int, vector<Game_input>> import_league_weeks()
     map<int, vector<Game_input>> leagues_weeks;
     for (int week_num = FIRST_WEEK; week_num <= FINAL_WEEK; week_num++)
         leagues_weeks.insert(make_pair(week_num, import_week_state(week_num).weeks_games));
+    // // TODO rm
+    // for (auto i : leagues_weeks)
+    // for (auto j : i.second)
+    // for (auto k : j.players_status)
+    // cout << "what???   " << k.first << "\t\tis " << k.second.score << " in week " << i.first << endl;
+
     return leagues_weeks;
 }
