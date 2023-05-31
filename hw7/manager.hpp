@@ -10,11 +10,11 @@ class Manager
 {
 private:
     Real_game_manager real_game_manager;
-    map<string, shared_ptr<User>> users;
-    shared_ptr<User> user_logged;
+    map<string, shared_ptr<NormalUser>> users;
+    shared_ptr<NormalUser> user_logged;
 
     bool can_signup(User_login_info input);
-    shared_ptr<User> add_new_user(User_login_info input);
+    shared_ptr<NormalUser> add_new_user(User_login_info input);
     void check_can_login(User_login_info input);
     void check_can_logout();
     bool is_user_logged();
