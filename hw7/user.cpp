@@ -4,10 +4,9 @@ User::User(string name_,string password_)
     name = name_;
     password = password_;
 }
-NormalUser::NormalUser(string user_name, string user_pass)
+NormalUser::NormalUser(string user_name, string user_pass) : User(user_name,user_pass)
 {
-    name = user_name;
-    password = user_pass;
+
 }
 
 bool NormalUser::is_password_valid(string pass)
@@ -47,5 +46,7 @@ void NormalUser::buy_player(string name)
 
 Admin::Admin() : User("admin","123456")
 {
+    is_transfer_open = false;
+    week_number = 1;
 
 }
