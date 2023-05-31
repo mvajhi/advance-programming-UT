@@ -31,5 +31,6 @@ public:
     void import_teams(League_data input);
     shared_ptr<Match_reporter> get_matches_report(int week);
     shared_ptr<Team_player_reporter> get_team_player_report(Team_players_input input);
+    shared_ptr<Team_list_reporter> get_team_list_report(int week);
     vector<shared_ptr<Player>> get_best_players_in_post(int week, string post, int count);
 };

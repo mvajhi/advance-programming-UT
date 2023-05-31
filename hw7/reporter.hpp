@@ -4,6 +4,7 @@
 
 class Match;
 class Player;
+class Team;
 
 class Reporter
 {
@@ -54,5 +55,18 @@ private:
 
 public:
     Team_player_reporter(vector<shared_ptr<Player>> players_, int week_);
+    void cli_report();
+};
+
+class Team_list_reporter : public Reporter
+{
+private:
+    vector<shared_ptr<Team>> teams;
+    int week;
+
+    string convert_team_to_string(shared_ptr<Team> team);
+
+public:
+    Team_list_reporter(vector<shared_ptr<Team>> teams_, int week_);
     void cli_report();
 };

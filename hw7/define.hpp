@@ -80,6 +80,7 @@ const string LOGIN_COMMAND = "POST login ?";
 const string LOGOUT_COMMAND = "POST logout";
 const string BEST_TEAM_COMMAND = "GET team_of_the_week ?";
 const string TEAM_PLAYERS_COMMAND = "GET players ?";
+const string TEAM_LIST_COMMAND = "GET league_standing";
 const string SORT_BY_SCORE_COMMAND = "rank";
 
 // commands size
@@ -87,6 +88,7 @@ const int LOGIN_COMMAND_SIZE = 7;
 const int BEST_TEAM_COMMAND_SIZE = 5;
 const int TEAM_PLAYERS_COMMAND_SIZE = 5;
 const int POST_COMMAND_SIZE = 2;
+const int TEAM_LIST_COMMAND_SIZE = 2;
 
 // commands index
 const int USERNAME_INDEX = 4;

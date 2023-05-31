@@ -17,4 +17,11 @@ public:
     vector<shared_ptr<Player>> get_players(bool is_sort, bool have_role, string role, int week_for_sort = 0);
     string get_name();
     void add_new_match(int week, int score, int ga, int gf);
+    double get_score(int week);
+    double get_sum_score(int week);
+    int get_gf(int week);
+    int get_ga(int week);
+    int get_sum_gf(int week);
+    int get_sum_ga(int week);
+    int get_diff_goal(int week);
 };

@@ -74,3 +74,59 @@ void Team::add_new_match(int week, int score, int ga, int gf)
     status.gf = gf;
     weeks_status.insert(make_pair(week, status));
 }
+
+double Team::get_score(int week)
+{
+    if (weeks_status.count(week) == 0)
+        return 0;
+    return weeks_status[week].score;
+}
+
+double Team::get_sum_score(int week)
+{
+    double sum = 0;
+
+    for (size_t i = 1; i <= week; i++)
+        sum += get_score(i);
+
+    return sum;
+}
+
+int Team::get_gf(int week)
+{
+    if (weeks_status.count(week) == 0)
+        return 0;
+    return weeks_status[week].gf;
+}
+
+int Team::get_ga(int week)
+{
+    if (weeks_status.count(week) == 0)
+        return 0;
+    return weeks_status[week].ga;
+}
+
+int Team::get_sum_gf(int week)
+{
+    double sum = 0;
+
+    for (size_t i = 1; i <= week; i++)
+        sum += get_gf(i);
+
+    return sum;
+}
+
+int Team::get_sum_ga(int week)
+{
+    double sum = 0;
+
+    for (size_t i = 1; i <= week; i++)
+        sum += get_ga(i);
+
+    return sum;
+}
+
+int Team::get_diff_goal(int week)
+{
+    return get_sum_gf(week) - get_sum_ga(week);
+}

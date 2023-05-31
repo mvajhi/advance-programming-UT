@@ -127,7 +127,7 @@ shared_ptr<Reporter> Manager::get_team_players(Team_players_input input)
         // cout << "have post: " << input.just_special_post << endl;
         // cout << "post: " << input.post << endl;
         // cout << "\\\\\\\\\\\\\\\\\\\\\\\\\n";
-        
+
         // TODO
         // check_team_players(input);
 
@@ -137,6 +137,11 @@ shared_ptr<Reporter> Manager::get_team_players(Team_players_input input)
     {
         return make_shared<Massage_reporter>(error + "\n");
     }
+}
+
+shared_ptr<Reporter> Manager::get_team_list(int week)
+{
+    return real_game_manager.get_team_list_report(week);
 }
 
 int Manager::get_week()

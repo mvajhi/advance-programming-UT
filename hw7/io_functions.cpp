@@ -36,6 +36,8 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             return manager.get_best_team(convert_to_best_team_input(input, manager));
         else if (are_commands_some(input, TEAM_PLAYERS_COMMAND))
             return manager.get_team_players(convert_to_team_players_input(input, manager));
+        else if (are_commands_some(input, TEAM_LIST_COMMAND))
+            return manager.get_team_list(convert_to_team_list_input(input, manager));
         else
             return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + " else\n");
     }
@@ -134,6 +136,13 @@ int convert_to_best_team_input(vector<string> input, Manager &manager)
     if (input.size() < BEST_TEAM_COMMAND_SIZE)
         return manager.get_week();
     return stoi(input[BEST_TEAM_COMMAND_SIZE - 1]);
+}
+
+int convert_to_team_list_input(vector<string> input, Manager &manager)
+{
+    if (input.size() != TEAM_LIST_COMMAND_SIZE)
+        throw BAD_REQUEST_MASSAGE;
+    return manager.get_week();
 }
 
 Team_players_input convert_to_team_players_input(vector<string> input, Manager &manager)

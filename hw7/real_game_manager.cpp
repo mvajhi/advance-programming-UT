@@ -150,6 +150,26 @@ shared_ptr<Team_player_reporter> Real_game_manager::get_team_player_report(Team_
                                              input.week);
 }
 
+shared_ptr<Team_list_reporter> Real_game_manager::get_team_list_report(int week)
+{
+    vector<shared_ptr<Team>> output;
+
+    for (auto team : teams)
+        output.push_back(team.second);
+
+    sort(output.begin(), output.end(), [week](shared_ptr<Team> t1, shared_ptr<Team> t2)
+         {
+            if (t1->get_sum_score(week) != t2->get_sum_score(week))
+                return t1->get_sum_score(week) > t2->get_sum_score(week);
+            if (t1->get_diff_goal(week) != t2->get_diff_goal(week))
+                return t1->get_diff_goal(week) > t2->get_diff_goal(week);
+            if (t1->get_sum_gf(week) != t2->get_sum_gf(week))
+                return t1->get_sum_gf(week) > t2->get_sum_gf(week);
+            return t1->get_name().compare(t2->get_name()) < 0; });
+
+    return make_shared<Team_list_reporter>(output, week);
+}
+
 vector<shared_ptr<Player>> Real_game_manager::get_best_players_in_post(int week, string post, int count)
 {
     vector<shared_ptr<Player>> all_players = get_all_players_in_post(post);
