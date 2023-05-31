@@ -16,6 +16,6 @@ public:
     string get_name();
     double get_total_score(int week_num);
     shared_ptr<FantasyTeam> get_team(int week);
-    // void buy_player(string name);
-    // void sell_player(string name);
+     void buy_player(string name);
+     void sell_player(string name);
 };

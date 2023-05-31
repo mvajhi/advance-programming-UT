@@ -4,6 +4,7 @@
 #include "reporter.hpp"
 #include "user.hpp"
 #include "real_game_manager.hpp"
+#include <algorithm>
 
 class Manager
 {
@@ -22,7 +23,6 @@ public:
     Manager();
 
     shared_ptr<Reporter> get_week_matches_report(int week);
-
     // SSO
     shared_ptr<Reporter> signup(User_login_info input);
     shared_ptr<Reporter> login(User_login_info input);
@@ -32,6 +32,8 @@ public:
     shared_ptr<Reporter> get_best_team(int week);
     shared_ptr<Reporter> get_team_players(Team_players_input input);
     shared_ptr<Reporter> get_team_list(int week);
+    vector<User_ranking_data> get_users_ranking();
+
     int get_week();
 
     void import_real_teams(League_data input);

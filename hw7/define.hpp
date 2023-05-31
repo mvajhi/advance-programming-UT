@@ -68,6 +68,11 @@ struct Week_state
     vector<Game_input> weeks_games;
 };
 
+struct User_ranking_data
+{
+    double point;
+    string name;
+};
 // status massage
 const string SUCCESS_MASSAGE = "OK";
 const string BAD_REQUEST_MASSAGE = "Bad Request";
@@ -82,6 +87,7 @@ const string BEST_TEAM_COMMAND = "GET team_of_the_week ?";
 const string TEAM_PLAYERS_COMMAND = "GET players ?";
 const string TEAM_LIST_COMMAND = "GET league_standing";
 const string SORT_BY_SCORE_COMMAND = "rank";
+const string USERS_RANKING = "GET users_ranking";
 
 // commands size
 const int LOGIN_COMMAND_SIZE = 7;
@@ -137,3 +143,10 @@ const int LOSE_SCORE = 0;
 const int NUM_WEEK_DONT_PLAY_FOR_RED_CARD = 1;
 const int NUM_WEEK_DONT_PLAY_FOR_INJURED = 3;
 const int MAX_YELLOW_CARD = 3;
+
+// allowed size of each post index
+const int GK_ALLOWED_SIZE = 1;
+const int DF_ALLOWED_SIZE = 2;
+const int MF_ALLOWED_SIZE = 1;
+const int FW_ALLOWED_SIZE = 1;
+
