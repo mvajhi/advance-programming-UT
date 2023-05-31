@@ -69,6 +69,7 @@ const string SIGNUP_COMMAND = "POST signup ?";
 const string LOGIN_COMMAND = "POST login ?";
 const string LOGOUT_COMMAND = "POST logout";
 const string BEST_TEAM_COMMAND = "GET team_of_the_week ?";
+const string TEAM_DETAIL_COMMAND = "GET players ?";
 
 // commands size
 const int LOGIN_COMMAND_SIZE = 7;
