@@ -86,7 +86,7 @@ double Team::get_sum_score(int week)
 {
     double sum = 0;
 
-    for (size_t i = 1; i <= week; i++)
+    for (int i = 1; i <= week; i++)
         sum += get_score(i);
 
     return sum;
@@ -110,7 +110,7 @@ int Team::get_sum_gf(int week)
 {
     double sum = 0;
 
-    for (size_t i = 1; i <= week; i++)
+    for (int i = 1; i <= week; i++)
         sum += get_gf(i);
 
     return sum;
@@ -120,7 +120,7 @@ int Team::get_sum_ga(int week)
 {
     double sum = 0;
 
-    for (size_t i = 1; i <= week; i++)
+    for (int i = 1; i <= week; i++)
         sum += get_ga(i);
 
     return sum;

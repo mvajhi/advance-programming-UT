@@ -78,7 +78,7 @@ double Player::get_avg_score(int week)
     double sum = 0;
     double count = 0;
 
-    for (size_t i = 1; i <= week; i++)
+    for (int i = 1; i <= week; i++)
         if (is_played(i))
         {
             sum += get_score(i);

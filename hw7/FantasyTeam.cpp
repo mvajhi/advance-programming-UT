@@ -65,6 +65,8 @@ bool FantasyTeam::can_add_player(string post)
             return false;
         return true;
     }
+    
+    return true;
 }
 
 
