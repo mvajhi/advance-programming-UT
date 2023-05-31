@@ -11,10 +11,15 @@ bool FantasyTeam::have_this_player(string name)
 
 void FantasyTeam::remove_player(string name)
 {
-    for (auto role : players)
-        for (shared_ptr<Player> player : players[role.first])
-            if (player->get_name() == name)
+    for (auto& role : players)
+        for (size_t player = 0 ; player < players[role.first].size() ; player++)
+            if (players[role.first][player]->get_name() == name)
             {
-                //players[role.first].erase();
+                players[role.first].erase(players[role.first].begin()+player);
+                return;
             }
+}
+void FantasyTeam::add_player(shared_ptr<Player> target_player)
+{
+    players[target_player->get_role()].push_back(target_player);
 }
