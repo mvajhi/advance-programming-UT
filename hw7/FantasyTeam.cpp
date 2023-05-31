@@ -19,7 +19,24 @@ void FantasyTeam::remove_player(string name)
                 return;
             }
 }
+
 void FantasyTeam::add_player(shared_ptr<Player> target_player)
 {
     players[target_player->get_role()].push_back(target_player);
+    return;
 }
+
+double FantasyTeam::get_score(int week_num)
+{
+    double result=0;
+    for (auto role:players)
+    {
+        for (auto player:players[role.first])
+        {
+            result+=player->get_score(week_num);
+        }
+    }
+    return result;
+}
+
+
