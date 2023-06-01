@@ -2,6 +2,8 @@
 
 Manager::Manager()
 {
+    auto new_admin = make_shared<Admin>();
+    admins.insert(make_pair(new_admin->get_name(),new_admin));
 }
 
 bool Manager::can_signup(User_login_info input)
@@ -50,7 +52,7 @@ void Manager::check_can_logout()
 
 bool Manager::is_user_logged()
 {
-    return user_logged == nullptr;
+    return user_logged == nullptr && admin_logged == nullptr;
 }
 
 shared_ptr<Reporter> Manager::get_week_matches_report(int week)
@@ -89,6 +91,30 @@ shared_ptr<Reporter> Manager::login(User_login_info input)
     }
 }
 
+void Manager::check_admin_can_login(User_login_info input)
+{
+    if (!is_user_logged())
+        throw BAD_REQUEST_MASSAGE;
+    if(input.username != ADMIN_NAME || input.password!= ADMIN_PASSWORD)
+        throw BAD_REQUEST_MASSAGE;
+}
+
+shared_ptr<Reporter> Manager::register_admin(User_login_info input)
+{
+    try
+    {
+        check_admin_can_login(input);
+
+        admin_logged = admins[input.username];
+
+        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+
+    }
+    catch(const string& error)
+    {
+        return make_shared<Massage_reporter>(error + "\n");
+    }
+}
 shared_ptr<Reporter> Manager::logout()
 {
     try
@@ -96,6 +122,7 @@ shared_ptr<Reporter> Manager::logout()
         check_can_logout();
 
         user_logged = nullptr;
+        admin_logged = nullptr;
 
         return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
     }

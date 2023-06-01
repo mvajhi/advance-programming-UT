@@ -32,6 +32,8 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             return manager.login(convert_to_login_info(input));
         else if (are_commands_some(input, LOGOUT_COMMAND))
             return manager.logout();
+        else if (are_commands_some(input , REGISTER_ADMIN_COMMAND))
+            return manager.register_admin(convert_to_login_info(input));
         else if (are_commands_some(input, BEST_TEAM_COMMAND))
             return manager.get_best_team(convert_to_best_team_input(input, manager));
         else if (are_commands_some(input, TEAM_PLAYERS_COMMAND))
@@ -40,6 +42,7 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             return manager.get_team_list(convert_to_team_list_input(input, manager));
         else if (are_commands_some(input, USERS_RANKING))
             return manager.get_users_ranking();
+
         else
             return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + " else\n");
     }

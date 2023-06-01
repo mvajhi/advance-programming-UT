@@ -11,11 +11,14 @@ class Manager
 private:
     Real_game_manager real_game_manager;
     map<string, shared_ptr<NormalUser>> users;
+    map<string , shared_ptr<Admin>> admins;
     shared_ptr<NormalUser> user_logged;
+    shared_ptr<Admin> admin_logged;
 
     bool can_signup(User_login_info input);
     shared_ptr<NormalUser> add_new_user(User_login_info input);
     void check_can_login(User_login_info input);
+    void check_admin_can_login(User_login_info input);
     void check_can_logout();
     bool is_user_logged();
 
@@ -27,7 +30,7 @@ public:
     shared_ptr<Reporter> signup(User_login_info input);
     shared_ptr<Reporter> login(User_login_info input);
     shared_ptr<Reporter> logout();
-
+    shared_ptr<Reporter> register_admin(User_login_info input);
     // output
     shared_ptr<Reporter> get_best_team(int week);
     shared_ptr<Reporter> get_team_players(Team_players_input input);
