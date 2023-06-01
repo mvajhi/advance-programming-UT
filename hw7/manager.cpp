@@ -5,6 +5,7 @@ Manager::Manager()
     auto new_admin = make_shared<Admin>();
     admins.insert(make_pair(new_admin->get_name(),new_admin));
     week_number = 1;
+    transfer_window_status = false;
 }
 
 bool Manager::can_signup(User_login_info input)
@@ -208,6 +209,20 @@ shared_ptr<Reporter> Manager::get_users_ranking()
     return make_shared<Massage_reporter>("TODO\n");
 }
 
+shared_ptr<Reporter> Manager::open_transfer_window()
+{
+    if((admin_logged!= nullptr) && transfer_window_status == false)
+    {
+        transfer_window_status =true ;
+        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+    }
+    else if (transfer_window_status == false)
+        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
+    else if (transfer_window_status == true)
+        return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
+
+}
+
 shared_ptr<Reporter> Manager::pass_week()
 {
     if(admin_logged!= nullptr)
@@ -218,6 +233,18 @@ shared_ptr<Reporter> Manager::pass_week()
     else
         return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
 
+}
 
+shared_ptr<Reporter> Manager::close_transfer_window()
+{
+    if((admin_logged!= nullptr) && transfer_window_status == true)
+    {
+        transfer_window_status= false;
+        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+    }
+    else if (transfer_window_status == false)
+        return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
+    else
+        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
 
 }

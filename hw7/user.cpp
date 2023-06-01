@@ -48,17 +48,17 @@ Admin::Admin() : User("admin","123456")
     week_number = 1;
 }
 
-void Admin::close_transfer_window()
-{
-    is_transfer_open = false;
-}
-
-void Admin::open_transfer_window()
-{
-    is_transfer_open = true;
-}
-
-void Admin::pass_week()
-{
-    week_number += 1;
-}
+//void Admin::close_transfer_window()
+//{
+//    is_transfer_open = false;
+//}
+//
+//void Admin::open_transfer_window()
+//{
+//    is_transfer_open = true;
+//}
+//
+//void Admin::pass_week()
+//{
+//    week_number += 1;
+//}
