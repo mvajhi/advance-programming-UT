@@ -23,6 +23,7 @@ shared_ptr<FantasyTeam> User::get_team(int week)
 
 void User::buy_player(shared_ptr<Player> player)
 {
+    
 }
 
 void User::sell_player(string name)

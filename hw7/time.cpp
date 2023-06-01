@@ -8,6 +8,11 @@ int Time::get_week()
     return week;
 }
 
+int Time::get_next_week()
+{
+    return week + 1;
+}
+
 bool Time::is_transfer_open()
 {
     return transfer;

@@ -49,7 +49,7 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
         else if(are_commands_some(input , CLOSE_TRANSFER_WINDOW))
             return manager.close_transfer_window();
         else
-            return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + " else\n");
+            return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + " TODO check error\n");
     }
     catch (const string &error)
     {
