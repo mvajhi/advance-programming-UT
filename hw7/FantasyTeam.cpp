@@ -1,5 +1,12 @@
 #include "FantasyTeam.hpp"
 
+    map<string, size_t> MAX_PLAYER_IN_ROLE =
+    {
+        {GK, 1},
+        {DF, 2},
+        {MF, 1},
+        {FW, 1}};
+
 bool FantasyTeam::have_this_player(string name)
 {
     for (auto player : players)
@@ -9,7 +16,7 @@ bool FantasyTeam::have_this_player(string name)
     return false;
 }
 
-void FantasyTeam::remove_player(string name)
+void FantasyTeam::sell_player(string name)
 {
     for (auto &role : players)
         for (size_t player = 0; player < players[role.first].size(); player++)
@@ -20,10 +27,19 @@ void FantasyTeam::remove_player(string name)
             }
 }
 
-void FantasyTeam::add_player(shared_ptr<Player> target_player)
+void FantasyTeam::buy_player(shared_ptr<Player> target_player)
 {
+    check_can_buy(target_player);
+    
     players[target_player->get_role()].push_back(target_player);
-    return;
+}
+
+void FantasyTeam::check_can_buy(shared_ptr<Player> player)
+{
+    // check post is not fill
+    if (players[player->get_role()].size() >=
+        MAX_PLAYER_IN_ROLE[player->get_role()])
+        throw BAD_REQUEST_MASSAGE;
 }
 
 double FantasyTeam::get_score(int week_num)

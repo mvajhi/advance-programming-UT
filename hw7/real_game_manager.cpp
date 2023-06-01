@@ -188,3 +188,8 @@ shared_ptr<Player> Real_game_manager::get_player_by_name(string name)
 {
     return players[name];
 }
+
+bool Real_game_manager::does_player_exist(string name)
+{
+    return players.count(name) != 0;
+}

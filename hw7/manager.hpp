@@ -22,6 +22,7 @@ private:
     void check_admin_can_login(User_login_info input);
     void check_can_logout();
     void check_can_buy_player(string name);
+    void check_can_sell_player(string name);
     bool is_user_logged();
 
 public:
@@ -48,5 +49,5 @@ public:
 
     // transfer
     shared_ptr<Reporter> buy_player(string name);
-    shared_ptr<Reporter> sell_player(string sell);
+    shared_ptr<Reporter> sell_player(string name);
 };

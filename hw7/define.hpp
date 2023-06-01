@@ -74,11 +74,13 @@ struct User_ranking_data
     double point;
     string name;
 };
+
 // status massage
 const string SUCCESS_MASSAGE = "OK";
 const string BAD_REQUEST_MASSAGE = "Bad Request";
 const string PERMISSION_DENIED_MASSAGE = "Permission Denied";
 const string NOT_FOUND_MASSAGE = "Not Found";
+const string PLAYER_CANT_PLAY_MASSAGE = "This player is not available for next week";
 
 // commands
 const string SIGNUP_COMMAND = "POST signup ?";
@@ -149,6 +151,10 @@ const int LOSE_SCORE = 0;
 const int NUM_WEEK_DONT_PLAY_FOR_RED_CARD = 1;
 const int NUM_WEEK_DONT_PLAY_FOR_INJURED = 3;
 const int MAX_YELLOW_CARD = 3;
+
+// fantasy game role
+const int MAX_BUY_COUNT = 2;
+const int MAX_SELL_COUNT = 2;
 
 // allowed size of each post index
 const int GK_ALLOWED_SIZE = 1;

@@ -8,7 +8,7 @@ Manager::Manager()
 bool Manager::can_signup(User_login_info input)
 {
     // check no one login
-    if (is_user_logged())
+    if (is_user_logged() || admin.is_logged())
         return false;
 
     // check name
@@ -30,7 +30,7 @@ shared_ptr<User> Manager::add_new_user(User_login_info input)
 void Manager::check_can_login(User_login_info input)
 {
     // check no one login
-    if (is_user_logged())
+    if (is_user_logged() || admin.is_logged())
         throw BAD_REQUEST_MASSAGE;
 
     // check name
@@ -45,7 +45,7 @@ void Manager::check_can_login(User_login_info input)
 void Manager::check_admin_can_login(User_login_info input)
 {
     // check no one login
-    if (is_user_logged())
+    if (is_user_logged() || admin.is_logged())
         throw BAD_REQUEST_MASSAGE;
 
     // check username
@@ -60,19 +60,35 @@ void Manager::check_admin_can_login(User_login_info input)
 void Manager::check_can_logout()
 {
     // no user logged
-    if (!is_user_logged())
+    if (!(is_user_logged() || admin.is_logged()))
         throw PERMISSION_DENIED_MASSAGE;
 }
 
 void Manager::check_can_buy_player(string name)
 {
-    // TODO
+    // check login
+    if (!is_user_logged())
+        throw PERMISSION_DENIED_MASSAGE;
+    // check have this player
+    if (!real_game_manager.does_player_exist(name))
+        throw NOT_FOUND_MASSAGE;
+    // check transfer open
+    if (!Time::is_transfer_open())
+        throw PERMISSION_DENIED_MASSAGE;
+    // check player can play
+    if (real_game_manager.get_player_by_name(name)
+            ->can_play(Time::get_next_week()))
+        throw PLAYER_CANT_PLAY_MASSAGE;
+}
+
+void Manager::check_can_sell_player(string name)
+{
 }
 
 bool Manager::is_user_logged()
 {
     // !change == to !=
-    return user_logged != nullptr && admin.is_logged();
+    return user_logged != nullptr;
 }
 
 shared_ptr<Reporter> Manager::get_week_matches_report(int week)
@@ -209,9 +225,20 @@ shared_ptr<Reporter> Manager::buy_player(string name)
     }
 }
 
-shared_ptr<Reporter> Manager::sell_player(string sell)
+shared_ptr<Reporter> Manager::sell_player(string name)
 {
-    return shared_ptr<Reporter>();
+    try
+    {
+        check_can_sell_player(name);
+
+        user_logged->sell_player(name);
+
+        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+    }
+    catch (const string &error)
+    {
+        return make_shared<Massage_reporter>(error + "\n");
+    }
 }
 
 bool compare_users(User_ranking_data a, User_ranking_data b)
@@ -245,6 +272,7 @@ shared_ptr<Reporter> Manager::pass_week()
         return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
 
     admin.pass_week();
+    // TODO update user team and copy for next week
 
     return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }

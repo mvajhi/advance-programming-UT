@@ -4,19 +4,31 @@
 #include "FantasyTeam.hpp"
 #include "reporter.hpp"
 
+struct Weekly_team
+{
+    FantasyTeam team;
+    int sell_count;
+    int buy_count;
+};
+
+
 class User
 {
 private:
     string name;
     string password;
-    map<int, shared_ptr<FantasyTeam>> user_teams;
+    int week_joined;
+    map<int, Weekly_team> user_teams;
+    
+    void create_weekly_teams();
+    void check_can_buy();
 
 public:
     User(string user_name, string user_pass);
     bool is_password_valid(string pass);
     string get_name();
     double get_total_score(int week_num);
-    shared_ptr<FantasyTeam> get_team(int week);
+    FantasyTeam get_team(int week);
     void buy_player(shared_ptr<Player> player);
     void sell_player(string name);
 };
