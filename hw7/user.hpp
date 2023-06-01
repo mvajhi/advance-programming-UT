@@ -2,6 +2,7 @@
 
 #include "define.hpp"
 #include "FantasyTeam.hpp"
+#include "reporter.hpp"
 class User
 {
 protected:
@@ -35,5 +36,8 @@ private:
 
 public:
     Admin();
+    void pass_week();
+    void close_transfer_window();
+    void open_transfer_window();
 
 };
