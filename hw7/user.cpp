@@ -28,9 +28,7 @@ double NormalUser::get_total_score(int week_num)
 {
     double result = 0;
     for (int week = FIRST_WEEK; week <= week_num; week++)
-    {
          result += user_teams[week]->get_score(week) ;
-    }
     return result;
 }
 
