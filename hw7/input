@@ -1,2 +1,4 @@
-GET league_standing
-GET league_standing ? 
+GET players ? team_name AFC_Bournemouth
+GET players ? team_name AFC_Bournemouth rank
+GET players ? team_name AFC_Bournemouth gk
+GET players ? team_name AFC_Bournemouth gk rank
