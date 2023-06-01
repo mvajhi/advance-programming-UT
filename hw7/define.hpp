@@ -95,6 +95,7 @@ const int BEST_TEAM_COMMAND_SIZE = 5;
 const int TEAM_PLAYERS_COMMAND_SIZE = 5;
 const int POST_COMMAND_SIZE = 2;
 const int TEAM_LIST_COMMAND_SIZE = 2;
+const int REGISTER_ADMIN_COMMAND_SIZE = 5;
 
 // commands index
 const int USERNAME_INDEX = 4;
