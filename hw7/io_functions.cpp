@@ -100,8 +100,8 @@ User_login_info convert_to_register_admin_info(vector<string> input)
     if (input.size() != REGISTER_ADMIN_COMMAND_SIZE)
         throw make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 
-    output.username = input[USERNAME_INDEX];
-    output.password = input[PASSWORD_INDEX - 1];
+    output.username = input[USERNAME_INDEX - 1];
+    output.password = input[PASSWORD_INDEX - 2];
 
     return output;
 }
