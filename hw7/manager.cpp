@@ -4,6 +4,7 @@ Manager::Manager()
 {
     auto new_admin = make_shared<Admin>();
     admins.insert(make_pair(new_admin->get_name(),new_admin));
+    week_number = 1;
 }
 
 bool Manager::can_signup(User_login_info input)
@@ -205,4 +206,18 @@ shared_ptr<Reporter> Manager::get_users_ranking()
     }
     sort(collection.begin(), collection.end(), compare_users);
     return make_shared<Massage_reporter>("TODO\n");
+}
+
+shared_ptr<Reporter> Manager::pass_week()
+{
+    if(admin_logged!= nullptr)
+    {
+        week_number++;
+        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+    }
+    else
+        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
+
+
+
 }

@@ -14,7 +14,7 @@ private:
     map<string , shared_ptr<Admin>> admins;
     shared_ptr<NormalUser> user_logged;
     shared_ptr<Admin> admin_logged;
-
+    int week_number;
     bool can_signup(User_login_info input);
     shared_ptr<NormalUser> add_new_user(User_login_info input);
     void check_can_login(User_login_info input);
@@ -36,7 +36,7 @@ public:
     shared_ptr<Reporter> get_team_players(Team_players_input input);
     shared_ptr<Reporter> get_team_list(int week);
     shared_ptr<Reporter> get_users_ranking();
-
+    shared_ptr<Reporter> pass_week();
     int get_week();
 
     void import_real_teams(League_data input);
