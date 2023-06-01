@@ -37,9 +37,9 @@ void NormalUser::sell_player(string name)
 
 }
 
-void NormalUser::buy_player(string name)
+void NormalUser::buy_player(shared_ptr<Player> player)
 {
-
+    
 }
 
 Admin::Admin() : User("admin","123456")

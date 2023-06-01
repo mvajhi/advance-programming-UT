@@ -8,27 +8,31 @@ class User
 protected:
     string name;
     string password;
+
 public:
-    User(string , string);
-    string get_name(){ return name;}
-    string get_password(){return password;}
+    User(string, string);
+    string get_name() { return name; }
+    string get_password() { return password; }
 };
-class NormalUser: public User
+
+class NormalUser : public User
 {
 private:
     map<int, shared_ptr<FantasyTeam>> user_teams;
-//        map<int , Transfer_state> transfers_state;
+    //        map<int , Transfer_state> transfers_state;
 
 public:
     NormalUser(string user_name, string user_pass);
+    // TODO move to user
     bool is_password_valid(string pass);
     string get_name();
     double get_total_score(int week_num);
     shared_ptr<FantasyTeam> get_team(int week);
-     void buy_player(string name);
-     void sell_player(string name);
+    void buy_player(shared_ptr<Player> player);
+    void sell_player(string name);
 };
-class Admin: public User
+
+class Admin : public User
 {
 private:
     bool is_transfer_open;
@@ -36,8 +40,7 @@ private:
 
 public:
     Admin();
-//    void pass_week();
-//    void close_transfer_window();
-//    void open_transfer_window();
-
+    //    void pass_week();
+    //    void close_transfer_window();
+    //    void open_transfer_window();
 };

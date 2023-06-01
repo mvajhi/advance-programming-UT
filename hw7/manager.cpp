@@ -3,7 +3,7 @@
 Manager::Manager()
 {
     auto new_admin = make_shared<Admin>();
-    admins.insert(make_pair(new_admin->get_name(),new_admin));
+    admins.insert(make_pair(new_admin->get_name(), new_admin));
     week_number = 1;
     transfer_window_status = false;
 }
@@ -52,6 +52,11 @@ void Manager::check_can_logout()
         throw PERMISSION_DENIED_MASSAGE;
 }
 
+void Manager::check_can_buy_player(string name)
+{
+    // TODO
+}
+
 bool Manager::is_user_logged()
 {
     return user_logged == nullptr && admin_logged == nullptr;
@@ -97,7 +102,7 @@ void Manager::check_admin_can_login(User_login_info input)
 {
     if (!is_user_logged())
         throw BAD_REQUEST_MASSAGE;
-    if(input.username != ADMIN_NAME || input.password!= ADMIN_PASSWORD)
+    if (input.username != ADMIN_NAME || input.password != ADMIN_PASSWORD)
         throw BAD_REQUEST_MASSAGE;
 }
 
@@ -110,9 +115,8 @@ shared_ptr<Reporter> Manager::register_admin(User_login_info input)
         admin_logged = admins[input.username];
 
         return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
-
     }
-    catch(const string& error)
+    catch (const string &error)
     {
         return make_shared<Massage_reporter>(error + "\n");
     }
@@ -175,8 +179,7 @@ shared_ptr<Reporter> Manager::get_team_list(int week)
 
 int Manager::get_week()
 {
-    // TODO
-    return 1;
+    return week_number;
 }
 
 void Manager::import_real_teams(League_data input)
@@ -188,6 +191,23 @@ void Manager::import_real_weeks(map<int, std::vector<Game_input>> input)
 {
     real_game_manager.add_league_weeks(input);
 }
+
+shared_ptr<Reporter> Manager::buy_player(string name)
+{
+    try
+    {
+        check_can_buy_player(name);
+
+        user_logged->buy_player(real_game_manager.get_player_by_name(name));
+
+        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+    }
+    catch (const string &error)
+    {
+        return make_shared<Massage_reporter>(error + "\n");
+    }
+}
+
 bool compare_users(User_ranking_data a, User_ranking_data b)
 {
     if ((a.point < b.point) || ((a.point == b.point) && (a.name[0] < b.name[0])))
@@ -199,7 +219,7 @@ shared_ptr<Reporter> Manager::get_users_ranking()
 {
     User_ranking_data user_date;
     vector<User_ranking_data> collection;
-    for(auto user: users)
+    for (auto user : users)
     {
         user_date.name = user.first;
         user_date.point = user.second->get_total_score(get_week());
@@ -211,40 +231,37 @@ shared_ptr<Reporter> Manager::get_users_ranking()
 
 shared_ptr<Reporter> Manager::open_transfer_window()
 {
-    if((admin_logged!= nullptr) && transfer_window_status == false)
+    if ((admin_logged != nullptr) && transfer_window_status == false)
     {
-        transfer_window_status =true ;
+        transfer_window_status = true;
         return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
     }
     else if (transfer_window_status == false)
         return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
-    else if (transfer_window_status == true)
-        return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 
+    return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 }
 
 shared_ptr<Reporter> Manager::pass_week()
 {
-    if(admin_logged!= nullptr)
+    if (admin_logged != nullptr)
     {
         week_number++;
         return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
     }
     else
         return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
-
 }
 
 shared_ptr<Reporter> Manager::close_transfer_window()
 {
-    if((admin_logged!= nullptr) && transfer_window_status == true)
+    if ((admin_logged != nullptr) && transfer_window_status == true)
     {
-        transfer_window_status= false;
+        transfer_window_status = false;
         return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
     }
     else if (transfer_window_status == false)
         return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
     else
         return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
-
 }

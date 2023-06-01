@@ -183,3 +183,8 @@ vector<shared_ptr<Player>> Real_game_manager::get_best_players_in_post(int week,
 
     return vector<shared_ptr<Player>>(all_players.begin(), all_players.begin() + count);
 }
+
+shared_ptr<Player> Real_game_manager::get_player_by_name(string name)
+{
+    return players[name];
+}
