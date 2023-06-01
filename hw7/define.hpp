@@ -88,6 +88,9 @@ const string TEAM_PLAYERS_COMMAND = "GET players ?";
 const string TEAM_LIST_COMMAND = "GET league_standing";
 const string SORT_BY_SCORE_COMMAND = "rank";
 const string USERS_RANKING = "GET users_ranking";
+const string PASS_WEEK = "POST pass_week";
+const string OPEN_TRANSFER_WINDOW ="post open_transfer_window";
+const string CLOSE_TRANSFER_WINDOW ="post close_transfer_window";
 
 // commands size
 const int LOGIN_COMMAND_SIZE = 7;

@@ -42,7 +42,12 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             return manager.get_team_list(convert_to_team_list_input(input, manager));
         else if (are_commands_some(input, USERS_RANKING))
             return manager.get_users_ranking();
-
+        else if (are_commands_some(input , PASS_WEEK))
+            return manager.pass_week();
+        else if (are_commands_some(input , OPEN_TRANSFER_WINDOW))
+            return manager.open_transfer_window();
+        else if(are_commands_some(input , CLOSE_TRANSFER_WINDOW))
+            return manager.close_transfer_window();
         else
             return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + " else\n");
     }
