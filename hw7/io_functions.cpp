@@ -156,7 +156,7 @@ Player_status initialize_status(double score)
 int convert_to_best_team_input(vector<string> input, Manager &manager)
 {
     if (input.size() < BEST_TEAM_COMMAND_SIZE)
-        return manager.get_week();
+        return Time::get_week();
     return stoi(input[BEST_TEAM_COMMAND_SIZE - 1]);
 }
 
@@ -164,7 +164,7 @@ int convert_to_team_list_input(vector<string> input, Manager &manager)
 {
     if (input.size() != TEAM_LIST_COMMAND_SIZE)
         throw BAD_REQUEST_MASSAGE;
-    return manager.get_week();
+    return Time::get_week();
 }
 
 Team_players_input convert_to_team_players_input(vector<string> input, Manager &manager)
@@ -172,7 +172,7 @@ Team_players_input convert_to_team_players_input(vector<string> input, Manager &
     // TODO check input
     Team_players_input output;
     output.name = replace_char(input[TEAM_NAME_COMMAND_INDEX], TEAM_NAME_SEPARATOR, ' ');
-    output.week = manager.get_week();
+    output.week = Time::get_week();
 
     if (input.size() <= TEAM_PLAYERS_COMMAND_SIZE)
     {
@@ -223,9 +223,7 @@ vector<string> choose_score_subset(vector<string> game_info)
 {
     vector<string> subset;
     for (size_t i = 0; i < game_info.size(); i++)
-    {
         subset.push_back(game_info[i]);
-    }
     return subset;
 }
 

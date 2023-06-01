@@ -7,7 +7,6 @@ class FantasyTeam
 {
 private:
     string name;
-    int week_num;
     map<string, vector<shared_ptr<Player>>> players;
 
 public:

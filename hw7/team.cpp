@@ -49,7 +49,7 @@ void Team::create_weeks()
     tmp_week.gf = 0;
     tmp_week.score = 0;
 
-    for (size_t i = 0; i < FINAL_WEEK; i++)
+    for (size_t i = 0; i <= FINAL_WEEK; i++)
         weeks_status.insert(make_pair(i, tmp_week));
 }
 

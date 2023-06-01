@@ -2,16 +2,16 @@
 
 Manager::Manager()
 {
-    auto new_admin = make_shared<Admin>();
-    admins.insert(make_pair(new_admin->get_name(), new_admin));
-    week_number = 1;
     transfer_window_status = false;
+
+    // TODO rm this
+    Time::go_next_week();
 }
 
 bool Manager::can_signup(User_login_info input)
 {
     // check no one login
-    if (!is_user_logged())
+    if (is_user_logged())
         return false;
 
     // check name
@@ -21,9 +21,9 @@ bool Manager::can_signup(User_login_info input)
     return true;
 }
 
-shared_ptr<NormalUser> Manager::add_new_user(User_login_info input)
+shared_ptr<User> Manager::add_new_user(User_login_info input)
 {
-    auto new_user = make_shared<NormalUser>(input.username, input.password);
+    auto new_user = make_shared<User>(input.username, input.password);
 
     users.insert(make_pair(input.username, new_user));
 
@@ -33,7 +33,7 @@ shared_ptr<NormalUser> Manager::add_new_user(User_login_info input)
 void Manager::check_can_login(User_login_info input)
 {
     // check no one login
-    if (!is_user_logged())
+    if (is_user_logged())
         throw BAD_REQUEST_MASSAGE;
 
     // check name
@@ -48,7 +48,7 @@ void Manager::check_can_login(User_login_info input)
 void Manager::check_can_logout()
 {
     // no user logged
-    if (is_user_logged())
+    if (!is_user_logged())
         throw PERMISSION_DENIED_MASSAGE;
 }
 
@@ -59,7 +59,9 @@ void Manager::check_can_buy_player(string name)
 
 bool Manager::is_user_logged()
 {
-    return user_logged == nullptr && admin_logged == nullptr;
+    // !change == to !=
+    // TODO fix bug
+    return user_logged != nullptr;
 }
 
 shared_ptr<Reporter> Manager::get_week_matches_report(int week)
@@ -98,29 +100,6 @@ shared_ptr<Reporter> Manager::login(User_login_info input)
     }
 }
 
-void Manager::check_admin_can_login(User_login_info input)
-{
-    if (!is_user_logged())
-        throw BAD_REQUEST_MASSAGE;
-    if (input.username != ADMIN_NAME || input.password != ADMIN_PASSWORD)
-        throw BAD_REQUEST_MASSAGE;
-}
-
-shared_ptr<Reporter> Manager::register_admin(User_login_info input)
-{
-    try
-    {
-        check_admin_can_login(input);
-
-        admin_logged = admins[input.username];
-
-        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
-    }
-    catch (const string &error)
-    {
-        return make_shared<Massage_reporter>(error + "\n");
-    }
-}
 shared_ptr<Reporter> Manager::logout()
 {
     try
@@ -128,7 +107,7 @@ shared_ptr<Reporter> Manager::logout()
         check_can_logout();
 
         user_logged = nullptr;
-        admin_logged = nullptr;
+        admin_logged = false;
 
         return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
     }
@@ -136,6 +115,13 @@ shared_ptr<Reporter> Manager::logout()
     {
         return make_shared<Massage_reporter>(error + "\n");
     }
+}
+
+shared_ptr<Reporter> Manager::register_admin(User_login_info input)
+{
+    // TODO
+    admin_logged = true;
+    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }
 
 shared_ptr<Reporter> Manager::get_best_team(int week)
@@ -177,11 +163,6 @@ shared_ptr<Reporter> Manager::get_team_list(int week)
     return real_game_manager.get_team_list_report(week);
 }
 
-int Manager::get_week()
-{
-    return week_number;
-}
-
 void Manager::import_real_teams(League_data input)
 {
     real_game_manager.import_teams(input);
@@ -215,6 +196,7 @@ bool compare_users(User_ranking_data a, User_ranking_data b)
     else
         return 0;
 }
+
 shared_ptr<Reporter> Manager::get_users_ranking()
 {
     User_ranking_data user_date;
@@ -222,46 +204,30 @@ shared_ptr<Reporter> Manager::get_users_ranking()
     for (auto user : users)
     {
         user_date.name = user.first;
-        user_date.point = user.second->get_total_score(get_week());
+        user_date.point = user.second->get_total_score(Time::get_week());
         collection.push_back(user_date);
     }
     sort(collection.begin(), collection.end(), compare_users);
     return make_shared<Massage_reporter>("TODO\n");
 }
 
-shared_ptr<Reporter> Manager::open_transfer_window()
-{
-    if ((admin_logged != nullptr) && transfer_window_status == false)
-    {
-        transfer_window_status = true;
-        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
-    }
-    else if (transfer_window_status == false)
-        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
-
-    return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
-}
-
 shared_ptr<Reporter> Manager::pass_week()
 {
-    if (admin_logged != nullptr)
-    {
-        week_number++;
-        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
-    }
-    else
-        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
+    // TODO check can do it?
+    Time::go_next_week();
+    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+}
+
+shared_ptr<Reporter> Manager::open_transfer_window()
+{
+    // TODO check can do it?
+    Time::open_transfer();
+    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }
 
 shared_ptr<Reporter> Manager::close_transfer_window()
 {
-    if ((admin_logged != nullptr) && transfer_window_status == true)
-    {
-        transfer_window_status = false;
-        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
-    }
-    else if (transfer_window_status == false)
-        return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
-    else
-        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
+    // TODO check can do it?
+    Time::close_transfer();
+    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }

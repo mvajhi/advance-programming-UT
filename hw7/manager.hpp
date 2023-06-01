@@ -10,14 +10,13 @@ class Manager
 {
 private:
     Real_game_manager real_game_manager;
-    map<string, shared_ptr<NormalUser>> users;
-    map<string , shared_ptr<Admin>> admins;
-    shared_ptr<NormalUser> user_logged;
-    shared_ptr<Admin> admin_logged;
-    int week_number;
+    map<string, shared_ptr<User>> users;
+    shared_ptr<User> user_logged;
+    bool admin_logged;
     bool transfer_window_status;
+
     bool can_signup(User_login_info input);
-    shared_ptr<NormalUser> add_new_user(User_login_info input);
+    shared_ptr<User> add_new_user(User_login_info input);
     void check_can_login(User_login_info input);
     void check_admin_can_login(User_login_info input);
     void check_can_logout();
@@ -42,7 +41,6 @@ public:
     shared_ptr<Reporter> pass_week();
     shared_ptr<Reporter> open_transfer_window();
     shared_ptr<Reporter> close_transfer_window();
-    int get_week();
 
     void import_real_teams(League_data input);
     void import_real_weeks(map<int, std::vector<Game_input>> input);
