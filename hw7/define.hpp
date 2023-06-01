@@ -83,6 +83,7 @@ const string NOT_FOUND_MASSAGE = "Not Found";
 const string SIGNUP_COMMAND = "POST signup ?";
 const string LOGIN_COMMAND = "POST login ?";
 const string LOGOUT_COMMAND = "POST logout";
+const string REGISTER_ADMIN_COMMAND = "POST register_admin ?";
 const string BEST_TEAM_COMMAND = "GET team_of_the_week ?";
 const string TEAM_PLAYERS_COMMAND = "GET players ?";
 const string TEAM_LIST_COMMAND = "GET league_standing";
@@ -95,6 +96,7 @@ const int BEST_TEAM_COMMAND_SIZE = 5;
 const int TEAM_PLAYERS_COMMAND_SIZE = 5;
 const int POST_COMMAND_SIZE = 2;
 const int TEAM_LIST_COMMAND_SIZE = 2;
+const int REGISTER_ADMIN_COMMAND_SIZE = 5;
 
 // commands index
 const int USERNAME_INDEX = 4;
@@ -150,3 +152,6 @@ const int DF_ALLOWED_SIZE = 2;
 const int MF_ALLOWED_SIZE = 1;
 const int FW_ALLOWED_SIZE = 1;
 
+// admins information
+const string ADMIN_NAME ="admin";
+const string ADMIN_PASSWORD ="123456";
