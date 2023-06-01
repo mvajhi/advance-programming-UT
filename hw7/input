@@ -2,3 +2,7 @@ GET players ? team_name AFC_Bournemouth
 GET players ? team_name AFC_Bournemouth rank
 GET players ? team_name AFC_Bournemouth gk
 GET players ? team_name AFC_Bournemouth gk rank
+POST pass_week
+POST register_admin ? username admin password 123456
+POST pass_week
+GET players ? team_name AFC_Bournemouth gk rank

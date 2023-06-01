@@ -33,6 +33,53 @@ double User::get_total_score(int week_num)
 {
     double result = 0;
     for (int week = FIRST_WEEK; week <= week_num; week++)
-         result += user_teams[week]->get_score(week) ;
+        result += user_teams[week]->get_score(week);
     return result;
+}
+
+Admin::Admin()
+{
+    logged = false;
+}
+
+bool Admin::is_logged()
+{
+    return logged;
+}
+
+bool Admin::is_valid_username(string input)
+{
+    return input == ADMIN_NAME;
+}
+
+bool Admin::is_valid_password(string input)
+{
+    return input == ADMIN_PASSWORD;
+}
+
+void Admin::logging()
+{
+    logged = true;
+}
+
+void Admin::logout()
+{
+    logged = false;
+}
+
+void Admin::pass_week()
+{
+    Time::go_next_week();
+    // ! is ok?
+    open_transfer_window();
+}
+
+void Admin::open_transfer_window()
+{
+    Time::open_transfer();
+}
+
+void Admin::close_transfer_window()
+{
+    Time::close_transfer();
 }

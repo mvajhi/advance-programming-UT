@@ -9,7 +9,6 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager);
 void check_arg_count(vector<string> input, size_t count);
 User_login_info convert_to_login_info(vector<string> input);
 bool are_commands_some(vector<string> input, string command);
-User_login_info convert_to_register_admin_info(vector<string> input);
 Team_data read_team(string line);
 League_data import_league();
 Week_state import_week_state(int week_num);

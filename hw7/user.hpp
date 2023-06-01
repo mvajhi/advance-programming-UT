@@ -10,7 +10,6 @@ private:
     string name;
     string password;
     map<int, shared_ptr<FantasyTeam>> user_teams;
-    //    map<int , Transfer_State> transfers_state;
 
 public:
     User(string user_name, string user_pass);
@@ -20,4 +19,20 @@ public:
     shared_ptr<FantasyTeam> get_team(int week);
     void buy_player(shared_ptr<Player> player);
     void sell_player(string name);
+};
+
+class Admin
+{
+private:
+    bool logged;
+public:
+    Admin();
+    bool is_logged();
+    bool is_valid_username(string input);
+    bool is_valid_password(string input);
+    void logging();
+    void logout();
+    void pass_week();
+    void open_transfer_window();
+    void close_transfer_window();
 };

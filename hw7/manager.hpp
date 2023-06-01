@@ -6,13 +6,14 @@
 #include "real_game_manager.hpp"
 #include <algorithm>
 
+// TODO separate checker
 class Manager
 {
 private:
     Real_game_manager real_game_manager;
     map<string, shared_ptr<User>> users;
     shared_ptr<User> user_logged;
-    bool admin_logged;
+    Admin admin;
     bool transfer_window_status;
 
     bool can_signup(User_login_info input);

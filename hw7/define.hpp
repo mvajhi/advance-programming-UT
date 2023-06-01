@@ -91,8 +91,8 @@ const string TEAM_LIST_COMMAND = "GET league_standing";
 const string SORT_BY_SCORE_COMMAND = "rank";
 const string USERS_RANKING = "GET users_ranking";
 const string PASS_WEEK = "POST pass_week";
-const string OPEN_TRANSFER_WINDOW ="post open_transfer_window";
-const string CLOSE_TRANSFER_WINDOW ="post close_transfer_window";
+const string OPEN_TRANSFER_WINDOW = "post open_transfer_window";
+const string CLOSE_TRANSFER_WINDOW = "post close_transfer_window";
 
 // commands size
 const int LOGIN_COMMAND_SIZE = 7;
@@ -100,7 +100,7 @@ const int BEST_TEAM_COMMAND_SIZE = 5;
 const int TEAM_PLAYERS_COMMAND_SIZE = 5;
 const int POST_COMMAND_SIZE = 2;
 const int TEAM_LIST_COMMAND_SIZE = 2;
-const int REGISTER_ADMIN_COMMAND_SIZE = 5;
+const int REGISTER_ADMIN_COMMAND_SIZE = 7;
 
 // commands index
 const int USERNAME_INDEX = 4;
@@ -157,5 +157,5 @@ const int MF_ALLOWED_SIZE = 1;
 const int FW_ALLOWED_SIZE = 1;
 
 // admins information
-const string ADMIN_NAME ="admin";
-const string ADMIN_PASSWORD ="123456";
+const string ADMIN_NAME = "admin";
+const string ADMIN_PASSWORD = "123456";
