@@ -38,6 +38,7 @@ public:
     string get_name();
     FantasyTeam get_team(int week);
     double get_total_score(int week_num);
+    Fantasy_team_data show_fantasy_team(int week_num);
 
     // check
     bool is_password_valid(string pass);

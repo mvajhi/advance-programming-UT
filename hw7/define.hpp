@@ -85,6 +85,13 @@ struct Match_info
     vector<string> score_players;
 };
 
+struct Fantasy_team_data
+{
+    string team_name;
+    string gk,df1,df2,mf,fw;
+    double total_score;
+};
+
 // status massage
 const string SUCCESS_MASSAGE = "OK";
 const string NOT_FOUND_MASSAGE = "Not Found";
@@ -94,6 +101,7 @@ const string PLAYER_CANT_PLAY_MASSAGE = "This player is not available for next w
 
 // commands
 const string LOGOUT_COMMAND = "POST logout";
+const string GET_SQUAD_COMMAND = "GET squad ?";
 const string PASS_WEEK_COMMAND = "POST pass_week";
 const string TEAM_PLAYERS_COMMAND = "GET players ?";
 const string LOGIN_COMMAND = "POST login ? team_name";
@@ -116,6 +124,7 @@ const string SORT_BY_SCORE_COMMAND = "rank";
 const int POST_COMMAND_SIZE = 2;
 const int LOGIN_COMMAND_SIZE = 7;
 const int TRANSFER_COMMAND_SIZE = 5;
+const int GET_SQUAD_COMMAND_SIZE = 5;
 const int TEAM_LIST_COMMAND_SIZE = 2;
 const int TEAM_PLAYERS_COMMAND_SIZE = 5;
 const int BEST_TEAM_COMMAND_MIN_SIZE = 3;

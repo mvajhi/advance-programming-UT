@@ -20,6 +20,7 @@ int convert_to_team_list_input(vector<string> input);
 string convert_to_transfer_input(vector<string> input);
 User_login_info convert_to_login_info(vector<string> input);
 Team_players_input convert_to_team_players_input(vector<string> input);
+string convert_to_fantasy_team_name(vector<string> input);
 
 // check
 bool is_a_post(string input);

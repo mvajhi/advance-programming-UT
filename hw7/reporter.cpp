@@ -135,3 +135,19 @@ void User_ranks_report::get_cli_report()
         cout << i + 1 << ". "
              << convert_collection_to_string(collection[i]) << endl;
 }
+
+FantasyTeamReporter::FantasyTeamReporter(Fantasy_team_data target_team_)
+{
+    target_team = target_team_;
+}
+
+void FantasyTeamReporter::get_cli_report()
+{
+    cout <<"fantasy_team: "<<target_team.team_name<<endl;
+    cout <<"Goalkeeper: "<<target_team.gk<<endl;
+    cout <<"Defender1: "<<target_team.df1<<endl;
+    cout <<"Defender2: "<<target_team.df2<<endl;
+    cout <<"Midfielder: "<<target_team.mf<<endl;
+    cout <<"Striker: "<<target_team.fw<<endl;
+    cout <<"Total Points: "<< float_to_string(target_team.total_score)<<endl;
+}

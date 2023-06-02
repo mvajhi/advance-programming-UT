@@ -88,6 +88,8 @@ shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager)
         return manager.buy_player(convert_to_transfer_input(input));
     else if (are_commands_some(input, SELL_PLAYER_COMMAND))
         return manager.sell_player(convert_to_transfer_input(input));
+    else if (are_commands_some(input, GET_SQUAD_COMMAND))
+        return manager.get_fantasy_team(convert_to_fantasy_team_name(input));
     else
         return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + " TODO check error\n");
 }
@@ -185,6 +187,15 @@ Team_players_input convert_to_team_players_input(vector<string> input)
     output.post = input[POST_COMMAND_INDEX];
 
     return output;
+}
+
+string convert_to_fantasy_team_name(vector<string> input)
+{
+    if (input.size() == GET_SQUAD_COMMAND_SIZE)
+        return input[USERNAME_INDEX];
+    else
+        // TODO
+        return "user_logged";
 }
 
 bool is_a_post(string input)

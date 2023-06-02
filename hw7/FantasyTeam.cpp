@@ -53,6 +53,11 @@ double FantasyTeam::get_score(int week_num)
     return result;
 }
 
+map<string, vector<shared_ptr<Player>>> FantasyTeam::get_players()
+{
+    return players;
+}
+
 bool FantasyTeam::can_add_player(string post)
 {
     if (post == GK)

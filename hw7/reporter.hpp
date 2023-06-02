@@ -84,3 +84,13 @@ public:
     User_ranks_report(vector<User_ranking_data> collection_);
     void get_cli_report();
 };
+
+class FantasyTeamReporter : public Reporter
+{
+private:
+    Fantasy_team_data target_team;
+
+public:
+    FantasyTeamReporter(Fantasy_team_data target_team_);
+    void get_cli_report();
+};

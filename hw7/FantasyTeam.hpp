@@ -15,6 +15,7 @@ private:
 public:
     // output
     double get_score(int week_num);
+    map<string, vector<shared_ptr<Player>>> get_players();
 
     // check
     bool can_add_player(string post);

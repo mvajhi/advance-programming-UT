@@ -130,6 +130,16 @@ shared_ptr<Reporter> Manager::get_week_matches_report(int week)
     return report;
 }
 
+shared_ptr<Reporter> Manager::get_fantasy_team(string target_team)
+{
+    // TODO check input
+    // TODO fix user_logged
+    if (target_team != "user_logged")
+        return make_shared<FantasyTeamReporter>(users[target_team]->show_fantasy_team(Time::get_week()));
+    else
+        return make_shared<FantasyTeamReporter>(users[user_logged->get_name()]->show_fantasy_team(Time::get_week()));
+}
+
 shared_ptr<Reporter> Manager::signup(User_login_info input)
 {
     if (!can_signup(input))

@@ -106,6 +106,20 @@ double User::get_total_score(int week_num)
     return result;
 }
 
+Fantasy_team_data User::show_fantasy_team(int week_num)
+{
+    Fantasy_team_data target;
+    target.team_name = get_name();
+    target.total_score = get_total_score(week_num);
+    map<string, vector<shared_ptr<Player>>> teams_players = get_team(week_num).get_players();
+    target.gk = teams_players[GK][0]->get_name();
+    target.df1 = teams_players[DF][0]->get_name();
+    target.df2 = teams_players[DF][1]->get_name();
+    target.mf = teams_players[MF][0]->get_name();
+    target.fw = teams_players[FW][0]->get_name();
+    return target;
+}
+
 Admin::Admin()
 {
     logged = false;
