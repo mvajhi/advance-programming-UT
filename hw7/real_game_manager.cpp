@@ -63,12 +63,17 @@ void Real_game_manager::add_new_match(Game_input new_game, int week)
     if (weeks_matches.count(week) == 0)
         weeks_matches.insert(make_pair(week, vector<shared_ptr<Match>>()));
 
+
     weeks_matches[week].push_back(
         make_shared<Match>(
             teams[new_game.team1.first],
             new_game.team1.second,
             teams[new_game.team2.first],
             new_game.team2.second));
+
+    // cout << weeks_matches.size() << endl;
+    // cout << weeks_matches[week][0]->team1 << endl;
+    // cout << weeks_matches[week][0]->team1 << endl;
 }
 
 void Real_game_manager::update_teams(Game_input new_game, int week)
@@ -167,11 +172,6 @@ shared_ptr<Team_player_reporter> Real_game_manager::get_team_player_report(
 
 shared_ptr<Team_list_reporter> Real_game_manager::get_team_list_report(int week)
 {
-    // TODO
-    // cout << Time::get_week() << endl;
-    // cout << teams["AFC Bournemouth"]->get_ga(Time::get_week()) << endl;
-    // cout << teams["AFC Bournemouth"]->get_gf(Time::get_week()) << endl;
-    // cout << teams["AFC Bournemouth"]->get_name() << endl;
     vector<shared_ptr<Team>> output;
 
     for (auto team : teams)

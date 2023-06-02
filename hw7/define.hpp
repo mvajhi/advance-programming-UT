@@ -113,6 +113,7 @@ const string USERS_RANKING_COMMAND = "GET users_ranking";
 const string BEST_TEAM_COMMAND = "GET team_of_the_week ?";
 const string BUY_PLAYER_COMMAND = "POST buy_player ? name";
 const string SELL_PLAYER_COMMAND = "POST sell_player ? name";
+const string MATCH_REPORT_COMMAND = "GET matches_result_league";
 const string REGISTER_ADMIN_COMMAND = "POST register_admin ? username";
 const string OPEN_TRANSFER_WINDOW_COMMAND = "POST open_transfer_window";
 const string CLOSE_TRANSFER_WINDOW_COMMAND = "POST close_transfer_window";

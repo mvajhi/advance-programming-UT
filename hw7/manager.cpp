@@ -54,7 +54,7 @@ void Manager::check_admin_can_login(User_login_info input)
 
     // check password
     if (!admin.is_valid_password(input.password))
-        throw PERMISSION_DENIED_MASSAGE;
+        throw BAD_REQUEST_MASSAGE;
 }
 
 void Manager::check_can_logout()
@@ -79,8 +79,8 @@ void Manager::check_can_buy_player(string name)
         throw PERMISSION_DENIED_MASSAGE;
 
     // check player can play
-    if (real_game_manager.get_player_by_name(name)
-            ->can_play(Time::get_next_week()))
+    if (!real_game_manager.get_player_by_name(name)
+             ->can_play(Time::get_next_week()))
         throw PLAYER_CANT_PLAY_MASSAGE;
 }
 
@@ -132,17 +132,17 @@ shared_ptr<Reporter> Manager::get_week_matches_report(int week)
 
 shared_ptr<Reporter> Manager::get_fantasy_team(string target_team)
 {
+    // TODO FIX that
+    if (user_logged == nullptr)
+        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
+    // TODO fix user_logged
+    if (target_team == "user_logged")
+        return make_shared<FantasyTeamReporter>(users[target_team]->show_fantasy_team(Time::get_week()));
     // TODO check input
     if (users.count(target_team) == 0)
         return make_shared<Massage_reporter>(NOT_FOUND_MASSAGE + "\n");
-    if (user_logged != nullptr)
-        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
 
-    // TODO fix user_logged
-    if (target_team != "user_logged")
-        return make_shared<FantasyTeamReporter>(users[target_team]->show_fantasy_team(Time::get_week()));
-    else
-        return make_shared<FantasyTeamReporter>(users[user_logged->get_name()]->show_fantasy_team(Time::get_week()));
+    return make_shared<FantasyTeamReporter>(users[user_logged->get_name()]->show_fantasy_team(Time::get_week()));
 }
 
 shared_ptr<Reporter> Manager::signup(User_login_info input)
@@ -325,6 +325,7 @@ shared_ptr<Reporter> Manager::pass_week()
     return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }
 
+// TODO merge funcs
 shared_ptr<Reporter> Manager::open_transfer_window()
 {
     if (!admin.is_logged())
@@ -340,7 +341,7 @@ shared_ptr<Reporter> Manager::close_transfer_window()
     if (!admin.is_logged())
         return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
 
-    admin.open_transfer_window();
+    admin.close_transfer_window();
 
     return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }

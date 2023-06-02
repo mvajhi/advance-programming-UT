@@ -148,6 +148,7 @@ void FantasyTeamReporter::get_cli_report()
 
     cout << "fantasy_team: " << target_team.team_name << endl;
     cout << "Goalkeeper: " << target_team.gk << endl;
+    // TODO sort defender
     cout << "Defender1: " << target_team.df1 << endl;
     cout << "Defender2: " << target_team.df2 << endl;
     cout << "Midfielder: " << target_team.mf << endl;
