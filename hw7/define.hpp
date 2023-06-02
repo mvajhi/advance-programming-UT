@@ -90,6 +90,7 @@ struct Fantasy_team_data
     string team_name;
     string gk,df1,df2,mf,fw;
     double total_score;
+    bool is_full;
 };
 
 // status massage
@@ -98,6 +99,7 @@ const string NOT_FOUND_MASSAGE = "Not Found";
 const string BAD_REQUEST_MASSAGE = "Bad Request";
 const string PERMISSION_DENIED_MASSAGE = "Permission Denied";
 const string PLAYER_CANT_PLAY_MASSAGE = "This player is not available for next week";
+const string EMPTY_MASSAGE = "EMPTY";
 
 // commands
 const string LOGOUT_COMMAND = "POST logout";
@@ -105,7 +107,7 @@ const string GET_SQUAD_COMMAND = "GET squad ?";
 const string PASS_WEEK_COMMAND = "POST pass_week";
 const string TEAM_PLAYERS_COMMAND = "GET players ?";
 const string LOGIN_COMMAND = "POST login ? team_name";
-const string TEAM_LIST_COMMAND = "GET league_standing";
+const string TEAM_LIST_COMMAND = "GET league_standings";
 const string SIGNUP_COMMAND = "POST signup ? team_name";
 const string USERS_RANKING_COMMAND = "GET users_ranking";
 const string BEST_TEAM_COMMAND = "GET team_of_the_week ?";

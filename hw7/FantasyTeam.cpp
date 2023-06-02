@@ -16,6 +16,16 @@ bool FantasyTeam::have_this_player(string name)
     return false;
 }
 
+bool FantasyTeam::is_team_full()
+{
+    int counter = 0;
+    counter += players[GK].size();
+    counter += players[DF].size();
+    counter += players[MF].size();
+    counter += players[FW].size();
+    return counter != TEAM_SIZE;
+}
+
 void FantasyTeam::sell_player(string name)
 {
     for (auto &role : players)

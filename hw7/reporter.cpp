@@ -143,11 +143,14 @@ FantasyTeamReporter::FantasyTeamReporter(Fantasy_team_data target_team_)
 
 void FantasyTeamReporter::get_cli_report()
 {
-    cout <<"fantasy_team: "<<target_team.team_name<<endl;
-    cout <<"Goalkeeper: "<<target_team.gk<<endl;
-    cout <<"Defender1: "<<target_team.df1<<endl;
-    cout <<"Defender2: "<<target_team.df2<<endl;
-    cout <<"Midfielder: "<<target_team.mf<<endl;
-    cout <<"Striker: "<<target_team.fw<<endl;
-    cout <<"Total Points: "<< float_to_string(target_team.total_score)<<endl;
+    if (target_team.is_full == false)
+        Massage_reporter(EMPTY_MASSAGE + "\n").get_cli_report();
+
+    cout << "fantasy_team: " << target_team.team_name << endl;
+    cout << "Goalkeeper: " << target_team.gk << endl;
+    cout << "Defender1: " << target_team.df1 << endl;
+    cout << "Defender2: " << target_team.df2 << endl;
+    cout << "Midfielder: " << target_team.mf << endl;
+    cout << "Striker: " << target_team.fw << endl;
+    cout << "Total Points: " << float_to_string(target_team.total_score) << endl;
 }

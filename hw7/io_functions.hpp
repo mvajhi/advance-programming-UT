@@ -8,6 +8,7 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager);
 shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager);
 
 // tools
+bool is_number(string num);
 void check_arg_count(vector<string> input, size_t count);
 bool are_commands_some(vector<string> input, string command);
 string replace_char(string input, char str_char, char final_char);

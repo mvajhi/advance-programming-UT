@@ -91,7 +91,7 @@ shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager)
     else if (are_commands_some(input, GET_SQUAD_COMMAND))
         return manager.get_fantasy_team(convert_to_fantasy_team_name(input));
     else
-        return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + " TODO check error\n");
+        return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 }
 
 bool are_commands_some(vector<string> input, string command)
@@ -238,6 +238,25 @@ void check_team_player_input(vector<string> input)
 {
     if (input.size() > TEAM_PLAYERS_COMMAND_MAX_SIZE)
         throw BAD_REQUEST_MASSAGE;
+    if (input.size() < TEAM_PLAYERS_COMMAND_SIZE)
+        throw BAD_REQUEST_MASSAGE;
+    if (input[3] != "team_name")
+        throw BAD_REQUEST_MASSAGE;
+    if (input.size() == 6)
+        if (input[5] != "rank" &&
+            find(POSTS.begin(), POSTS.end(), input[5]) == POSTS.end())
+            throw BAD_REQUEST_MASSAGE;
+    if (input.size() == 7)
+        if (input[6] != "rank")
+            throw BAD_REQUEST_MASSAGE;
+        else if (find(POSTS.begin(), POSTS.end(), input[5]) == POSTS.end())
+            throw BAD_REQUEST_MASSAGE;
+        else
+        {
+        }
+    else
+    {
+    }
 }
 
 void check_sso_input(vector<string> input)
@@ -253,9 +272,27 @@ void check_best_team_input(vector<string> input)
         input.size() != BEST_TEAM_COMMAND_MIN_SIZE)
         throw BAD_REQUEST_MASSAGE;
 
-    if (input.size() == BEST_TEAM_COMMAND_MAX_SIZE &&
-        input[WEEK_NUM_INDEX] == WEEK_NUM_COMMAND)
-        throw BAD_REQUEST_MASSAGE;
+    if (input.size() == BEST_TEAM_COMMAND_MAX_SIZE)
+        if (input[WEEK_NUM_INDEX] != WEEK_NUM_COMMAND)
+            throw BAD_REQUEST_MASSAGE;
+        else if (!is_number(input[WEEK_NUM_INDEX + 1]))
+            throw BAD_REQUEST_MASSAGE;
+        else if (Time::get_week() < stoi(input[WEEK_NUM_INDEX + 1]))
+            throw BAD_REQUEST_MASSAGE;
+        else
+        {
+        }
+    else
+    {
+    }
+}
+
+bool is_number(string num)
+{
+    for (auto i : num)
+        if (!isdigit(i))
+            return false;
+    return true;
 }
 
 map<string, Player_status> get_score_from_csv(vector<string> scores)

@@ -167,6 +167,11 @@ shared_ptr<Team_player_reporter> Real_game_manager::get_team_player_report(
 
 shared_ptr<Team_list_reporter> Real_game_manager::get_team_list_report(int week)
 {
+    // TODO
+    // cout << Time::get_week() << endl;
+    // cout << teams["AFC Bournemouth"]->get_ga(Time::get_week()) << endl;
+    // cout << teams["AFC Bournemouth"]->get_gf(Time::get_week()) << endl;
+    // cout << teams["AFC Bournemouth"]->get_name() << endl;
     vector<shared_ptr<Team>> output;
 
     for (auto team : teams)

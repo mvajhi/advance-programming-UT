@@ -88,7 +88,7 @@ void Team::add_new_match(int week, int score, int ga, int gf)
     status.score = score;
     status.ga = ga;
     status.gf = gf;
-    weeks_status.insert(make_pair(week, status));
+    weeks_status[week] = status;
 }
 
 double Team::get_sum_score(int week)

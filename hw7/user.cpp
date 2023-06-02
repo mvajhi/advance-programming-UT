@@ -111,6 +111,10 @@ Fantasy_team_data User::show_fantasy_team(int week_num)
     Fantasy_team_data target;
     target.team_name = get_name();
     target.total_score = get_total_score(week_num);
+    target.is_full = user_teams[week_num].team.is_team_full();
+    if (target.is_full == false)
+        return target;
+
     map<string, vector<shared_ptr<Player>>> teams_players = get_team(week_num).get_players();
     target.gk = teams_players[GK][0]->get_name();
     target.df1 = teams_players[DF][0]->get_name();

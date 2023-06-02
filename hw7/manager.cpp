@@ -133,6 +133,11 @@ shared_ptr<Reporter> Manager::get_week_matches_report(int week)
 shared_ptr<Reporter> Manager::get_fantasy_team(string target_team)
 {
     // TODO check input
+    if (users.count(target_team) == 0)
+        return make_shared<Massage_reporter>(NOT_FOUND_MASSAGE + "\n");
+    if (user_logged != nullptr)
+        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
+
     // TODO fix user_logged
     if (target_team != "user_logged")
         return make_shared<FantasyTeamReporter>(users[target_team]->show_fantasy_team(Time::get_week()));
