@@ -144,7 +144,10 @@ FantasyTeamReporter::FantasyTeamReporter(Fantasy_team_data target_team_)
 void FantasyTeamReporter::get_cli_report()
 {
     if (target_team.is_full == false)
+    {
         Massage_reporter(EMPTY_MASSAGE + "\n").get_cli_report();
+        return;
+    }
 
     cout << "fantasy_team: " << target_team.team_name << endl;
     cout << "Goalkeeper: " << target_team.gk << endl;

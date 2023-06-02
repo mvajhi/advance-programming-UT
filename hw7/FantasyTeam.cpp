@@ -23,7 +23,7 @@ bool FantasyTeam::is_team_full()
     counter += players[DF].size();
     counter += players[MF].size();
     counter += players[FW].size();
-    return counter != TEAM_SIZE;
+    return counter == TEAM_SIZE;
 }
 
 void FantasyTeam::sell_player(string name)

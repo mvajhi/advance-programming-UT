@@ -65,6 +65,21 @@ POST buy_player ? name L. Cook
 POST sell_player ? name L. Coo
 POST sell_player ? name Smith
 POST sell_player ? name L. Cook
+POST sell_player ? name D. Randolph
+POST buy_player ? name D. Randolph
+POST buy_player ? name L. Kelly
+POST buy_player ? name Jack Stacey
+POST buy_player ? name J. Stanislas
+POST buy_player ? name H. Traore
+POST buy_player ? name T. Cairney
 GET squad ? fantasy_team man
 GET squad ? fantasy_team taham
+GET squad ?
+POST pass_week
+POST logout
+POST register_admin ? username admin password 123456
+POST pass_week
+POST logout
+POST login ? team_name taham password 123
+GET users_ranking
 GET squad ?

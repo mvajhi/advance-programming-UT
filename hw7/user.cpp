@@ -13,9 +13,9 @@ void User::create_weekly_teams()
 void User::check_can_buy()
 {
     // check can trade and count not full
-    if (Time::get_next_week() != week_team_is_full &&
-        user_teams[Time::get_next_week()].buy_count >= MAX_BUY_COUNT)
-        throw PERMISSION_DENIED_MASSAGE;
+    if (Time::get_next_week() > week_team_is_full)
+        if (user_teams[Time::get_next_week()].buy_count >= MAX_BUY_COUNT)
+            throw PERMISSION_DENIED_MASSAGE;
 }
 
 void User::update_after_buy()
@@ -27,9 +27,9 @@ void User::update_after_buy()
 void User::check_can_sell()
 {
     // check can trade and count not full
-    if (Time::get_next_week() != week_team_is_full &&
-        user_teams[Time::get_next_week()].sell_count >= MAX_SELL_COUNT)
-        throw PERMISSION_DENIED_MASSAGE;
+    if (Time::get_next_week() > week_team_is_full)
+        if (user_teams[Time::get_next_week()].sell_count >= MAX_SELL_COUNT)
+            throw PERMISSION_DENIED_MASSAGE;
 }
 
 void User::update_after_sell()
@@ -157,8 +157,6 @@ void Admin::logout()
 void Admin::pass_week()
 {
     Time::go_next_week();
-    // ! is ok?
-    open_transfer_window();
 }
 
 void Admin::open_transfer_window()
