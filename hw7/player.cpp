@@ -10,15 +10,14 @@ bool Player::is_injured(Player_status status)
     return status.injured;
 }
 
-bool Player::check_pre_weeks_status(int week, size_t pre_weeks_check, bool (*have_this_state)(Player_status))
+bool Player::check_pre_weeks_status(
+    int week, size_t pre_weeks_check, bool (*have_this_state)(Player_status))
 {
     for (size_t i = 0; i < pre_weeks_check; i++)
-    {
         if (weeks_games.count(week - i - 1) == 0)
             continue;
-        if ((*have_this_state)(weeks_games[week - i - 1]))
+        else if ((*have_this_state)(weeks_games[week - i - 1]))
             return true;
-    }
 
     return false;
 }
@@ -59,8 +58,10 @@ double Player::get_score(int week)
 
 bool Player::can_play(int week)
 {
-    return !(check_pre_weeks_status(week, NUM_WEEK_DONT_PLAY_FOR_RED_CARD, have_red_card) ||
-             check_pre_weeks_status(week, NUM_WEEK_DONT_PLAY_FOR_INJURED, is_injured));
+    return !(check_pre_weeks_status(
+                 week, NUM_WEEK_DONT_PLAY_FOR_RED_CARD, have_red_card) ||
+             check_pre_weeks_status(
+                 week, NUM_WEEK_DONT_PLAY_FOR_INJURED, is_injured));
 }
 
 string Player::get_role()
@@ -87,6 +88,7 @@ double Player::get_avg_score(int week)
 
     if (count == 0)
         return 0.0;
+
     return sum / count;
 }
 

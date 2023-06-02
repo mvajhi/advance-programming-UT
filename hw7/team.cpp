@@ -24,7 +24,8 @@ vector<shared_ptr<Player>> Team::get_team_players(bool have_role, string role)
     return output;
 }
 
-vector<shared_ptr<Player>> Team::sort_players(vector<shared_ptr<Player>> team_players, bool is_sort_by_score, int week)
+vector<shared_ptr<Player>> Team::sort_players(
+    vector<shared_ptr<Player>> team_players, bool is_sort_by_score, int week)
 {
     if (is_sort_by_score)
         sort(team_players.begin(), team_players.end(),
@@ -59,23 +60,6 @@ Team::Team(string name_, map<string, vector<shared_ptr<Player>>> players_)
     players = players_;
 
     create_weeks();
-
-    /*
-        cout << "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n";
-        cout << "team name: " << name << endl;
-        for (auto i : players)
-        {
-            cout << "\t\\\\\\\\\\\\\n";
-            cout << "\trole: " << i.first << endl;
-            for (auto j : i.second)
-            {
-                cout << "\t\t\\\\\\\\\\\\\n";
-                cout << "\t\tname: " << j->get_name() << endl;
-            }
-            cout << "\t\\\\\\\\\\\\\n";
-        }
-        cout << "\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\n";
-        */
 }
 
 Team_status Team::get_status(int week)
@@ -83,7 +67,8 @@ Team_status Team::get_status(int week)
     return weeks_status[week];
 }
 
-vector<shared_ptr<Player>> Team::get_players(bool is_sort, bool have_role, string role, int week_for_sort)
+vector<shared_ptr<Player>> Team::get_players(
+    bool is_sort, bool have_role, string role, int week_for_sort)
 {
     vector<shared_ptr<Player>> output = get_team_players(have_role, role);
 

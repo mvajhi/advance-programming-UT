@@ -15,7 +15,7 @@ int main()
         // proccess
         shared_ptr<Reporter> report = proccess(separated_line, manager);
         // output
-        report->cli_report();
+        report->get_cli_report();
     }
 
     return 0;

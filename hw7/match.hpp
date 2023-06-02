@@ -13,5 +13,6 @@ private:
     friend class Match_reporter;
 
 public:
-    Match(shared_ptr<Team> team1, int goal1, shared_ptr<Team> team2, int goal2);
+    Match(
+        shared_ptr<Team> team1, int goal1, shared_ptr<Team> team2, int goal2);
 };

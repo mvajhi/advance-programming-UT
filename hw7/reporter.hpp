@@ -10,7 +10,7 @@ class Team;
 class Reporter
 {
 public:
-    virtual void cli_report() = 0;
+    virtual void get_cli_report() = 0;
 };
 
 class Massage_reporter : public Reporter
@@ -20,7 +20,7 @@ private:
 
 public:
     Massage_reporter(string massage_);
-    void cli_report();
+    void get_cli_report();
 };
 
 class Match_reporter : public Reporter
@@ -30,7 +30,7 @@ private:
 
 public:
     Match_reporter(vector<shared_ptr<Match>> matches_);
-    void cli_report();
+    void get_cli_report();
 };
 
 class Best_team_reporter : public Reporter
@@ -42,8 +42,9 @@ private:
     string convert_player_to_cli_output(string role, int index = 0);
 
 public:
-    Best_team_reporter(map<string, vector<shared_ptr<Player>>> players_, int week_);
-    void cli_report();
+    Best_team_reporter(map<string, vector<shared_ptr<Player>>> players_,
+                       int week_);
+    void get_cli_report();
 };
 
 class Team_player_reporter : public Reporter
@@ -56,7 +57,7 @@ private:
 
 public:
     Team_player_reporter(vector<shared_ptr<Player>> players_, int week_);
-    void cli_report();
+    void get_cli_report();
 };
 
 class Team_list_reporter : public Reporter
@@ -69,7 +70,7 @@ private:
 
 public:
     Team_list_reporter(vector<shared_ptr<Team>> teams_, int week_);
-    void cli_report();
+    void get_cli_report();
 };
 
 class User_ranks_report : public Reporter
@@ -81,5 +82,5 @@ private:
 
 public:
     User_ranks_report(vector<User_ranking_data> collection_);
-    void cli_report();
+    void get_cli_report();
 };

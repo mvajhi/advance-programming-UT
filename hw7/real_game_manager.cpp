@@ -29,12 +29,15 @@ map<string, string> Real_game_manager::convert_team_players_to_map(shared_ptr<Te
 
 void Real_game_manager::add_new_team(shared_ptr<Team_data> team_data)
 {
-    map<string, vector<shared_ptr<Player>>> players = link_players_team(team_data);
+    map<string, vector<shared_ptr<Player>>> players =
+        link_players_team(team_data);
 
-    teams.insert(make_pair(team_data->team_name, make_shared<Team>(team_data->team_name, players)));
+    teams.insert(make_pair(team_data->team_name,
+                           make_shared<Team>(team_data->team_name, players)));
 }
 
-vector<shared_ptr<Player>> Real_game_manager::get_link_players(vector<string> players_name)
+vector<shared_ptr<Player>> Real_game_manager::get_link_players(
+    vector<string> players_name)
 {
     vector<shared_ptr<Player>> output;
     for (auto i : players_name)
@@ -42,7 +45,8 @@ vector<shared_ptr<Player>> Real_game_manager::get_link_players(vector<string> pl
     return output;
 }
 
-map<string, vector<shared_ptr<Player>>> Real_game_manager::link_players_team(shared_ptr<Team_data> team_data)
+map<string, vector<shared_ptr<Player>>> Real_game_manager::link_players_team(
+    shared_ptr<Team_data> team_data)
 {
     map<string, vector<shared_ptr<Player>>> output;
 
@@ -59,7 +63,12 @@ void Real_game_manager::add_new_match(Game_input new_game, int week)
     if (weeks_matches.count(week) == 0)
         weeks_matches.insert(make_pair(week, vector<shared_ptr<Match>>()));
 
-    weeks_matches[week].push_back(make_shared<Match>(teams[new_game.team1.first], new_game.team1.second, teams[new_game.team2.first], new_game.team2.second));
+    weeks_matches[week].push_back(
+        make_shared<Match>(
+            teams[new_game.team1.first],
+            new_game.team1.second,
+            teams[new_game.team2.first],
+            new_game.team2.second));
 }
 
 void Real_game_manager::update_teams(Game_input new_game, int week)
@@ -84,8 +93,10 @@ void Real_game_manager::update_teams(Game_input new_game, int week)
         score2 = DRAW_SCORE;
     }
 
-    teams[new_game.team1.first]->add_new_match(week, score1, team2_goal, team1_goal);
-    teams[new_game.team2.first]->add_new_match(week, score2, team1_goal, team2_goal);
+    teams[new_game.team1.first]->add_new_match(
+        week, score1, team2_goal, team1_goal);
+    teams[new_game.team2.first]->add_new_match(
+        week, score2, team1_goal, team2_goal);
 }
 
 void Real_game_manager::update_players(Game_input new_game, int week)
@@ -94,7 +105,8 @@ void Real_game_manager::update_players(Game_input new_game, int week)
         players[i.first]->add_new_match(i.second, week);
 }
 
-vector<shared_ptr<Player>> Real_game_manager::get_all_players_in_post(string post)
+vector<shared_ptr<Player>> Real_game_manager::get_all_players_in_post(
+    string post)
 {
     vector<shared_ptr<Player>> output;
 
@@ -122,7 +134,8 @@ void Real_game_manager::add_week(vector<Game_input> games, int week)
         add_new_game(i, week);
 }
 
-void Real_game_manager::add_league_weeks(map<int, vector<Game_input>> league_week_data)
+void Real_game_manager::import_league_weeks(
+    map<int, vector<Game_input>> league_week_data)
 {
     for (auto i : league_week_data)
         add_week(i.second, i.first);
@@ -142,12 +155,14 @@ shared_ptr<Match_reporter> Real_game_manager::get_matches_report(int week)
     return make_shared<Match_reporter>(weeks_matches[week]);
 }
 
-shared_ptr<Team_player_reporter> Real_game_manager::get_team_player_report(Team_players_input input)
+shared_ptr<Team_player_reporter> Real_game_manager::get_team_player_report(
+    Team_players_input input)
 {
-    return make_shared<Team_player_reporter>(teams[input.name]->get_players(input.is_sort_with_rank,
-                                                                            input.just_special_post,
-                                                                            input.post, input.week),
-                                             input.week);
+    return make_shared<Team_player_reporter>(
+        teams[input.name]->get_players(input.is_sort_with_rank,
+                                       input.just_special_post,
+                                       input.post, input.week),
+        input.week);
 }
 
 shared_ptr<Team_list_reporter> Real_game_manager::get_team_list_report(int week)
@@ -157,7 +172,8 @@ shared_ptr<Team_list_reporter> Real_game_manager::get_team_list_report(int week)
     for (auto team : teams)
         output.push_back(team.second);
 
-    sort(output.begin(), output.end(), [week](shared_ptr<Team> t1, shared_ptr<Team> t2)
+    sort(output.begin(), output.end(),
+         [week](shared_ptr<Team> t1, shared_ptr<Team> t2)
          {
             if (t1->get_sum_score(week) != t2->get_sum_score(week))
                 return t1->get_sum_score(week) > t2->get_sum_score(week);
@@ -170,18 +186,21 @@ shared_ptr<Team_list_reporter> Real_game_manager::get_team_list_report(int week)
     return make_shared<Team_list_reporter>(output, week);
 }
 
-vector<shared_ptr<Player>> Real_game_manager::get_best_players_in_post(int week, string post, int count)
+vector<shared_ptr<Player>> Real_game_manager::get_best_players_in_post(
+    int week, string post, int count)
 {
     vector<shared_ptr<Player>> all_players = get_all_players_in_post(post);
 
-    sort(all_players.begin(), all_players.end(), [week](shared_ptr<Player> p1, shared_ptr<Player> p2) { //! possible bug in sort by name
-        if (p1->get_score(week) == p2->get_score(week))
-            return p1->get_name().compare(p2->get_name()) < 0;
-        else
-            return p1->get_score(week) > p2->get_score(week);
-    });
+    sort(all_players.begin(), all_players.end(),
+         [week](shared_ptr<Player> p1, shared_ptr<Player> p2) {
+             if (p1->get_score(week) == p2->get_score(week))
+                 return p1->get_name().compare(p2->get_name()) < 0;
+             else
+                 return p1->get_score(week) > p2->get_score(week);
+         });
 
-    return vector<shared_ptr<Player>>(all_players.begin(), all_players.begin() + count);
+    return vector<shared_ptr<Player>>(all_players.begin(),
+                                      all_players.begin() + count);
 }
 
 shared_ptr<Player> Real_game_manager::get_player_by_name(string name)

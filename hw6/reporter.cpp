@@ -5,7 +5,7 @@ Massage_reporter::Massage_reporter(string massage_)
     massage = massage_;
 }
 
-void Massage_reporter::cli_report()
+void Massage_reporter::get_cli_report()
 {
     cout << massage;
 }
@@ -21,7 +21,7 @@ bool sort_mission_logic(shared_ptr<Mission_with_status> m1, shared_ptr<Mission_w
     return m1->detail->get_time_range().start < m2->detail->get_time_range().start;
 }
 
-void new_completed_missions_reporter::cli_report()
+void new_completed_missions_reporter::get_cli_report()
 {
     sort(completed_missions.begin(), completed_missions.end(), sort_mission_logic);
     cout << "completed missions for driver " << driver_id << ":";
@@ -44,7 +44,7 @@ all_missions_reporter::all_missions_reporter(vector<shared_ptr<Mission_with_stat
     driver_id = driver_id_;
 }
 
-void all_missions_reporter::cli_report()
+void all_missions_reporter::get_cli_report()
 {
     sort(missions.begin(), missions.end(), sort_mission_logic);
     cout << "missions status for driver " << driver_id << ":";

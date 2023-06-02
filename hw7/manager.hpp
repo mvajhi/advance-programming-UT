@@ -16,38 +16,44 @@ private:
     Admin admin;
     bool transfer_window_status;
 
-    bool can_signup(User_login_info input);
-    shared_ptr<User> add_new_user(User_login_info input);
+    // check
     void check_can_login(User_login_info input);
     void check_admin_can_login(User_login_info input);
     void check_can_logout();
     void check_can_buy_player(string name);
     void check_can_sell_player(string name);
     void check_team_players(Team_players_input input);
+    bool can_signup(User_login_info input);
     bool is_user_logged();
+
+    // other
+    shared_ptr<User> add_new_user(User_login_info input);
     void update_user_new_week();
 
 public:
     Manager();
-
-    shared_ptr<Reporter> get_week_matches_report(int week);
 
     // SSO
     shared_ptr<Reporter> signup(User_login_info input);
     shared_ptr<Reporter> login(User_login_info input);
     shared_ptr<Reporter> logout();
     shared_ptr<Reporter> register_admin(User_login_info input);
+
     // output
     shared_ptr<Reporter> get_best_team(int week);
     shared_ptr<Reporter> get_team_players(Team_players_input input);
     shared_ptr<Reporter> get_team_list(int week);
     shared_ptr<Reporter> get_users_ranking();
+    shared_ptr<Reporter> get_week_matches_report(int week);
+
+    // time control
     shared_ptr<Reporter> pass_week();
     shared_ptr<Reporter> open_transfer_window();
     shared_ptr<Reporter> close_transfer_window();
 
+    // import
     void import_real_teams(League_data input);
-    void import_real_weeks(map<int, std::vector<Game_input>> input);
+    void import_real_weeks(map<int, vector<Game_input>> input);
 
     // transfer
     shared_ptr<Reporter> buy_player(string name);

@@ -69,12 +69,15 @@ void Manager::check_can_buy_player(string name)
     // check login
     if (!is_user_logged())
         throw PERMISSION_DENIED_MASSAGE;
+
     // check have this player
     if (!real_game_manager.does_player_exist(name))
         throw NOT_FOUND_MASSAGE;
+
     // check transfer open
     if (!Time::is_transfer_open())
         throw PERMISSION_DENIED_MASSAGE;
+
     // check player can play
     if (real_game_manager.get_player_by_name(name)
             ->can_play(Time::get_next_week()))
@@ -234,7 +237,7 @@ void Manager::import_real_teams(League_data input)
 
 void Manager::import_real_weeks(map<int, std::vector<Game_input>> input)
 {
-    real_game_manager.add_league_weeks(input);
+    real_game_manager.import_league_weeks(input);
 }
 
 shared_ptr<Reporter> Manager::buy_player(string name)
