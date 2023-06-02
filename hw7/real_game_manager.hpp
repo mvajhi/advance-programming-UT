@@ -35,4 +35,5 @@ public:
     vector<shared_ptr<Player>> get_best_players_in_post(int week, string post, int count);
     shared_ptr<Player> get_player_by_name(string name);
     bool does_player_exist(string name);
+    bool does_team_exist(string name);
 };

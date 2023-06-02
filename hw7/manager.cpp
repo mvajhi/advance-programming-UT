@@ -83,6 +83,26 @@ void Manager::check_can_buy_player(string name)
 
 void Manager::check_can_sell_player(string name)
 {
+    // check login
+    if (!is_user_logged())
+        throw PERMISSION_DENIED_MASSAGE;
+    // check have this player
+    if (!real_game_manager.does_player_exist(name))
+        throw NOT_FOUND_MASSAGE;
+    // check transfer open
+    if (!Time::is_transfer_open())
+        throw PERMISSION_DENIED_MASSAGE;
+}
+
+void Manager::check_team_players(Team_players_input input)
+{
+    // have this post
+    if (input.just_special_post &&
+        find(POSTS.begin(), POSTS.end(), input.post) == POSTS.end())
+        throw BAD_REQUEST_MASSAGE;
+    // have this team
+    if (!real_game_manager.does_team_exist(input.name))
+        throw NOT_FOUND_MASSAGE;
 }
 
 bool Manager::is_user_logged()
@@ -91,9 +111,17 @@ bool Manager::is_user_logged()
     return user_logged != nullptr;
 }
 
+void Manager::update_user_new_week()
+{
+    for (auto user : users)
+        user.second->ready_for_new_week();
+}
+
 shared_ptr<Reporter> Manager::get_week_matches_report(int week)
 {
-    // TODO check week
+    if (!Time::is_valid_week(week))
+        return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
+
     auto report = real_game_manager.get_matches_report(week);
     // TODO check for not found
     return report;
@@ -164,10 +192,18 @@ shared_ptr<Reporter> Manager::get_best_team(int week)
 {
     map<string, vector<shared_ptr<Player>>> best_team;
 
-    best_team.insert(make_pair(GK, real_game_manager.get_best_players_in_post(week, GK, 1)));
-    best_team.insert(make_pair(DF, real_game_manager.get_best_players_in_post(week, DF, 2)));
-    best_team.insert(make_pair(MF, real_game_manager.get_best_players_in_post(week, MF, 1)));
-    best_team.insert(make_pair(FW, real_game_manager.get_best_players_in_post(week, FW, 1)));
+    best_team.insert(make_pair(GK,
+                               real_game_manager
+                                   .get_best_players_in_post(week, GK, 1)));
+    best_team.insert(make_pair(DF,
+                               real_game_manager
+                                   .get_best_players_in_post(week, DF, 2)));
+    best_team.insert(make_pair(MF,
+                               real_game_manager
+                                   .get_best_players_in_post(week, MF, 1)));
+    best_team.insert(make_pair(FW,
+                               real_game_manager
+                                   .get_best_players_in_post(week, FW, 1)));
 
     return make_shared<Best_team_reporter>(best_team, week);
 }
@@ -176,15 +212,7 @@ shared_ptr<Reporter> Manager::get_team_players(Team_players_input input)
 {
     try
     {
-        // TODO rm
-        // cout << "name: " << input.name << endl;
-        // cout << "sort: " << input.is_sort_with_rank << endl;
-        // cout << "have post: " << input.just_special_post << endl;
-        // cout << "post: " << input.post << endl;
-        // cout << "\\\\\\\\\\\\\\\\\\\\\\\\\n";
-
-        // TODO
-        // check_team_players(input);
+        check_team_players(input);
 
         return real_game_manager.get_team_player_report(input);
     }
@@ -243,7 +271,9 @@ shared_ptr<Reporter> Manager::sell_player(string name)
 
 bool compare_users(User_ranking_data a, User_ranking_data b)
 {
-    if ((a.point < b.point) || ((a.point == b.point) && (a.name[0] < b.name[0])))
+    if ((a.point < b.point) ||
+        ((a.point == b.point) &&
+         (a.name[0] < b.name[0])))
         return 1;
     else
         return 0;
@@ -263,7 +293,7 @@ shared_ptr<Reporter> Manager::get_users_ranking()
 
     sort(collection.begin(), collection.end(), compare_users);
 
-    return make_shared<Massage_reporter>("TODO\n");
+    return make_shared<User_ranks_report>(collection);
 }
 
 shared_ptr<Reporter> Manager::pass_week()
@@ -272,7 +302,7 @@ shared_ptr<Reporter> Manager::pass_week()
         return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
 
     admin.pass_week();
-    // TODO update user team and copy for next week
+    update_user_new_week();
 
     return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }

@@ -193,3 +193,8 @@ bool Real_game_manager::does_player_exist(string name)
 {
     return players.count(name) != 0;
 }
+
+bool Real_game_manager::does_team_exist(string name)
+{
+    return teams.count(name) != 0;
+}

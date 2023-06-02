@@ -6,6 +6,7 @@ class Match;
 class Player;
 class Team;
 
+// TODO check Empty output
 class Reporter
 {
 public:

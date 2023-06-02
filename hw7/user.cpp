@@ -13,16 +13,48 @@ void User::create_weekly_teams()
 void User::check_can_buy()
 {
     // check can trade and count not full
-    if (Time::get_next_week() != week_joined &&
+    if (Time::get_next_week() != week_team_is_full &&
         user_teams[Time::get_next_week()].buy_count >= MAX_BUY_COUNT)
         throw PERMISSION_DENIED_MASSAGE;
+}
+
+void User::update_after_buy()
+{
+    user_teams[Time::get_next_week()].buy_count++;
+    update_team_state();
+}
+
+void User::check_can_sell()
+{
+    // check can trade and count not full
+    if (Time::get_next_week() != week_team_is_full &&
+        user_teams[Time::get_next_week()].sell_count >= MAX_SELL_COUNT)
+        throw PERMISSION_DENIED_MASSAGE;
+}
+
+void User::update_after_sell()
+{
+    user_teams[Time::get_next_week()].sell_count++;
+    update_team_state();
+}
+
+void User::update_team_state()
+{
+    if (user_teams[Time::get_next_week()].buy_count -
+                user_teams[Time::get_next_week()].sell_count ==
+            TEAM_SIZE &&
+        week_team_is_full != Time::get_next_week())
+        week_team_is_full = Time::get_next_week();
+
+    else if (week_team_is_full == Time::get_next_week())
+        week_team_is_full = NOT_FULL;
 }
 
 User::User(string user_name, string user_pass)
 {
     name = user_name;
     password = user_pass;
-    week_joined = Time::get_next_week();
+    week_team_is_full = NOT_FULL;
 
     create_weekly_teams();
 }
@@ -47,12 +79,23 @@ void User::buy_player(shared_ptr<Player> player)
     check_can_buy();
 
     user_teams[Time::get_next_week()].team.buy_player(player);
-    
-    user_teams[Time::get_next_week()].buy_count++;
+
+    update_after_buy();
 }
 
 void User::sell_player(string name)
 {
+    check_can_sell();
+
+    user_teams[Time::get_next_week()].team.sell_player(name);
+
+    update_after_sell();
+}
+
+void User::ready_for_new_week()
+{
+    user_teams[Time::get_next_week()].team =
+        user_teams[Time::get_week()].team;
 }
 
 double User::get_total_score(int week_num)

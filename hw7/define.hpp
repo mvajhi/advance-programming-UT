@@ -83,32 +83,40 @@ const string NOT_FOUND_MASSAGE = "Not Found";
 const string PLAYER_CANT_PLAY_MASSAGE = "This player is not available for next week";
 
 // commands
-const string SIGNUP_COMMAND = "POST signup ?";
-const string LOGIN_COMMAND = "POST login ?";
+const string SIGNUP_COMMAND = "POST signup ? team_name";
+const string LOGIN_COMMAND = "POST login ? team_name";
 const string LOGOUT_COMMAND = "POST logout";
-const string REGISTER_ADMIN_COMMAND = "POST register_admin ?";
+const string REGISTER_ADMIN_COMMAND = "POST register_admin ? username";
 const string BEST_TEAM_COMMAND = "GET team_of_the_week ?";
 const string TEAM_PLAYERS_COMMAND = "GET players ?";
 const string TEAM_LIST_COMMAND = "GET league_standing";
+const string USERS_RANKING_COMMAND = "GET users_ranking";
+const string PASS_WEEK_COMMAND = "POST pass_week";
+const string OPEN_TRANSFER_WINDOW_COMMAND = "POST open_transfer_window";
+const string CLOSE_TRANSFER_WINDOW_COMMAND = "POST close_transfer_window";
+const string SELL_PLAYER_COMMAND = "POST sell_player ? name";
+const string BUY_PLAYER_COMMAND = "POST buy_player ? name";
 const string SORT_BY_SCORE_COMMAND = "rank";
-const string USERS_RANKING = "GET users_ranking";
-const string PASS_WEEK = "POST pass_week";
-const string OPEN_TRANSFER_WINDOW = "post open_transfer_window";
-const string CLOSE_TRANSFER_WINDOW = "post close_transfer_window";
+const string PASSWORD_COMMAND = "password";
+const string WEEK_NUM_COMMAND = "week_num";
 
 // commands size
 const int LOGIN_COMMAND_SIZE = 7;
-const int BEST_TEAM_COMMAND_SIZE = 5;
+const int BEST_TEAM_COMMAND_MAX_SIZE = 5;
+const int BEST_TEAM_COMMAND_MIN_SIZE = 3;
 const int TEAM_PLAYERS_COMMAND_SIZE = 5;
+const int TEAM_PLAYERS_COMMAND_MAX_SIZE = 7;
 const int POST_COMMAND_SIZE = 2;
 const int TEAM_LIST_COMMAND_SIZE = 2;
 const int REGISTER_ADMIN_COMMAND_SIZE = 7;
+const int TRANSFER_COMMAND_SIZE = 5;
 
 // commands index
 const int USERNAME_INDEX = 4;
 const int PASSWORD_INDEX = 6;
 const int TEAM_NAME_COMMAND_INDEX = 4;
 const int POST_COMMAND_INDEX = 5;
+const int WEEK_NUM_INDEX = 3;
 
 // file
 const char ROLE_SEPARATOR = ',';
@@ -139,10 +147,12 @@ const string LEAGUE_ADDRESS = DATA_ADDRESS + "/premier_league.csv";
 const string WEEK_ADDRESS = DATA_ADDRESS + "/weeks_stats" + "/week_";
 const string CSV_FORMAT = ".csv";
 
+// posts
 const string GK = "gk";
 const string DF = "df";
 const string MF = "mf";
 const string FW = "fw";
+const vector<string> POSTS = {GK, DF, MF, FW};
 
 // real game role
 const int WIN_SCORE = 3;
@@ -155,6 +165,8 @@ const int MAX_YELLOW_CARD = 3;
 // fantasy game role
 const int MAX_BUY_COUNT = 2;
 const int MAX_SELL_COUNT = 2;
+const int TEAM_SIZE = 5;
+const int NOT_FULL = 20;
 
 // allowed size of each post index
 const int GK_ALLOWED_SIZE = 1;

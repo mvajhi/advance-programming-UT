@@ -1,6 +1,6 @@
 #include "FantasyTeam.hpp"
 
-    map<string, size_t> MAX_PLAYER_IN_ROLE =
+map<string, size_t> MAX_PLAYER_IN_ROLE =
     {
         {GK, 1},
         {DF, 2},
@@ -25,12 +25,14 @@ void FantasyTeam::sell_player(string name)
                 players[role.first].erase(players[role.first].begin() + player);
                 return;
             }
+
+    throw NOT_FOUND_MASSAGE;
 }
 
 void FantasyTeam::buy_player(shared_ptr<Player> target_player)
 {
     check_can_buy(target_player);
-    
+
     players[target_player->get_role()].push_back(target_player);
 }
 

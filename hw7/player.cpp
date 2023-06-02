@@ -92,9 +92,6 @@ double Player::get_avg_score(int week)
 
 void Player::add_new_match(Player_status status, int week)
 {
-    // // TODO rm
-    // cout << "score " << name << " in week " << week << " is " << status.score << endl;
-
     update_card_status(status);
 
     weeks_games.insert(make_pair(week, status));

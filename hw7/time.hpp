@@ -18,4 +18,5 @@ public:
     static int get_week();
     static int get_next_week();
     static bool is_transfer_open();
+    static bool is_valid_week(int input_week);
 };

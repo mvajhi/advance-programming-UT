@@ -17,11 +17,15 @@ class User
 private:
     string name;
     string password;
-    int week_joined;
+    int week_team_is_full;
     map<int, Weekly_team> user_teams;
     
     void create_weekly_teams();
     void check_can_buy();
+    void update_after_buy();
+    void check_can_sell();
+    void update_after_sell();
+    void update_team_state();
 
 public:
     User(string user_name, string user_pass);
@@ -31,6 +35,7 @@ public:
     FantasyTeam get_team(int week);
     void buy_player(shared_ptr<Player> player);
     void sell_player(string name);
+    void ready_for_new_week();
 };
 
 class Admin

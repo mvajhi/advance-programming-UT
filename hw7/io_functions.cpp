@@ -32,22 +32,26 @@ shared_ptr<Reporter> proccess(vector<string> input, Manager &manager)
             return manager.login(convert_to_login_info(input));
         else if (are_commands_some(input, LOGOUT_COMMAND))
             return manager.logout();
-        else if (are_commands_some(input , REGISTER_ADMIN_COMMAND))
+        else if (are_commands_some(input, REGISTER_ADMIN_COMMAND))
             return manager.register_admin(convert_to_login_info(input));
         else if (are_commands_some(input, BEST_TEAM_COMMAND))
-            return manager.get_best_team(convert_to_best_team_input(input, manager));
+            return manager.get_best_team(convert_to_best_team_input(input));
         else if (are_commands_some(input, TEAM_PLAYERS_COMMAND))
-            return manager.get_team_players(convert_to_team_players_input(input, manager));
+            return manager.get_team_players(convert_to_team_players_input(input));
         else if (are_commands_some(input, TEAM_LIST_COMMAND))
-            return manager.get_team_list(convert_to_team_list_input(input, manager));
-        else if (are_commands_some(input, USERS_RANKING))
+            return manager.get_team_list(convert_to_team_list_input(input));
+        else if (are_commands_some(input, USERS_RANKING_COMMAND))
             return manager.get_users_ranking();
-        else if (are_commands_some(input , PASS_WEEK))
+        else if (are_commands_some(input, PASS_WEEK_COMMAND))
             return manager.pass_week();
-        else if (are_commands_some(input , OPEN_TRANSFER_WINDOW))
+        else if (are_commands_some(input, OPEN_TRANSFER_WINDOW_COMMAND))
             return manager.open_transfer_window();
-        else if(are_commands_some(input , CLOSE_TRANSFER_WINDOW))
+        else if (are_commands_some(input, CLOSE_TRANSFER_WINDOW_COMMAND))
             return manager.close_transfer_window();
+        else if (are_commands_some(input, BUY_PLAYER_COMMAND))
+            return manager.buy_player(convert_to_transfer_input(input));
+        else if (are_commands_some(input, SELL_PLAYER_COMMAND))
+            return manager.sell_player(convert_to_transfer_input(input));
         else
             return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + " TODO check error\n");
     }
@@ -73,10 +77,9 @@ void import_files(Manager &manager)
 
 User_login_info convert_to_login_info(vector<string> input)
 {
-    User_login_info output;
+    check_sso_input(input);
 
-    if (input.size() != LOGIN_COMMAND_SIZE)
-        throw make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
+    User_login_info output;
 
     output.username = input[USERNAME_INDEX];
     output.password = input[PASSWORD_INDEX];
@@ -141,23 +144,26 @@ Player_status initialize_status(double score)
     return target;
 }
 
-int convert_to_best_team_input(vector<string> input, Manager &manager)
+int convert_to_best_team_input(vector<string> input)
 {
-    if (input.size() < BEST_TEAM_COMMAND_SIZE)
+    check_best_team_input(input);
+
+    if (input.size() == BEST_TEAM_COMMAND_MIN_SIZE)
         return Time::get_week();
-    return stoi(input[BEST_TEAM_COMMAND_SIZE - 1]);
+    return stoi(input[BEST_TEAM_COMMAND_MAX_SIZE - 1]);
 }
 
-int convert_to_team_list_input(vector<string> input, Manager &manager)
+int convert_to_team_list_input(vector<string> input)
 {
     if (input.size() != TEAM_LIST_COMMAND_SIZE)
         throw BAD_REQUEST_MASSAGE;
     return Time::get_week();
 }
 
-Team_players_input convert_to_team_players_input(vector<string> input, Manager &manager)
+Team_players_input convert_to_team_players_input(vector<string> input)
 {
-    // TODO check input
+    check_team_player_input(input);
+
     Team_players_input output;
     output.name = replace_char(input[TEAM_NAME_COMMAND_INDEX], TEAM_NAME_SEPARATOR, ' ');
     output.week = Time::get_week();
@@ -192,6 +198,47 @@ string replace_char(string input, char str_char, char final_char)
     output.pop_back();
 
     return output;
+}
+
+string convert_to_transfer_input(vector<string> input)
+{
+    check_transfer_input(input);
+
+    string output = "";
+    for (size_t i = TRANSFER_COMMAND_SIZE - 1; i < input.size(); i++)
+        output += input[i] + " ";
+    output.pop_back();
+
+    return output;
+}
+
+void check_transfer_input(vector<string> input)
+{
+    if (input.size() < TRANSFER_COMMAND_SIZE)
+        throw BAD_REQUEST_MASSAGE;
+}
+
+void check_team_player_input(vector<string> input)
+{
+    if (input.size() > TEAM_PLAYERS_COMMAND_MAX_SIZE)
+        throw BAD_REQUEST_MASSAGE;
+}
+
+void check_sso_input(vector<string> input)
+{
+    if (input.size() != LOGIN_COMMAND_SIZE ||
+        input[PASSWORD_INDEX - 1] != PASSWORD_COMMAND)
+        throw BAD_REQUEST_MASSAGE;
+}
+
+void check_best_team_input(vector<string> input)
+{
+    if (input.size() != BEST_TEAM_COMMAND_MAX_SIZE &&
+        input.size() != BEST_TEAM_COMMAND_MIN_SIZE)
+        throw BAD_REQUEST_MASSAGE;
+    if (input.size() == BEST_TEAM_COMMAND_MAX_SIZE &&
+        input[WEEK_NUM_INDEX] == WEEK_NUM_COMMAND)
+        throw BAD_REQUEST_MASSAGE;
 }
 
 map<string, Player_status> get_score_from_csv(vector<string> scores)
@@ -234,6 +281,7 @@ void update_with_injured_players(map<string, Player_status> &player_scores, vect
         player_scores[player].injured = true;
 }
 
+// TODO break it
 Game_input read_game_information(string line)
 {
     vector<string> game_info = separate_line(line, ROLE_SEPARATOR, false);
@@ -244,24 +292,8 @@ Game_input read_game_information(string line)
     vector<string> red_card_players = separate_line(game_info[RED_CARD_INDEX], PLAYER_SEPARATOR);
     vector<string> score_players = separate_line(game_info[SCORES_INDEX], PLAYER_SEPARATOR);
     vector<string> scores_vec = choose_score_subset(score_players);
-    // // TODO
-    // cout << line << endl;
-    // for (auto i : game_info)
-    //     cout << "GAM??    " << i << endl;
-    // for (auto i : team_names)
-    //     cout << "TNA??    " << i << endl;
-    // for (auto i : team_results)
-    //     cout << "TRE??    " << i << endl;
-    // for (auto i : injured_players)
-    //     cout << "INP??    " << i << endl;
-    // for (auto i : yellow_card_players)
-    //     cout << "YCP??    " << i << endl;
-    // for (auto i : red_card_players)
-    //     cout << "RCP??    " << i << endl;
-    // for (auto i : scores_vec)
-    //     cout << "SCO??    " << i << endl;
 
-    ///////////
+    /////////////
     map<string, Player_status> player_scores = get_score_from_csv(scores_vec);
     update_with_injured_players(player_scores, injured_players);
     update_with_yellow_card(player_scores, yellow_card_players);
@@ -283,19 +315,12 @@ Week_state import_week_state(int week_num)
     Week_state new_week;
     vector<Game_input> weeks_games;
     ifstream file(WEEK_ADDRESS + to_string(week_num) + CSV_FORMAT);
-    if (!file.is_open())
-        cout << "problem in opening file" << endl;
 
     getline(file, line);
     while (getline(file, line))
         weeks_games.push_back(read_game_information(line));
     new_week.weeks_games = weeks_games;
 
-    // // TODO rm
-    // // for (auto i : leagues_weeks)
-    // for (auto j : weeks_games)
-    // for (auto k : j.players_status)
-    // cout << "what???   " << k.first << "\t\tis " << k.second.score << " in week " << week_num << endl;
     return new_week;
 }
 
@@ -304,11 +329,6 @@ map<int, vector<Game_input>> import_league_weeks()
     map<int, vector<Game_input>> leagues_weeks;
     for (int week_num = FIRST_WEEK; week_num <= FINAL_WEEK; week_num++)
         leagues_weeks.insert(make_pair(week_num, import_week_state(week_num).weeks_games));
-    // // TODO rm
-    // for (auto i : leagues_weeks)
-    // for (auto j : i.second)
-    // for (auto k : j.players_status)
-    // cout << "what???   " << k.first << "\t\tis " << k.second.score << " in week " << i.first << endl;
 
     return leagues_weeks;
 }

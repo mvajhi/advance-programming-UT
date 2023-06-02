@@ -18,6 +18,11 @@ bool Time::is_transfer_open()
     return transfer;
 }
 
+bool Time::is_valid_week(int input_week)
+{
+    return input_week <= week;
+}
+
 void Time::close_transfer()
 {
     transfer = false;
@@ -30,6 +35,5 @@ void Time::open_transfer()
 
 void Time::go_next_week()
 {
-    // TODO check can go
     week++;
 }

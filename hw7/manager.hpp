@@ -23,7 +23,9 @@ private:
     void check_can_logout();
     void check_can_buy_player(string name);
     void check_can_sell_player(string name);
+    void check_team_players(Team_players_input input);
     bool is_user_logged();
+    void update_user_new_week();
 
 public:
     Manager();
