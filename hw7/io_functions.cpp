@@ -91,8 +91,7 @@ shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager)
     else if (are_commands_some(input, GET_SQUAD_COMMAND))
         return manager.get_fantasy_team(convert_to_fantasy_team_name(input));
     else if (are_commands_some(input, MATCH_REPORT_COMMAND))
-        return manager.get_week_matches_report(convert_to_best_team_input(input));
-        // TODO change arg matches report
+        return manager.get_week_matches_report(convert_to_matches_input(input));
     else
         return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 }
@@ -161,6 +160,16 @@ int convert_to_best_team_input(vector<string> input)
     return stoi(input[BEST_TEAM_COMMAND_MAX_SIZE - 1]);
 }
 
+int convert_to_matches_input(vector<string> input)
+{
+    check_matches_input(input);
+
+    if (input.size() == MATCHES_COMMAND_MIN_SIZE)
+        return Time::get_week();
+
+    return stoi(input[MATCHES_COMMAND_MAX_SIZE - 1]);
+}
+
 int convert_to_team_list_input(vector<string> input)
 {
     if (input.size() != TEAM_LIST_COMMAND_SIZE)
@@ -192,14 +201,15 @@ Team_players_input convert_to_team_players_input(vector<string> input)
     return output;
 }
 
-string convert_to_fantasy_team_name(vector<string> input)
+Fantasy_input convert_to_fantasy_team_name(vector<string> input)
 {
-    // TODO check input
+    Fantasy_input output;
+    output.have_name = true;
     if (input.size() == GET_SQUAD_COMMAND_SIZE)
-        return input[USERNAME_INDEX];
+        output.name = input[USERNAME_INDEX];
     else
-        // TODO
-        return "user_logged";
+        output.have_name = false;
+    return output;
 }
 
 bool is_a_post(string input)
@@ -263,6 +273,21 @@ void check_team_player_input(vector<string> input)
     }
 }
 
+void check_matches_input(vector<string> input)
+{
+    if (input.size() != MATCHES_COMMAND_MAX_SIZE &&
+        input.size() != MATCHES_COMMAND_MIN_SIZE)
+        throw BAD_REQUEST_MASSAGE;
+
+    if (input.size() == MATCHES_COMMAND_MAX_SIZE)
+        if (input[WEEK_NUM_INDEX] != WEEK_NUM_COMMAND)
+            throw BAD_REQUEST_MASSAGE;
+        else if (!is_number(input[WEEK_NUM_INDEX + 1]))
+            throw BAD_REQUEST_MASSAGE;
+        else if (Time::get_week() < stoi(input[WEEK_NUM_INDEX + 1]))
+            throw BAD_REQUEST_MASSAGE;
+}
+
 void check_sso_input(vector<string> input)
 {
     if (input.size() != LOGIN_COMMAND_SIZE ||
@@ -283,12 +308,6 @@ void check_best_team_input(vector<string> input)
             throw BAD_REQUEST_MASSAGE;
         else if (Time::get_week() < stoi(input[WEEK_NUM_INDEX + 1]))
             throw BAD_REQUEST_MASSAGE;
-        else
-        {
-        }
-    else
-    {
-    }
 }
 
 bool is_number(string num)
@@ -376,7 +395,6 @@ void update_with_injured_players(map<string, Player_status> &player_scores,
         player_scores[player].injured = true;
 }
 
-// TODO break it
 Game_input read_game_information(string line)
 {
     Match_info game_info = convert_line_to_raw_info(line);

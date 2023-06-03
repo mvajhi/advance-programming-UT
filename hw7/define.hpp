@@ -93,13 +93,19 @@ struct Fantasy_team_data
     bool is_full;
 };
 
+struct Fantasy_input
+{
+    bool have_name;
+    string name;
+};
+
 // status massage
 const string SUCCESS_MASSAGE = "OK";
+const string EMPTY_MASSAGE = "EMPTY";
 const string NOT_FOUND_MASSAGE = "Not Found";
 const string BAD_REQUEST_MASSAGE = "Bad Request";
 const string PERMISSION_DENIED_MASSAGE = "Permission Denied";
 const string PLAYER_CANT_PLAY_MASSAGE = "This player is not available for next week";
-const string EMPTY_MASSAGE = "EMPTY";
 
 // commands
 const string LOGOUT_COMMAND = "POST logout";
@@ -129,6 +135,8 @@ const int LOGIN_COMMAND_SIZE = 7;
 const int TRANSFER_COMMAND_SIZE = 5;
 const int GET_SQUAD_COMMAND_SIZE = 5;
 const int TEAM_LIST_COMMAND_SIZE = 2;
+const int MATCHES_COMMAND_MIN_SIZE = 3;
+const int MATCHES_COMMAND_MAX_SIZE = 5;
 const int TEAM_PLAYERS_COMMAND_SIZE = 5;
 const int BEST_TEAM_COMMAND_MIN_SIZE = 3;
 const int BEST_TEAM_COMMAND_MAX_SIZE = 5;
@@ -187,10 +195,10 @@ const int NUM_WEEK_DONT_PLAY_FOR_INJURED = 3;
 const int NUM_WEEK_DONT_PLAY_FOR_RED_CARD = 1;
 
 // fantasy game role
-const int MAX_BUY_COUNT = 2;
-const int MAX_SELL_COUNT = 2;
 const int TEAM_SIZE = 5;
 const int NOT_FULL = 20;
+const int MAX_BUY_COUNT = 2;
+const int MAX_SELL_COUNT = 2;
 
 // allowed size of each post index
 const int GK_ALLOWED_SIZE = 1;

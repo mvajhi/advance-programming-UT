@@ -63,17 +63,12 @@ void Real_game_manager::add_new_match(Game_input new_game, int week)
     if (weeks_matches.count(week) == 0)
         weeks_matches.insert(make_pair(week, vector<shared_ptr<Match>>()));
 
-
     weeks_matches[week].push_back(
         make_shared<Match>(
             teams[new_game.team1.first],
             new_game.team1.second,
             teams[new_game.team2.first],
             new_game.team2.second));
-
-    // cout << weeks_matches.size() << endl;
-    // cout << weeks_matches[week][0]->team1 << endl;
-    // cout << weeks_matches[week][0]->team1 << endl;
 }
 
 void Real_game_manager::update_teams(Game_input new_game, int week)

@@ -131,14 +131,30 @@ User_ranks_report::User_ranks_report(vector<User_ranking_data> collection_)
 
 void User_ranks_report::get_cli_report()
 {
+    if (collection.size() == 0)
+        Massage_reporter(EMPTY_MASSAGE + "\n").get_cli_report();
+    
     for (size_t i = 0; i < collection.size(); i++)
         cout << i + 1 << ". "
              << convert_collection_to_string(collection[i]) << endl;
 }
 
+void FantasyTeamReporter::sort_defender()
+{
+    string buffer;
+    if (target_team.df1.compare(target_team.df2) < 0)
+    {
+        buffer = target_team.df1;
+        target_team.df1 = target_team.df2;
+        target_team.df2 = buffer;
+    }
+}
+
 FantasyTeamReporter::FantasyTeamReporter(Fantasy_team_data target_team_)
 {
     target_team = target_team_;
+    
+    sort_defender();
 }
 
 void FantasyTeamReporter::get_cli_report()
@@ -151,7 +167,6 @@ void FantasyTeamReporter::get_cli_report()
 
     cout << "fantasy_team: " << target_team.team_name << endl;
     cout << "Goalkeeper: " << target_team.gk << endl;
-    // TODO sort defender
     cout << "Defender1: " << target_team.df1 << endl;
     cout << "Defender2: " << target_team.df2 << endl;
     cout << "Midfielder: " << target_team.mf << endl;

@@ -23,12 +23,14 @@ private:
     void check_can_buy_player(string name);
     void check_can_sell_player(string name);
     void check_team_players(Team_players_input input);
+    void check_can_show_fantasy_team(Fantasy_input input);
     bool can_signup(User_login_info input);
     bool is_user_logged();
 
     // other
     shared_ptr<User> add_new_user(User_login_info input);
     void update_user_new_week();
+    shared_ptr<Reporter> set_transfer(bool mod);
 
 public:
     Manager();
@@ -45,7 +47,7 @@ public:
     shared_ptr<Reporter> get_team_list(int week);
     shared_ptr<Reporter> get_users_ranking();
     shared_ptr<Reporter> get_week_matches_report(int week);
-    shared_ptr<Reporter> get_fantasy_team(string target_team);
+    shared_ptr<Reporter> get_fantasy_team(Fantasy_input target_team);
 
     // time control
     shared_ptr<Reporter> pass_week();

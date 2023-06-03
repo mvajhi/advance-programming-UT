@@ -6,7 +6,6 @@ class Match;
 class Player;
 class Team;
 
-// TODO check Empty output
 class Reporter
 {
 public:
@@ -89,6 +88,8 @@ class FantasyTeamReporter : public Reporter
 {
 private:
     Fantasy_team_data target_team;
+
+    void sort_defender();
 
 public:
     FantasyTeamReporter(Fantasy_team_data target_team_);

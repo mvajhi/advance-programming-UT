@@ -89,9 +89,11 @@ void Manager::check_can_sell_player(string name)
     // check login
     if (!is_user_logged())
         throw PERMISSION_DENIED_MASSAGE;
+
     // check have this player
     if (!real_game_manager.does_player_exist(name))
         throw NOT_FOUND_MASSAGE;
+
     // check transfer open
     if (!Time::is_transfer_open())
         throw PERMISSION_DENIED_MASSAGE;
@@ -103,14 +105,25 @@ void Manager::check_team_players(Team_players_input input)
     if (input.just_special_post &&
         find(POSTS.begin(), POSTS.end(), input.post) == POSTS.end())
         throw BAD_REQUEST_MASSAGE;
+
     // have this team
     if (!real_game_manager.does_team_exist(input.name))
         throw NOT_FOUND_MASSAGE;
 }
 
+void Manager::check_can_show_fantasy_team(Fantasy_input input)
+{
+    // check logged
+    if (user_logged == nullptr)
+        throw PERMISSION_DENIED_MASSAGE;
+
+    // check have target user
+    if (input.have_name && users.count(input.name) == 0)
+        throw NOT_FOUND_MASSAGE;
+}
+
 bool Manager::is_user_logged()
 {
-    // !change == to !=
     return user_logged != nullptr;
 }
 
@@ -120,29 +133,43 @@ void Manager::update_user_new_week()
         user.second->ready_for_new_week();
 }
 
+shared_ptr<Reporter> Manager::set_transfer(bool mod)
+{
+    if (!admin.is_logged())
+        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
+
+    mod ? admin.open_transfer_window() : admin.close_transfer_window();
+
+    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+}
+
 shared_ptr<Reporter> Manager::get_week_matches_report(int week)
 {
     if (!Time::is_valid_week(week))
         return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 
     auto report = real_game_manager.get_matches_report(week);
-    // TODO check for not found
+    
     return report;
 }
 
-shared_ptr<Reporter> Manager::get_fantasy_team(string target_team)
+shared_ptr<Reporter> Manager::get_fantasy_team(Fantasy_input target_team)
 {
-    // TODO FIX that
-    if (user_logged == nullptr)
-        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
-    // TODO fix user_logged
-    if (target_team == "user_logged")
-        return make_shared<FantasyTeamReporter>(user_logged->show_fantasy_team(Time::get_week()));
-    // TODO check input
-    if (users.count(target_team) == 0)
-        return make_shared<Massage_reporter>(NOT_FOUND_MASSAGE + "\n");
-
-    return make_shared<FantasyTeamReporter>(users[user_logged->get_name()]->show_fantasy_team(Time::get_week()));
+    try
+    {
+        check_can_show_fantasy_team(target_team);
+        if (target_team.have_name)
+            return make_shared<FantasyTeamReporter>(
+                users[user_logged->get_name()]
+                    ->show_fantasy_team(Time::get_week()));
+        else
+            return make_shared<FantasyTeamReporter>(
+                user_logged->show_fantasy_team(Time::get_week()));
+    }
+    catch (const string &error)
+    {
+        return make_shared<Massage_reporter>(error + "\n");
+    }
 }
 
 shared_ptr<Reporter> Manager::signup(User_login_info input)
@@ -325,23 +352,12 @@ shared_ptr<Reporter> Manager::pass_week()
     return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
 }
 
-// TODO merge funcs
 shared_ptr<Reporter> Manager::open_transfer_window()
 {
-    if (!admin.is_logged())
-        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
-
-    admin.open_transfer_window();
-
-    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+    return set_transfer(true);
 }
 
 shared_ptr<Reporter> Manager::close_transfer_window()
 {
-    if (!admin.is_logged())
-        return make_shared<Massage_reporter>(PERMISSION_DENIED_MASSAGE + "\n");
-
-    admin.close_transfer_window();
-
-    return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+    return set_transfer(false);
 }
