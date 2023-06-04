@@ -1,6 +1,6 @@
 #include "time.hpp"
 
-int Time::week = 1;
+int Time::week = 0;
 bool Time::transfer = true;
 
 int Time::get_week()
