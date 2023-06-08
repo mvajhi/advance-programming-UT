@@ -3,7 +3,7 @@ CFLAGS=-c -Wall --std=c++11
 LDFLAGS= 
 
 BIN_DIR =./bin
-EXECUTABLE = $(BIN_DIR)/main
+EXECUTABLE = $(BIN_DIR)/futballFantasy.out
 
 SOURCES=$(wildcard *.cpp)
 OBJS = $(patsubst %.cpp,$(BIN_DIR)/%.o,$(SOURCES))

@@ -101,7 +101,7 @@ struct Fantasy_input
 
 // status massage
 const string SUCCESS_MASSAGE = "OK";
-const string EMPTY_MASSAGE = "EMPTY";
+const string EMPTY_MASSAGE = "Empty";
 const string NOT_FOUND_MASSAGE = "Not Found";
 const string BAD_REQUEST_MASSAGE = "Bad Request";
 const string PERMISSION_DENIED_MASSAGE = "Permission Denied";
