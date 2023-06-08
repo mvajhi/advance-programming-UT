@@ -17,11 +17,12 @@ private:
     string name;
     string password;
     int week_team_is_full;
+    int week_joined;
     map<int, Weekly_team> user_teams;
 
     // check
-    void check_can_sell();
     void check_can_buy();
+    void check_can_sell();
 
     // update
     void update_after_buy();
@@ -41,11 +42,12 @@ public:
     Fantasy_team_data show_fantasy_team(int week_num);
 
     // check
+    bool is_joined(int week);
     bool is_password_valid(string pass);
 
     // transform
-    void buy_player(shared_ptr<Player> player);
     void sell_player(string name);
+    void buy_player(shared_ptr<Player> player);
 
     // other
     void ready_for_new_week();
@@ -65,8 +67,8 @@ public:
     bool is_valid_password(string input);
 
     // SSO
-    void logging();
     void logout();
+    void logging();
 
     // time control
     void pass_week();

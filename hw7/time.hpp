@@ -9,9 +9,9 @@ private:
     static bool transfer;
 
     // change
-    static void close_transfer();
-    static void open_transfer();
     static void go_next_week();
+    static void open_transfer();
+    static void close_transfer();
 
     friend class Admin;
 

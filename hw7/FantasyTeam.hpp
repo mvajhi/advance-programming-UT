@@ -18,9 +18,9 @@ public:
     map<string, vector<shared_ptr<Player>>> get_players();
 
     // check
+    bool is_team_full();
     bool can_add_player(string post);
     bool have_this_player(string name);
-    bool is_team_full();
 
     // transfer
     void sell_player(string name);

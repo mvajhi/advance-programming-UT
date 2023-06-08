@@ -55,6 +55,7 @@ User::User(string user_name, string user_pass)
     name = user_name;
     password = user_pass;
     week_team_is_full = NOT_FULL;
+    week_joined = Time::get_next_week();
 
     create_weekly_teams();
 }
@@ -62,6 +63,11 @@ User::User(string user_name, string user_pass)
 bool User::is_password_valid(string pass)
 {
     return pass == password;
+}
+
+bool User::is_joined(int week)
+{
+    return week >= week_joined;
 }
 
 string User::get_name()

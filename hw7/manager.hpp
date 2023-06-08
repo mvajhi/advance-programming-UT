@@ -6,26 +6,25 @@
 #include "real_game_manager.hpp"
 #include <algorithm>
 
-// TODO separate checker
 class Manager
 {
 private:
-    Real_game_manager real_game_manager;
-    map<string, shared_ptr<User>> users;
-    shared_ptr<User> user_logged;
     Admin admin;
     bool transfer_window_status;
+    shared_ptr<User> user_logged;
+    Real_game_manager real_game_manager;
+    map<string, shared_ptr<User>> users;
 
     // check
-    void check_can_login(User_login_info input);
-    void check_admin_can_login(User_login_info input);
+    bool is_user_logged();
     void check_can_logout();
     void check_can_buy_player(string name);
-    void check_can_sell_player(string name);
-    void check_team_players(Team_players_input input);
-    void check_can_show_fantasy_team(Fantasy_input input);
     bool can_signup(User_login_info input);
-    bool is_user_logged();
+    void check_can_sell_player(string name);
+    void check_can_login(User_login_info input);
+    void check_team_players(Team_players_input input);
+    void check_admin_can_login(User_login_info input);
+    void check_can_show_fantasy_team(Fantasy_input input);
 
     // other
     shared_ptr<User> add_new_user(User_login_info input);
@@ -42,11 +41,11 @@ public:
     shared_ptr<Reporter> register_admin(User_login_info input);
 
     // output
-    shared_ptr<Reporter> get_best_team(int week);
-    shared_ptr<Reporter> get_team_players(Team_players_input input);
-    shared_ptr<Reporter> get_team_list(int week);
     shared_ptr<Reporter> get_users_ranking();
+    shared_ptr<Reporter> get_team_list(int week);
+    shared_ptr<Reporter> get_best_team(int week);
     shared_ptr<Reporter> get_week_matches_report(int week);
+    shared_ptr<Reporter> get_team_players(Team_players_input input);
     shared_ptr<Reporter> get_fantasy_team(Fantasy_input target_team);
 
     // time control

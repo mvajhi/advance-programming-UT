@@ -42,13 +42,13 @@ public:
     void import_league_weeks(map<int, vector<Game_input>> league_week_data);
 
     // output
+    shared_ptr<Player> get_player_by_name(string name);
     shared_ptr<Match_reporter> get_matches_report(int week);
-    shared_ptr<Team_player_reporter> get_team_player_report(
-        Team_players_input input);
     shared_ptr<Team_list_reporter> get_team_list_report(int week);
     vector<shared_ptr<Player>> get_best_players_in_post(
         int week, string post, int count);
-    shared_ptr<Player> get_player_by_name(string name);
+    shared_ptr<Team_player_reporter> get_team_player_report(
+        Team_players_input input);
 
     // check
     bool does_team_exist(string name);

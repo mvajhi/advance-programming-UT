@@ -149,7 +149,7 @@ shared_ptr<Reporter> Manager::get_week_matches_report(int week)
         return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 
     auto report = real_game_manager.get_matches_report(week);
-    
+
     return report;
 }
 
@@ -330,11 +330,12 @@ shared_ptr<Reporter> Manager::get_users_ranking()
     vector<User_ranking_data> collection;
 
     for (auto user : users)
-    {
-        user_date.name = user.first;
-        user_date.point = user.second->get_total_score(Time::get_week());
-        collection.push_back(user_date);
-    }
+        if (user.second->is_joined(Time::get_week()))
+        {
+            user_date.name = user.first;
+            user_date.point = user.second->get_total_score(Time::get_week());
+            collection.push_back(user_date);
+        }
 
     sort(collection.begin(), collection.end(), compare_users);
 

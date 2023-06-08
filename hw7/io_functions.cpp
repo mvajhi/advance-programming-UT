@@ -62,34 +62,34 @@ shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager)
 {
     if (input.size() == 0)
         return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
-    else if (are_commands_some(input, SIGNUP_COMMAND))
-        return manager.signup(convert_to_login_info(input));
-    else if (are_commands_some(input, LOGIN_COMMAND))
-        return manager.login(convert_to_login_info(input));
     else if (are_commands_some(input, LOGOUT_COMMAND))
         return manager.logout();
-    else if (are_commands_some(input, REGISTER_ADMIN_COMMAND))
-        return manager.register_admin(convert_to_login_info(input));
-    else if (are_commands_some(input, BEST_TEAM_COMMAND))
-        return manager.get_best_team(convert_to_best_team_input(input));
-    else if (are_commands_some(input, TEAM_PLAYERS_COMMAND))
-        return manager.get_team_players(convert_to_team_players_input(input));
-    else if (are_commands_some(input, TEAM_LIST_COMMAND))
-        return manager.get_team_list(convert_to_team_list_input(input));
-    else if (are_commands_some(input, USERS_RANKING_COMMAND))
-        return manager.get_users_ranking();
     else if (are_commands_some(input, PASS_WEEK_COMMAND))
         return manager.pass_week();
+    else if (are_commands_some(input, USERS_RANKING_COMMAND))
+        return manager.get_users_ranking();
     else if (are_commands_some(input, OPEN_TRANSFER_WINDOW_COMMAND))
         return manager.open_transfer_window();
     else if (are_commands_some(input, CLOSE_TRANSFER_WINDOW_COMMAND))
         return manager.close_transfer_window();
+    else if (are_commands_some(input, LOGIN_COMMAND))
+        return manager.login(convert_to_login_info(input));
+    else if (are_commands_some(input, SIGNUP_COMMAND))
+        return manager.signup(convert_to_login_info(input));
     else if (are_commands_some(input, BUY_PLAYER_COMMAND))
         return manager.buy_player(convert_to_transfer_input(input));
+    else if (are_commands_some(input, REGISTER_ADMIN_COMMAND))
+        return manager.register_admin(convert_to_login_info(input));
     else if (are_commands_some(input, SELL_PLAYER_COMMAND))
         return manager.sell_player(convert_to_transfer_input(input));
+    else if (are_commands_some(input, TEAM_LIST_COMMAND))
+        return manager.get_team_list(convert_to_team_list_input(input));
+    else if (are_commands_some(input, BEST_TEAM_COMMAND))
+        return manager.get_best_team(convert_to_best_team_input(input));
     else if (are_commands_some(input, GET_SQUAD_COMMAND))
         return manager.get_fantasy_team(convert_to_fantasy_team_name(input));
+    else if (are_commands_some(input, TEAM_PLAYERS_COMMAND))
+        return manager.get_team_players(convert_to_team_players_input(input));
     else if (are_commands_some(input, MATCH_REPORT_COMMAND))
         return manager.get_week_matches_report(convert_to_matches_input(input));
     else

@@ -14,5 +14,6 @@ private:
 
 public:
     Match(
-        shared_ptr<Team> team1_ptr, int goal1, shared_ptr<Team> team2_ptr, int goal2);
+        shared_ptr<Team> team1_ptr, int goal1,
+        shared_ptr<Team> team2_ptr, int goal2);
 };

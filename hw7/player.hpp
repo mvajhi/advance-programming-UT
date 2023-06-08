@@ -31,10 +31,10 @@ public:
     bool can_play(int week);
 
     // output
-    double get_avg_score(int week);
-    double get_score(int week);
     string get_role();
     string get_name();
+    double get_score(int week);
+    double get_avg_score(int week);
 
     // other
     void add_new_match(Player_status status, int week);

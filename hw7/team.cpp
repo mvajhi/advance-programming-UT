@@ -14,7 +14,6 @@ vector<shared_ptr<Player>> Team::get_team_players(bool have_role, string role)
 {
     vector<shared_ptr<Player>> output;
 
-    //! possible bug
     if (have_role)
         output = players[role];
     else

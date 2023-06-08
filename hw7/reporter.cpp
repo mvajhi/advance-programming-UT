@@ -133,7 +133,7 @@ void User_ranks_report::get_cli_report()
 {
     if (collection.size() == 0)
         Massage_reporter(EMPTY_MASSAGE + "\n").get_cli_report();
-    
+
     for (size_t i = 0; i < collection.size(); i++)
         cout << i + 1 << ". "
              << convert_collection_to_string(collection[i]) << endl;
@@ -153,7 +153,7 @@ void FantasyTeamReporter::sort_defender()
 FantasyTeamReporter::FantasyTeamReporter(Fantasy_team_data target_team_)
 {
     target_team = target_team_;
-    
+
     sort_defender();
 }
 
