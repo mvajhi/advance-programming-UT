@@ -39,6 +39,13 @@ struct Player_status
     bool red_card;
     int yellow_card;
     bool injured;
+    // TODO use this
+    int win_status;
+    int team_ga;
+    int team_gf;
+    int goal;
+    int assists;
+    int own_goal;
 };
 
 struct Game_input
