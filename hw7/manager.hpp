@@ -27,9 +27,9 @@ private:
     void check_can_show_fantasy_team(Fantasy_input input);
 
     // other
-    shared_ptr<User> add_new_user(User_login_info input);
     void update_user_new_week();
     shared_ptr<Reporter> set_transfer(bool mod);
+    shared_ptr<User> add_new_user(User_login_info input);
 
 public:
     Manager();
