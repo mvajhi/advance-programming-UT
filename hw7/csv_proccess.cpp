@@ -16,16 +16,27 @@ League_data import_league()
 
     return premier_league;
 }
-
+vector<Player_info> read_player(vector<string> input)
+{
+    Player_info new_player ;
+    vector<Player_info> players ;
+    for (auto player : input)
+    {
+        new_player.name = separate_line(player,PRICE_SEPARATOR)[NAME_INDEX];
+        new_player.price = stoi(separate_line(player,PRICE_SEPARATOR)[PRICE_INDEX]);
+        players.push_back((new_player));
+    }
+    return players;
+}
 Team_data read_team(string line)
 {
     Team_data new_team;
     vector<string> players = separate_line(line, ROLE_SEPARATOR);
     new_team.team_name = players[TEAM_NAME_INDEX];
-    new_team.gk = separate_line(players[GK_INDEX], PLAYER_SEPARATOR);
-    new_team.df = separate_line(players[DF_INDEX], PLAYER_SEPARATOR);
-    new_team.mf = separate_line(players[MF_INDEX], PLAYER_SEPARATOR);
-    new_team.fw = separate_line(players[FW_INDEX], PLAYER_SEPARATOR);
+    new_team.gk = read_player(separate_line(players[GK_INDEX], PLAYER_SEPARATOR));
+    new_team.df = read_player(separate_line(players[DF_INDEX], PLAYER_SEPARATOR));
+    new_team.mf = read_player(separate_line(players[MF_INDEX], PLAYER_SEPARATOR));
+    new_team.fw = read_player(separate_line(players[FW_INDEX], PLAYER_SEPARATOR));
     return new_team;
 }
 

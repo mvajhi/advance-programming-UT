@@ -12,13 +12,19 @@
 
 using namespace std;
 
+struct Player_info
+{
+    string name;
+    int price;
+};
+
 struct Team_data
 {
     string team_name;
-    vector<string> gk;
-    vector<string> df;
-    vector<string> mf;
-    vector<string> fw;
+    vector<Player_info> gk;
+    vector<Player_info> df;
+    vector<Player_info> mf;
+    vector<Player_info> fw;
 };
 
 struct League_data
@@ -162,6 +168,7 @@ const char ROLE_SEPARATOR = ',';
 const char TEAM_SEPARATOR = ':';
 const char PLAYER_SEPARATOR = ';';
 const char TEAM_NAME_SEPARATOR = '_';
+const char PRICE_SEPARATOR = ':';
 
 // file index
 const int GK_INDEX = 1;
@@ -170,6 +177,8 @@ const int MF_INDEX = 3;
 const int FW_INDEX = 4;
 const int FIRST_WEEK = 1;
 const int FINAL_WEEK = 19;
+const int NAME_INDEX = 0;
+const int PRICE_INDEX = 1;
 const int TEAM1_INDEX = 0;
 const int TEAM2_INDEX = 1;
 const int RESULT_INDEX = 1;

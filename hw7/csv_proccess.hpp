@@ -11,6 +11,7 @@ Game_input read_game_information(string line);
 Match_info convert_line_to_raw_info(string line);
 Game_input convert_to_game_input(Match_info game);
 map<int, vector<Game_input>> import_league_weeks();
+vector<Player_info> read_player(vector<string> input);
 vector<string> choose_score_subset(vector<string> game_info);
 map<string, Player_status> create_player_status (Match_info info);
 pair<string, Player_status> create_new_score(string player_score);
