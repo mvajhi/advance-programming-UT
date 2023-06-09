@@ -147,13 +147,6 @@ Match_detail convert_to_match_detail(Match_info game)
 {
     Match_detail match_details;
 
-//    game_details.team1.first = game.team_names[TEAM1_INDEX];
-//    game_details.team2.first = game.team_names[TEAM2_INDEX];
-//    game_details.team1.second = stoi(game.team_results[TEAM1_INDEX]);
-//    game_details.team2.second = stoi(game.team_results[TEAM2_INDEX]);
-//    game_details.players_status = create_player_status(game);
-//
-//    return game_details;
     match_details.teams_name.first = game.team_names[TEAM1_INDEX];
     match_details.teams_name.second = game.team_names[TEAM2_INDEX];
     match_details.teams_goal.first = stoi(game.team_results[TEAM1_INDEX]);
