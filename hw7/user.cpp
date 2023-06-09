@@ -94,9 +94,9 @@ void User::buy_player(shared_ptr<Player> player)
 void User::sell_player(string name)
 {
     check_can_sell();
-
+    int player_price = user_teams[Time::get_next_week()].team.find_player_price(name);
     user_teams[Time::get_next_week()].team.sell_player(name);
-
+    increase_budget(player_price);
     update_after_sell();
 }
 

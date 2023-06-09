@@ -25,7 +25,16 @@ bool FantasyTeam::is_team_full()
     counter += players[FW].size();
     return counter == TEAM_SIZE;
 }
-
+int FantasyTeam::find_player_price(string name)
+{
+    for (auto &role : players)
+        for (size_t player = 0; player < players[role.first].size(); player++)
+            if (players[role.first][player]->get_name() == name)
+            {
+                return players[role.first][player]->get_price();
+            }
+    throw NOT_FOUND_MASSAGE;
+}
 void FantasyTeam::sell_player(string name)
 {
     for (auto &role : players)
