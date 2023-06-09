@@ -11,7 +11,7 @@ int main()
 
     while (getline(cin, line))
     {
-        // input
+        // input/home/sayyedali/CLionProjects/clion2/hw7/data/
         vector<string> separated_line = separate_line(line);
         // proccess
         shared_ptr<Reporter> report = proccess(separated_line, manager);

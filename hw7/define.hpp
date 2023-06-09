@@ -46,7 +46,7 @@ struct Player_status
     int yellow_card;
     bool injured;
     // TODO use this
-    int win_status;
+    bool win_status;
     int team_ga;
     int team_gf;
     int goal;
@@ -88,6 +88,12 @@ struct User_ranking_data
     string name;
 };
 
+struct Key_change
+{
+    vector<string> goals;
+    vector<string> assists;
+};
+
 struct Match_info
 {
     vector<string> team_names;
@@ -95,7 +101,9 @@ struct Match_info
     vector<string> injured_players;
     vector<string> yellow_card_players;
     vector<string> red_card_players;
-    vector<string> score_players;
+    Key_change goals_and_assists;
+    vector<string> team1_players;
+    vector<string> team2_players;
 };
 
 struct Fantasy_team_data
@@ -141,6 +149,7 @@ const string CLOSE_TRANSFER_WINDOW_COMMAND = "POST close_transfer_window";
 const string PASSWORD_COMMAND = "password";
 const string WEEK_NUM_COMMAND = "week_num";
 const string SORT_BY_SCORE_COMMAND = "rank";
+const string OWN_GOAL_COMMAND = "OWN_GOAL";
 
 // commands size
 const int POST_COMMAND_SIZE = 2;
@@ -150,6 +159,7 @@ const int GET_SQUAD_COMMAND_SIZE = 5;
 const int TEAM_LIST_COMMAND_SIZE = 2;
 const int MATCHES_COMMAND_MIN_SIZE = 3;
 const int MATCHES_COMMAND_MAX_SIZE = 5;
+const int INITIAL_PLAYER_SCORE = 0;
 const int TEAM_PLAYERS_COMMAND_SIZE = 5;
 const int BEST_TEAM_COMMAND_MIN_SIZE = 3;
 const int BEST_TEAM_COMMAND_MAX_SIZE = 5;
@@ -169,12 +179,14 @@ const char TEAM_SEPARATOR = ':';
 const char PLAYER_SEPARATOR = ';';
 const char TEAM_NAME_SEPARATOR = '_';
 const char PRICE_SEPARATOR = ':';
+const char GOALS_ASSISTS_SEPARATOR = ':';
 
 // file index
 const int GK_INDEX = 1;
 const int DF_INDEX = 2;
 const int MF_INDEX = 3;
 const int FW_INDEX = 4;
+const int GOAL_INDEX = 0;
 const int FIRST_WEEK = 1;
 const int FINAL_WEEK = 19;
 const int NAME_INDEX = 0;
@@ -182,16 +194,20 @@ const int PRICE_INDEX = 1;
 const int TEAM1_INDEX = 0;
 const int TEAM2_INDEX = 1;
 const int RESULT_INDEX = 1;
-const int SCORES_INDEX = 5;
+const int ASSISTS_INDEX = 1;
+const int GOALS_ASSIST_INDEX = 5;
 const int RED_CARD_INDEX = 4;
 const int TEAM_NAME_INDEX = 0;
 const int YELLOW_CARD_INDEX = 3;
 const int SCORE_POINT_INDEX = 1;
+const int TEAM1_PLAYERS_INDEX = 6;
+const int TEAM2_PLAYERS_INDEX = 7;
 const int INJURED_PLAYER_INDEX = 2;
+
 
 // files address
 const string CSV_FORMAT = ".csv";
-const string DATA_ADDRESS = "./data";
+const string DATA_ADDRESS = "/home/sayyedali/CLionProjects/clion2/hw7/data";
 const string LEAGUE_ADDRESS = DATA_ADDRESS + "/premier_league.csv";
 const string WEEK_ADDRESS = DATA_ADDRESS + "/weeks_stats" + "/week_";
 

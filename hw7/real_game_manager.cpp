@@ -16,13 +16,13 @@ map<string, string> Real_game_manager::convert_team_players_to_map(shared_ptr<Te
     map<string, string> output;
 
     for (auto i : data->gk)
-        output.insert(make_pair(i, GK));
+        output.insert(make_pair(i.name, GK));
     for (auto i : data->df)
-        output.insert(make_pair(i, DF));
+        output.insert(make_pair(i.name, DF));
     for (auto i : data->mf)
-        output.insert(make_pair(i, MF));
+        output.insert(make_pair(i.name, MF));
     for (auto i : data->fw)
-        output.insert(make_pair(i, FW));
+        output.insert(make_pair(i.name, FW));
 
     return output;
 }
@@ -50,10 +50,10 @@ map<string, vector<shared_ptr<Player>>> Real_game_manager::link_players_team(
 {
     map<string, vector<shared_ptr<Player>>> output;
 
-    output.insert(make_pair(GK, get_link_players(team_data->gk)));
-    output.insert(make_pair(DF, get_link_players(team_data->df)));
-    output.insert(make_pair(FW, get_link_players(team_data->fw)));
-    output.insert(make_pair(MF, get_link_players(team_data->mf)));
+//    output.insert(make_pair(GK, get_link_players(team_data->gk)));
+//    output.insert(make_pair(DF, get_link_players(team_data->df)));
+//    output.insert(make_pair(FW, get_link_players(team_data->fw)));
+//    output.insert(make_pair(MF, get_link_players(team_data->mf)));
 
     return output;
 }

@@ -14,8 +14,8 @@ map<int, vector<Game_input>> import_league_weeks();
 vector<Player_info> read_player(vector<string> input);
 vector<string> choose_score_subset(vector<string> game_info);
 map<string, Player_status> create_player_status (Match_info info);
-pair<string, Player_status> create_new_score(string player_score);
-map<string, Player_status> get_score_from_csv(vector<string> scores);
+pair<string, Player_status> create_new_status(string player_name);
+map<string, Player_status> get_teamsheet_from_csv(vector<string> team1_players,vector<string> team2_players);
 void update_with_injured_players(
     map<string, Player_status> &player_scores,
     vector<string> injured_players);
@@ -27,3 +27,7 @@ void update_with_red_card(
 void update_with_yellow_card(
     map<string, Player_status> &player_scores,
     vector<string> yellow_cards);
+void update_with_key_changes(
+        map<string, Player_status> &players_status,
+        vector<string> goals,vector<string> assist
+        );

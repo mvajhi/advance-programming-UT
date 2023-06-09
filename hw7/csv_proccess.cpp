@@ -55,13 +55,13 @@ Week_state import_week_state(int week_num)
     return new_week;
 }
 
-Player_status initialize_status(double score)
+Player_status initialize_status()
 {
     Player_status target;
     target.injured = false;
     target.is_played = true;
     target.red_card = false;
-    target.score = score;
+    target.score = INITIAL_PLAYER_SCORE;
     target.yellow_card = 0;
     return target;
 }
@@ -73,6 +73,19 @@ Game_input read_game_information(string line)
     Game_input game_details = convert_to_game_input(game_info);
 
     return game_details;
+}
+
+Key_change convert_to_key_change_info(vector<string> important_change)
+{
+    Key_change chances;
+    vector<string> goal_info;
+    for(auto goal : important_change)
+    {
+        goal_info = separate_line(goal,GOALS_ASSISTS_SEPARATOR) ;
+        chances.goals.push_back(goal_info[GOAL_INDEX]);
+        chances.assists.push_back((goal_info[ASSISTS_INDEX]));
+    }
+    return chances;
 }
 
 Match_info convert_line_to_raw_info(string line)
@@ -97,10 +110,14 @@ Match_info convert_line_to_raw_info(string line)
     output.red_card_players = separate_line(
         game_info[RED_CARD_INDEX], PLAYER_SEPARATOR);
 
-    output.score_players = separate_line(
-        game_info[SCORES_INDEX], PLAYER_SEPARATOR);
+    output.goals_and_assists = convert_to_key_change_info(separate_line(
+            game_info[GOALS_ASSIST_INDEX], PLAYER_SEPARATOR));
 
-    output.score_players = choose_score_subset(output.score_players);
+    output.team1_players = separate_line(
+            game_info[TEAM1_PLAYERS_INDEX],PLAYER_SEPARATOR);
+
+    output.team2_players = separate_line(
+            game_info[TEAM2_PLAYERS_INDEX],PLAYER_SEPARATOR);
 
     return output;
 }
@@ -128,66 +145,69 @@ map<int, vector<Game_input>> import_league_weeks()
     return leagues_weeks;
 }
 
-vector<string> choose_score_subset(vector<string> game_info)
-{
-    vector<string> subset;
-
-    for (size_t i = 0; i < game_info.size(); i++)
-        subset.push_back(game_info[i]);
-
-    return subset;
-}
-
 map<string, Player_status> create_player_status(Match_info info)
 {
-    map<string, Player_status> player_scores = get_score_from_csv(
-        info.score_players);
-
-    update_with_injured_players(player_scores, info.injured_players);
-    update_with_yellow_card(player_scores, info.yellow_card_players);
-    update_with_red_card(player_scores, info.red_card_players);
-
-    return player_scores;
-}
-
-pair<string, Player_status> create_new_score(string player_score)
-{
-    Player_status target_player_status;
-
-    vector<string> info = separate_line(player_score, TEAM_SEPARATOR);
-    target_player_status = initialize_status(stod(info[SCORE_POINT_INDEX]));
-
-    return make_pair(info[TEAM_NAME_INDEX], target_player_status);
-}
-
-map<string, Player_status> get_score_from_csv(vector<string> scores)
-{
-    map<string, Player_status> players_status;
-
-    for (string player_score : scores)
-        players_status.insert(create_new_score(player_score));
+    map<string , Player_status> players_status = get_teamsheet_from_csv(info.team1_players,info.team2_players);
+    update_with_injured_players(players_status, info.injured_players);
+    update_with_yellow_card(players_status, info.yellow_card_players);
+    update_with_red_card(players_status, info.red_card_players);
+    update_with_key_changes(players_status,info.goals_and_assists.goals , info.goals_and_assists.assists);
 
     return players_status;
 }
 
+pair<string, Player_status> create_new_status(string player_name)
+{
+    Player_status target_player_status;
+
+    target_player_status = initialize_status();
+
+    return make_pair(player_name, target_player_status);
+}
+
+map<string, Player_status> get_teamsheet_from_csv(vector<string> team1_players, vector<string> team2_players)
+{
+    map<string, Player_status> players_status;
+
+    for (string player : team1_players)
+        players_status.insert(create_new_status(player));
+    for (string player : team2_players)
+        players_status.insert(create_new_status(player));
+    return players_status;
+}
+
 // string get_team_names
-void update_with_yellow_card(map<string, Player_status> &player_scores,
+void update_with_yellow_card(map<string, Player_status> &players_status,
                              vector<string> yellow_cards)
 {
     for (string player : yellow_cards)
-        player_scores[player].yellow_card++;
+        players_status[player].yellow_card++;
 }
 
-void update_with_red_card(map<string, Player_status> &player_scores,
+void update_with_red_card(map<string, Player_status> &players_status,
                           vector<string> red_cards)
 {
     for (string player : red_cards)
-        player_scores[player].red_card = true;
+        players_status[player].red_card = true;
 }
 
-void update_with_injured_players(map<string, Player_status> &player_scores,
+void update_with_injured_players(map<string, Player_status> &players_status,
                                  vector<string> injured_players)
 {
     for (string player : injured_players)
-        player_scores[player].injured = true;
+        players_status[player].injured = true;
 }
+
+void update_with_key_changes(map<string, Player_status> &players_status,
+                  vector<string> goals,vector<string> assist)
+{
+    for (size_t goal_number = 0 ; goal_number < goals.size() ; goal_number++)
+    {
+        if (assist[goal_number] != OWN_GOAL_COMMAND)
+            players_status[goals[goal_number]].goal++;
+        else
+            players_status[goals[goal_number]].own_goal++;
+    }
+}
+
+
