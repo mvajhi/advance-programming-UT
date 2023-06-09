@@ -18,6 +18,7 @@ private:
     string password;
     int week_team_is_full;
     int week_joined;
+    int transfer_budget;
     map<int, Weekly_team> user_teams;
 
     // check
@@ -48,6 +49,7 @@ public:
     // transform
     void sell_player(string name);
     void buy_player(shared_ptr<Player> player);
+    void decrease_budget(int player_price);
 
     // other
     void ready_for_new_week();

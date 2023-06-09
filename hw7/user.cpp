@@ -56,7 +56,7 @@ User::User(string user_name, string user_pass)
     password = user_pass;
     week_team_is_full = NOT_FULL;
     week_joined = Time::get_next_week();
-
+    transfer_budget = DEFAULT_BUDGET;
     create_weekly_teams();
 }
 
@@ -112,6 +112,10 @@ double User::get_total_score(int week_num)
     return result;
 }
 
+void User::decrease_budget(int player_price)
+{
+    transfer_budget -= player_price;
+}
 Fantasy_team_data User::show_fantasy_team(int week_num)
 {
     Fantasy_team_data target;
@@ -174,3 +178,4 @@ void Admin::close_transfer_window()
 {
     Time::close_transfer();
 }
+

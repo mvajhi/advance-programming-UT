@@ -281,3 +281,6 @@ const int FW_ALLOWED_SIZE = 1;
 // admins information
 const string ADMIN_NAME = "admin";
 const string ADMIN_PASSWORD = "123456";
+
+// budjet
+const int DEFAULT_BUDGET = 2500;
