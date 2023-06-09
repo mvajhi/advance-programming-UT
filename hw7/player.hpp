@@ -36,7 +36,7 @@ public:
     string get_name();
     double get_score(int week);
     double get_avg_score(int week);
-
+    int get_price();
     // other
     void add_new_match(Player_status status, int week);
 };

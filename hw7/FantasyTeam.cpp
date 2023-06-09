@@ -64,7 +64,7 @@ double FantasyTeam::get_score(int week_num)
 }
 
 map<string, vector<shared_ptr<Player>>> FantasyTeam::get_players()
-{
+{buy_player
     return players;
 }
 
@@ -96,4 +96,9 @@ bool FantasyTeam::can_add_player(string post)
     }
 
     return true;
+}
+
+int FantasyTeam::get_player_price(shared_ptr<Player> target_player)
+{
+    return target_player->get_price();
 }

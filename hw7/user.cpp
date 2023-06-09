@@ -10,12 +10,14 @@ void User::create_weekly_teams()
         user_teams.insert(make_pair(i, tmp_week));
 }
 
-void User::check_can_buy()
+void User::check_can_buy(shared_ptr<Player> target_player)
 {
     // check can trade and count not full
     if (Time::get_next_week() > week_team_is_full)
         if (user_teams[Time::get_next_week()].buy_count >= MAX_BUY_COUNT)
             throw PERMISSION_DENIED_MASSAGE;
+    if ( transfer_budget < target_player->get_price())
+        throw BAD_REQUEST_MASSAGE;
 }
 
 void User::update_after_buy()
@@ -82,8 +84,8 @@ FantasyTeam User::get_team(int week)
 
 void User::buy_player(shared_ptr<Player> player)
 {
-    check_can_buy();
-
+    check_can_buy(player);
+    decrease_budget(player->get_price());
     user_teams[Time::get_next_week()].team.buy_player(player);
 
     update_after_buy();
@@ -115,6 +117,11 @@ double User::get_total_score(int week_num)
 void User::decrease_budget(int player_price)
 {
     transfer_budget -= player_price;
+}
+
+void User::increase_budget(int player_price)
+{
+    transfer_budget += player_price;
 }
 Fantasy_team_data User::show_fantasy_team(int week_num)
 {

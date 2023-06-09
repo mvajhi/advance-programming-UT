@@ -25,4 +25,5 @@ public:
     // transfer
     void sell_player(string name);
     void buy_player(shared_ptr<Player> target_player);
+    int get_player_price(shared_ptr<Player> target_player);
 };
