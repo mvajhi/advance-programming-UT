@@ -11,7 +11,23 @@
 #include "time.hpp"
 
 using namespace std;
+// enum
+enum ROLES
+{
+    GK1,
+    LB,
+    LCB,
+    RCB,
+    RB,
+    LMF,
+    CM,
+    RMF,
+    LW,
+    CF,
+    RW
+};
 
+// struct
 struct Player_info
 {
     string name;
@@ -38,6 +54,12 @@ struct User_login_info
     string password;
 };
 
+struct Important_match_info
+{
+    bool win_status;
+    int team_ga;
+    int team_gf;
+};
 struct Player_status
 {
     bool is_played;
@@ -46,9 +68,8 @@ struct Player_status
     int yellow_card;
     bool injured;
     // TODO use this
-    bool win_status;
-    int team_ga;
-    int team_gf;
+    Important_match_info match;
+    ROLES role;
     int goal;
     int assists;
     int own_goal;
@@ -119,6 +140,7 @@ struct Fantasy_input
     bool have_name;
     string name;
 };
+
 
 // status massage
 const string SUCCESS_MASSAGE = "OK";
