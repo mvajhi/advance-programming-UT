@@ -1,8 +1,8 @@
 #include "real_game_manager.hpp"
 
-void Real_game_manager::add_new_player(string name, string role)
+void Real_game_manager::add_new_player(string name, string role, int price)
 {
-    players.insert(make_pair(name, make_shared<Player>(name, role)));
+    players.insert(make_pair(name, make_shared<Player>(name, role,price)));
 }
 
 void Real_game_manager::add_new_players(map<string, string> name_with_role)

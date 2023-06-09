@@ -13,7 +13,7 @@ private:
     map<int, vector<shared_ptr<Match>>> weeks_matches;
 
     // add
-    void add_new_player(string name, string role);
+    void add_new_player(string name, string role, int price);
     void add_new_game(Match_detail new_game, int week);
     void add_week(vector<Match_detail> games, int week);
     void add_new_match(Match_detail new_game, int week);

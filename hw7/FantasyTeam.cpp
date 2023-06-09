@@ -73,7 +73,7 @@ double FantasyTeam::get_score(int week_num)
 }
 
 map<string, vector<shared_ptr<Player>>> FantasyTeam::get_players()
-{buy_player
+{
     return players;
 }
 
