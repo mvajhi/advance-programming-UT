@@ -12,19 +12,29 @@
 
 using namespace std;
 // enum
-enum ROLES
+enum Roles
 {
-    GK1,
-    LB,
-    LCB,
-    RCB,
-    RB,
-    LMF,
-    CM,
-    RMF,
-    LW,
-    CF,
-    RW
+    gk,
+    lb,
+    cb,
+    rb,
+    mf,
+    lw,
+    cf,
+    rw
+};
+
+typedef string Name;
+
+struct Match_detail
+{
+    pair<int, int> teams_goal;
+    map<Name, Player_status> players_status;
+    pair<map<Name, Roles>, map<Name, Roles>> players_teams;
+    pair<Name, Name> teams_name;
+    vector<Name> goals;
+    vector<Name> goals_assist;
+    vector<Name> own_goal;
 };
 
 // struct
@@ -67,12 +77,6 @@ struct Player_status
     bool red_card;
     int yellow_card;
     bool injured;
-    // TODO use this
-    Important_match_info match;
-    ROLES role;
-    int goal;
-    int assists;
-    int own_goal;
 };
 
 struct Game_input
