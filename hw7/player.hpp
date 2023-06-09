@@ -12,6 +12,7 @@ private:
     shared_ptr<Team> team;
     map<int, Player_status> weeks_games;
     int sum_yellow_card;
+    int price;
 
     // check
     bool is_played(int week);
@@ -25,7 +26,7 @@ private:
     void update_card_status(Player_status &status);
 
 public:
-    Player(string name_, string role_);
+    Player(string name_, string role_,int price_);
 
     // check
     bool can_play(int week);
