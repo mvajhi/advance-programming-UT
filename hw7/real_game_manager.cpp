@@ -58,23 +58,23 @@ map<string, vector<shared_ptr<Player>>> Real_game_manager::link_players_team(
     return output;
 }
 
-void Real_game_manager::add_new_match(Game_input new_game, int week)
+void Real_game_manager::add_new_match(Match_detail new_game, int week)
 {
     if (weeks_matches.count(week) == 0)
         weeks_matches.insert(make_pair(week, vector<shared_ptr<Match>>()));
 
     weeks_matches[week].push_back(
         make_shared<Match>(
-            teams[new_game.team1.first],
-            new_game.team1.second,
-            teams[new_game.team2.first],
-            new_game.team2.second));
+            teams[new_game.teams_name.first],
+            new_game.teams_goal.first,
+            teams[new_game.teams_name.second],
+            new_game.teams_goal.second));
 }
 
-void Real_game_manager::update_teams(Game_input new_game, int week)
+void Real_game_manager::update_teams(Match_detail new_game, int week)
 {
-    int team1_goal = new_game.team1.second;
-    int team2_goal = new_game.team2.second;
+    int team1_goal = new_game.teams_goal.first;
+    int team2_goal = new_game.teams_goal.second;
     int score1, score2;
 
     if (team1_goal > team2_goal)
@@ -93,13 +93,13 @@ void Real_game_manager::update_teams(Game_input new_game, int week)
         score2 = DRAW_SCORE;
     }
 
-    teams[new_game.team1.first]->add_new_match(
+    teams[new_game.teams_name.first]->add_new_match(
         week, score1, team2_goal, team1_goal);
-    teams[new_game.team2.first]->add_new_match(
+    teams[new_game.teams_name.second]->add_new_match(
         week, score2, team1_goal, team2_goal);
 }
 
-void Real_game_manager::update_players(Game_input new_game, int week)
+void Real_game_manager::update_players(Match_detail new_game, int week)
 {
     for (auto i : new_game.players_status)
         players[i.first]->add_new_match(i.second, week);
@@ -121,21 +121,21 @@ Real_game_manager::Real_game_manager()
 {
 }
 
-void Real_game_manager::add_new_game(Game_input new_game, int week)
+void Real_game_manager::add_new_game(Match_detail new_game, int week)
 {
     update_players(new_game, week);
     update_teams(new_game, week);
     add_new_match(new_game, week);
 }
 
-void Real_game_manager::add_week(vector<Game_input> games, int week)
+void Real_game_manager::add_week(vector<Match_detail> games, int week)
 {
     for (auto i : games)
         add_new_game(i, week);
 }
 
 void Real_game_manager::import_league_weeks(
-    map<int, vector<Game_input>> league_week_data)
+    map<int, vector<Match_detail>> league_week_data)
 {
     for (auto i : league_week_data)
         add_week(i.second, i.first);

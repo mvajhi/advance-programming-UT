@@ -14,9 +14,9 @@ private:
 
     // add
     void add_new_player(string name, string role);
-    void add_new_game(Game_input new_game, int week);
-    void add_week(vector<Game_input> games, int week);
-    void add_new_match(Game_input new_game, int week);
+    void add_new_game(Match_detail new_game, int week);
+    void add_week(vector<Match_detail> games, int week);
+    void add_new_match(Match_detail new_game, int week);
     void add_new_team(shared_ptr<Team_data> team_data);
     void add_new_players(map<string, string> name_with_role);
 
@@ -25,8 +25,8 @@ private:
     vector<shared_ptr<Player>> get_link_players(vector<string> players_name);
 
     // update
-    void update_teams(Game_input new_game, int week);
-    void update_players(Game_input new_game, int week);
+    void update_teams(Match_detail new_game, int week);
+    void update_players(Match_detail new_game, int week);
 
     // other
     map<string, string> convert_team_players_to_map(
@@ -39,7 +39,7 @@ public:
 
     // import
     void import_teams(League_data input);
-    void import_league_weeks(map<int, vector<Game_input>> league_week_data);
+    void import_league_weeks(map<int, vector<Match_detail>> league_week_data);
 
     // output
     shared_ptr<Player> get_player_by_name(string name);

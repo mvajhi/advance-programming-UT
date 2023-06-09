@@ -55,7 +55,7 @@ public:
 
     // import
     void import_real_teams(League_data input);
-    void import_real_weeks(map<int, vector<Game_input>> input);
+    void import_real_weeks(map<int, vector<Match_detail>> input);
 
     // transfer
     shared_ptr<Reporter> buy_player(string name);

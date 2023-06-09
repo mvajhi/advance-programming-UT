@@ -277,7 +277,7 @@ void Manager::import_real_teams(League_data input)
     real_game_manager.import_teams(input);
 }
 
-void Manager::import_real_weeks(map<int, std::vector<Game_input>> input)
+void Manager::import_real_weeks(map<int, std::vector<Match_detail>> input)
 {
     real_game_manager.import_league_weeks(input);
 }

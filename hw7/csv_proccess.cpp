@@ -44,7 +44,7 @@ Week_state import_week_state(int week_num)
 {
     string line;
     Week_state new_week;
-    vector<Game_input> weeks_games;
+    vector<Match_detail> weeks_games;
     ifstream file(WEEK_ADDRESS + to_string(week_num) + CSV_FORMAT);
 
     getline(file, line);
@@ -66,11 +66,11 @@ Player_status initialize_status()
     return target;
 }
 
-Game_input read_game_information(string line)
+Match_detail read_game_information(string line)
 {
     Match_info game_info = convert_line_to_raw_info(line);
 
-    Game_input game_details = convert_to_game_input(game_info);
+    Match_detail game_details = convert_to_match_detail(game_info);
 
     return game_details;
 }
@@ -122,22 +122,60 @@ Match_info convert_line_to_raw_info(string line)
     return output;
 }
 
-Game_input convert_to_game_input(Match_info game)
+map<Name,Roles> convert_players_to_pair(vector<string> team1_players)
 {
-    Game_input game_details;
-
-    game_details.team1.first = game.team_names[TEAM1_INDEX];
-    game_details.team2.first = game.team_names[TEAM2_INDEX];
-    game_details.team1.second = stoi(game.team_results[TEAM1_INDEX]);
-    game_details.team2.second = stoi(game.team_results[TEAM2_INDEX]);
-    game_details.players_status = create_player_status(game);
-
-    return game_details;
+    map<Name,Roles> team_players;
+    for( int role = 0 ; role < PLAYERS_NUMBER ; role++)
+    {
+        team_players.insert(make_pair(team1_players[role],ORIGINAL_POSTS[role]));
+    }
+    return team_players;
 }
 
-map<int, vector<Game_input>> import_league_weeks()
+vector<Name> get_own_goal_from_goals(Key_change important_chance)
 {
-    map<int, vector<Game_input>> leagues_weeks;
+    vector<Name> own_goals;
+    for (size_t i = 0 ; i< important_chance.goals.size() ; i++)
+    {
+        if (important_chance.assists[i]==OWN_GOAL_COMMAND)
+            own_goals.push_back(important_chance.goals[i]);
+    }
+    return own_goals;
+}
+
+Match_detail convert_to_match_detail(Match_info game)
+{
+    Match_detail match_details;
+
+//    game_details.team1.first = game.team_names[TEAM1_INDEX];
+//    game_details.team2.first = game.team_names[TEAM2_INDEX];
+//    game_details.team1.second = stoi(game.team_results[TEAM1_INDEX]);
+//    game_details.team2.second = stoi(game.team_results[TEAM2_INDEX]);
+//    game_details.players_status = create_player_status(game);
+//
+//    return game_details;
+    match_details.teams_name.first = game.team_names[TEAM1_INDEX];
+    match_details.teams_name.second = game.team_names[TEAM2_INDEX];
+    match_details.teams_goal.first = stoi(game.team_results[TEAM1_INDEX]);
+    match_details.teams_goal.second = stoi(game.team_results[TEAM2_INDEX]);
+
+    match_details.goals = game.goals_and_assists.goals;
+    match_details.goals_assist = game.goals_and_assists.assists;
+    match_details.own_goal = get_own_goal_from_goals(game.goals_and_assists);
+
+    map<Name , Roles> team1_players = convert_players_to_pair(game.team1_players);
+    map<Name , Roles> team2_players = convert_players_to_pair(game.team2_players);
+    match_details.players_teams = make_pair(team1_players,team2_players);
+
+    match_details.players_status = create_player_status(game);
+
+    return match_details;
+
+}
+
+map<int, vector<Match_detail>> import_league_weeks()
+{
+    map<int, vector<Match_detail>> leagues_weeks;
     for (int week_num = FIRST_WEEK; week_num <= FINAL_WEEK; week_num++)
         leagues_weeks.insert(
             make_pair(week_num, import_week_state(week_num).weeks_games));
@@ -151,7 +189,6 @@ map<string, Player_status> create_player_status(Match_info info)
     update_with_injured_players(players_status, info.injured_players);
     update_with_yellow_card(players_status, info.yellow_card_players);
     update_with_red_card(players_status, info.red_card_players);
-    update_with_key_changes(players_status,info.goals_and_assists.goals , info.goals_and_assists.assists);
 
     return players_status;
 }
@@ -198,16 +235,5 @@ void update_with_injured_players(map<string, Player_status> &players_status,
         players_status[player].injured = true;
 }
 
-void update_with_key_changes(map<string, Player_status> &players_status,
-                  vector<string> goals,vector<string> assist)
-{
-    for (size_t goal_number = 0 ; goal_number < goals.size() ; goal_number++)
-    {
-        if (assist[goal_number] != OWN_GOAL_COMMAND)
-            players_status[goals[goal_number]].goal++;
-        else
-            players_status[goals[goal_number]].own_goal++;
-    }
-}
 
 

@@ -25,15 +25,16 @@ enum Roles
 };
 
 typedef string Name;
+struct Player_status;
 
 struct Match_detail
 {
-    pair<int, int> teams_goal;
-    map<Name, Player_status> players_status;
-    pair<map<Name, Roles>, map<Name, Roles>> players_teams;
-    pair<Name, Name> teams_name;
-    vector<Name> goals;
-    vector<Name> goals_assist;
+    pair<int, int> teams_goal; //
+    map<Name, Player_status> players_status; //
+    pair<map<Name, Roles>, map<Name, Roles>> players_teams; //
+    pair<Name, Name> teams_name; //
+    vector<Name> goals;//
+    vector<Name> goals_assist;//
     vector<Name> own_goal;
 };
 
@@ -79,12 +80,6 @@ struct Player_status
     bool injured;
 };
 
-struct Game_input
-{
-    map<string, Player_status> players_status;
-    pair<string, int> team1;
-    pair<string, int> team2;
-};
 
 struct Team_status
 {
@@ -104,7 +99,7 @@ struct Team_players_input
 
 struct Week_state
 {
-    vector<Game_input> weeks_games;
+    vector<Match_detail> weeks_games;
 };
 
 struct User_ranking_data
@@ -208,6 +203,7 @@ const char PRICE_SEPARATOR = ':';
 const char GOALS_ASSISTS_SEPARATOR = ':';
 
 // file index
+const int PLAYERS_NUMBER = 11;
 const int GK_INDEX = 1;
 const int DF_INDEX = 2;
 const int MF_INDEX = 3;
@@ -229,6 +225,17 @@ const int SCORE_POINT_INDEX = 1;
 const int TEAM1_PLAYERS_INDEX = 6;
 const int TEAM2_PLAYERS_INDEX = 7;
 const int INJURED_PLAYER_INDEX = 2;
+const int GK_NUMBER = 0;
+const int LB_NUMBER = 1;
+const int CB1_NUMBER = 2;
+const int CB2_NUMBER = 3;
+const int RB_NUMBER = 4;
+const int MF1_NUMBER = 5;
+const int MF2_NUMBER = 6;
+const int MF3_NUMBER = 7;
+const int LW_NUMBER = 8;
+const int CF_NUMBER = 9;
+const int RW_NUMBER = 10; 
 
 
 // files address
@@ -239,10 +246,17 @@ const string WEEK_ADDRESS = DATA_ADDRESS + "/weeks_stats" + "/week_";
 
 // posts
 const string GK = "gk";
+const string CB = "cb";
+const string LB = "lb";
+const string RB = "rb";
+const string LW = "lw";
+const string RW = "rw";
 const string DF = "df";
 const string MF = "mf";
 const string FW = "fw";
+const string CF = "cf";
 const vector<string> POSTS = {GK, DF, MF, FW};
+const vector<Roles> ORIGINAL_POSTS = {gk,lb,cb,cb,rb,mf,mf,mf,lw,cf,rw};
 
 // real game role
 const int WIN_SCORE = 3;
