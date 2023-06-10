@@ -7,13 +7,13 @@
 class Match
 {
 private:
+    vector<Name> goals;
+    vector<Name> own_goal;
+    vector<Name> goals_assist;
     pair<int, int> teams_goal;
+    pair<Name, Name> teams_name;
     map<Name, Player_status> players_status;
     pair<map<Name, Role>, map<Name, Role>> players_teams;
-    pair<Name, Name> teams_name;
-    vector<Name> goals;
-    vector<Name> goals_assist;
-    vector<Name> own_goal;
 
     map<Role, function<int(Name)>> score_algorithm;
 
@@ -30,8 +30,8 @@ private:
     int get_player_goal(Name player);
     int get_player_assist(Name player);
     int get_team_result_score(Name player);
-    int get_goal_in_posts(vector<Role> roles, map<Name, Role> players);
     map<Name, Role> get_opponent_team(Name player);
+    int get_goal_in_posts(vector<Role> roles, map<Name, Role> players);
 
     // proccess score
     int calculate_score_row(pair<Name, Role> player);
@@ -52,7 +52,7 @@ private:
 public:
     Match(Match_detail input);
 
-    //output
+    // output
     Match_report_data get_match_data();
     map<Name, Player_status> get_players_status();
 };

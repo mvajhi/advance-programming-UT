@@ -38,10 +38,10 @@ public:
     int get_price();
     string get_role();
     string get_name();
-    double get_score(int week);
-    int get_clean_sheet(int week);
     int get_goal(int week);
     int get_assist(int week);
+    double get_score(int week);
+    int get_clean_sheet(int week);
     double get_avg_score(int week);
 
     // other

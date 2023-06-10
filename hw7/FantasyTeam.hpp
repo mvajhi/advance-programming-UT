@@ -12,8 +12,8 @@ private:
     string captain_name;
 
     // check
-    void check_can_buy(shared_ptr<Player> player);
     void check_can_set_captain(string name);
+    void check_can_buy(shared_ptr<Player> player);
 
     // other
     shared_ptr<Player> find_player(string name);
@@ -22,11 +22,11 @@ public:
     FantasyTeam();
 
     // output
-    double get_score(int week_num);
-    map<string, vector<shared_ptr<Player>>> get_players();
+    int get_cost();
     bool get_captain_status();
     string get_captain_name();
-    int get_cost();
+    double get_score(int week_num);
+    map<string, vector<shared_ptr<Player>>> get_players();
 
     // check
     bool is_team_full();
@@ -35,9 +35,9 @@ public:
 
     // transfer
     void sell_player(string name);
+    int find_player_price(string name);
     void buy_player(shared_ptr<Player> target_player);
     int get_player_price(shared_ptr<Player> target_player);
-    int find_player_price(string name);
 
     // other
     void set_captain(string name);

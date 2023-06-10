@@ -18,12 +18,12 @@ League_data import_league()
 }
 vector<Player_info> read_player(vector<string> input)
 {
-    Player_info new_player ;
-    vector<Player_info> players ;
+    Player_info new_player;
+    vector<Player_info> players;
     for (auto player : input)
     {
-        new_player.name = separate_line(player,PRICE_SEPARATOR)[NAME_INDEX];
-        new_player.price = stoi(separate_line(player,PRICE_SEPARATOR)[PRICE_INDEX]);
+        new_player.name = separate_line(player, PRICE_SEPARATOR)[NAME_INDEX];
+        new_player.price = stoi(separate_line(player, PRICE_SEPARATOR)[PRICE_INDEX]);
         players.push_back((new_player));
     }
     return players;
@@ -79,9 +79,9 @@ Key_change convert_to_key_change_info(vector<string> important_change)
 {
     Key_change chances;
     vector<string> goal_info;
-    for(auto goal : important_change)
+    for (auto goal : important_change)
     {
-        goal_info = separate_line(goal,GOALS_ASSISTS_SEPARATOR) ;
+        goal_info = separate_line(goal, GOALS_ASSISTS_SEPARATOR);
         chances.goals.push_back(goal_info[GOAL_INDEX]);
         chances.assists.push_back((goal_info[ASSISTS_INDEX]));
     }
@@ -111,23 +111,23 @@ Match_info convert_line_to_raw_info(string line)
         game_info[RED_CARD_INDEX], PLAYER_SEPARATOR);
 
     output.goals_and_assists = convert_to_key_change_info(separate_line(
-            game_info[GOALS_ASSIST_INDEX], PLAYER_SEPARATOR));
+        game_info[GOALS_ASSIST_INDEX], PLAYER_SEPARATOR));
 
     output.team1_players = separate_line(
-            game_info[TEAM1_PLAYERS_INDEX],PLAYER_SEPARATOR);
+        game_info[TEAM1_PLAYERS_INDEX], PLAYER_SEPARATOR);
 
     output.team2_players = separate_line(
-            game_info[TEAM2_PLAYERS_INDEX],PLAYER_SEPARATOR);
+        game_info[TEAM2_PLAYERS_INDEX], PLAYER_SEPARATOR);
 
     return output;
 }
 
-map<Name,Role> convert_players_to_pair(vector<string> team1_players)
+map<Name, Role> convert_players_to_pair(vector<string> team1_players)
 {
-    map<Name,Role> team_players;
-    for( int role = 0 ; role < PLAYERS_NUMBER ; role++)
+    map<Name, Role> team_players;
+    for (int role = 0; role < PLAYERS_NUMBER; role++)
     {
-        team_players.insert(make_pair(team1_players[role],ORIGINAL_POSTS[role]));
+        team_players.insert(make_pair(team1_players[role], ORIGINAL_POSTS[role]));
     }
     return team_players;
 }
@@ -135,9 +135,9 @@ map<Name,Role> convert_players_to_pair(vector<string> team1_players)
 vector<Name> get_own_goal_from_goals(Key_change important_chance)
 {
     vector<Name> own_goals;
-    for (size_t i = 0 ; i< important_chance.goals.size() ; i++)
+    for (size_t i = 0; i < important_chance.goals.size(); i++)
     {
-        if (important_chance.assists[i]==OWN_GOAL_COMMAND)
+        if (important_chance.assists[i] == OWN_GOAL_COMMAND)
             own_goals.push_back(important_chance.goals[i]);
     }
     return own_goals;
@@ -156,14 +156,13 @@ Match_detail convert_to_match_detail(Match_info game)
     match_details.goals_assist = game.goals_and_assists.assists;
     match_details.own_goal = get_own_goal_from_goals(game.goals_and_assists);
 
-    map<Name , Role> team1_players = convert_players_to_pair(game.team1_players);
-    map<Name , Role> team2_players = convert_players_to_pair(game.team2_players);
-    match_details.players_teams = make_pair(team1_players,team2_players);
+    map<Name, Role> team1_players = convert_players_to_pair(game.team1_players);
+    map<Name, Role> team2_players = convert_players_to_pair(game.team2_players);
+    match_details.players_teams = make_pair(team1_players, team2_players);
 
     match_details.players_status = create_player_status(game);
 
     return match_details;
-
 }
 
 map<int, vector<Match_detail>> import_league_weeks()
@@ -178,7 +177,8 @@ map<int, vector<Match_detail>> import_league_weeks()
 
 map<string, Player_status> create_player_status(Match_info info)
 {
-    map<string , Player_status> players_status = get_teamsheet_from_csv(info.team1_players,info.team2_players);
+    map<string, Player_status> players_status = get_teamsheet_from_csv(
+        info.team1_players, info.team2_players);
     update_with_injured_players(players_status, info.injured_players);
     update_with_yellow_card(players_status, info.yellow_card_players);
     update_with_red_card(players_status, info.red_card_players);
@@ -195,7 +195,8 @@ pair<string, Player_status> create_new_status(string player_name)
     return make_pair(player_name, target_player_status);
 }
 
-map<string, Player_status> get_teamsheet_from_csv(vector<string> team1_players, vector<string> team2_players)
+map<string, Player_status> get_teamsheet_from_csv(
+    vector<string> team1_players, vector<string> team2_players)
 {
     map<string, Player_status> players_status;
 
@@ -227,6 +228,3 @@ void update_with_injured_players(map<string, Player_status> &players_status,
     for (string player : injured_players)
         players_status[player].injured = true;
 }
-
-
-

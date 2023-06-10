@@ -1,7 +1,5 @@
 #include "match.hpp"
 
-// TODO move or change player func to match class
-
 map<Role, vector<Role>> impressive_posts =
     {
         make_pair<Role, vector<Role>>(lb, {rw, rb}),
@@ -187,10 +185,6 @@ void Match::set_score(pair<Name, Role> player)
     int row_score = calculate_score_row(player);
     players_status[player.first].row_score = row_score;
     players_status[player.first].score = calculate_Ax_score(row_score);
-
-    // TODO rm
-    // cout << "name: " << player.first << "\trow score: " << row_score
-    //      << "\tscore: " << players_status[player.first].score << endl;
 }
 
 void Match::set_goal(Name player)

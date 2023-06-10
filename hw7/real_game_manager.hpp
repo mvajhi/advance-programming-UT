@@ -14,11 +14,11 @@ private:
 
     // add
     void add_new_player(Player_info info);
+    void add_new_team(shared_ptr<Team_data> team_data);
     void add_new_game(Match_detail new_game, int week);
     void add_week(vector<Match_detail> games, int week);
-    shared_ptr<Match> add_new_match(Match_detail new_game, int week);
-    void add_new_team(shared_ptr<Team_data> team_data);
     void add_new_players(map<string, Player_info> name_with_role);
+    shared_ptr<Match> add_new_match(Match_detail new_game, int week);
 
     // get
     vector<shared_ptr<Player>> get_all_players_in_post(string post);

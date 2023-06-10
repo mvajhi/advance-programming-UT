@@ -67,7 +67,8 @@ map<string, vector<shared_ptr<Player>>> Real_game_manager::link_players_team(
     return output;
 }
 
-shared_ptr<Match> Real_game_manager::add_new_match(Match_detail new_game, int week)
+shared_ptr<Match> Real_game_manager::add_new_match(Match_detail new_game,
+                                                   int week)
 {
     if (weeks_matches.count(week) == 0)
         weeks_matches.insert(make_pair(week, vector<shared_ptr<Match>>()));
@@ -113,7 +114,8 @@ void Real_game_manager::update_players(Match_detail new_game, int week)
         players[i.first]->add_new_match(i.second, week);
 }
 
-void Real_game_manager::update_match_detail(Match_detail &data, shared_ptr<Match> match)
+void Real_game_manager::update_match_detail(Match_detail &data,
+                                            shared_ptr<Match> match)
 {
     data.players_status = match->get_players_status();
 }

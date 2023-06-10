@@ -12,9 +12,9 @@ shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager);
 // tools
 bool is_number(string num);
 void check_arg_count(vector<string> input, size_t count);
+string merge_input(vector<string> input, size_t start_pos);
 bool are_commands_some(vector<string> input, string command);
 string replace_char(string input, char str_char, char final_char);
-string merge_input(vector<string> input, size_t start_pos);
 vector<string> separate_line(
     string line, char separator = ' ', bool ignore_tmp = true);
 

@@ -43,13 +43,13 @@ public:
     shared_ptr<Reporter> register_admin(User_login_info input);
 
     // output
+    shared_ptr<Reporter> show_budget();
     shared_ptr<Reporter> get_users_ranking();
     shared_ptr<Reporter> get_team_list(int week);
     shared_ptr<Reporter> get_best_team(int week);
     shared_ptr<Reporter> get_week_matches_report(int week);
     shared_ptr<Reporter> get_team_players(Team_players_input input);
     shared_ptr<Reporter> get_fantasy_team(Fantasy_input target_team);
-    shared_ptr<Reporter> show_budget();
 
     // time control
     shared_ptr<Reporter> pass_week();

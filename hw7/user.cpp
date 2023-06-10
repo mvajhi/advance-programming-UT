@@ -153,7 +153,7 @@ Fantasy_team_data User::show_fantasy_team(int week_num)
 
     target.have_captain = get_team(week_num).get_captain_status();
     if (target.have_captain)
-    target.captain_name = get_team(week_num).get_captain_name();
+        target.captain_name = get_team(week_num).get_captain_name();
 
     target.total_cost = get_team(week_num).get_cost();
 

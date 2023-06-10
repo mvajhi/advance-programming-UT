@@ -137,7 +137,6 @@ struct Fantasy_team_data
     string team_name;
     string gk, df1, df2, mf, fw;
     double total_score;
-    // TODO
     int total_cost;
     bool is_full;
     bool have_captain;
@@ -186,8 +185,8 @@ const string CLOSE_TRANSFER_WINDOW_COMMAND = "POST close_transfer_window";
 // key word in command
 const string PASSWORD_COMMAND = "password";
 const string WEEK_NUM_COMMAND = "week_num";
-const string SORT_BY_SCORE_COMMAND = "rank";
 const string OWN_GOAL_COMMAND = "OWN_GOAL";
+const string SORT_BY_SCORE_COMMAND = "rank";
 
 // commands size
 const int POST_COMMAND_SIZE = 2;
@@ -292,26 +291,26 @@ const int LOSE_PLAYER_SCORE = -1;
 
 const int OWN_GOAL_SCORE = -3;
 
+const int GOAL_GK_SCORE = -1;
 const int DEFAULT_GK_SCORE = 3;
 const int NO_GOAL_GK_SCORE = 5;
-const int GOAL_GK_SCORE = -1;
 
+const int GA_MF_SCORE = -1;
 const int DEFAULT_MF_SCORE = 0;
 const int NO_GOAL_MF_SCORE = 1;
 const int MF_PLAYER_GOAL_SCORE = 3;
 const int MF_PLAYER_ASSIST_SCORE = 2;
-const int GA_MF_SCORE = -1;
 
 const int DEFAULT_FW_SCORE = 0;
-const int FW_PLAYER_ASSIST_SCORE = 1;
 const int NO_GOAL_FW_SCORE = -1;
 const int FW_PLAYER_GOAL_SCORE = 3;
+const int FW_PLAYER_ASSIST_SCORE = 1;
 
 const int DEFAULT_DF_SCORE = 1;
 const int NO_GOAL_DF_SCORE = 2;
+const int DF_GA_IN_SIDE_SCORE = -1;
 const int DF_PLAYER_GOAL_SCORE = 4;
 const int DF_PLAYER_ASSIST_SCORE = 3;
-const int DF_GA_IN_SIDE_SCORE = -1;
 
 // fantasy game role
 const int TEAM_SIZE = 5;

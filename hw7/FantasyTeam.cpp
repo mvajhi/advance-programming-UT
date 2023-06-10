@@ -134,8 +134,8 @@ int FantasyTeam::get_cost()
     int cost = 0;
 
     for (auto players_in_post : players)
-     for (auto player : players_in_post.second)
-        cost += player->get_price();
+        for (auto player : players_in_post.second)
+            cost += player->get_price();
 
     return cost;
 }
