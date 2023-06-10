@@ -279,11 +279,6 @@ shared_ptr<Reporter> Manager::get_team_list(int week)
     return real_game_manager.get_team_list_report(week);
 }
 
-shared_ptr<Reporter> Manager::get_users_budget()
-{
-    return user_logged->show_transfer_budget();
-}
-
 void Manager::import_real_teams(League_data input)
 {
     real_game_manager.import_teams(input);
