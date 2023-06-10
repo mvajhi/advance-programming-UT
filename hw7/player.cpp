@@ -22,6 +22,17 @@ bool Player::check_pre_weeks_status(
     return false;
 }
 
+double Player::count_in_weeks_status(
+    int week, function<double(Player_status)> things_should_count)
+{
+    double counter = 0;
+
+    for (int i = 1; i <= week; i++)
+        counter += things_should_count(weeks_games[i]);
+
+    return counter;
+}
+
 bool Player::is_played(int week)
 {
     return weeks_games.count(week) != 0 && weeks_games[week].is_played;
@@ -29,7 +40,6 @@ bool Player::is_played(int week)
 
 void Player::update_card_status(Player_status &status)
 {
-
     sum_yellow_card += status.yellow_card;
 
     if (status.red_card == true)
@@ -55,6 +65,27 @@ double Player::get_score(int week)
     if (weeks_games.count(week) != 0)
         return weeks_games[week].score;
     return 0;
+}
+
+int Player::get_clean_sheet(int week)
+{
+    return count_in_weeks_status(week,
+                                 [](Player_status status)
+                                 { return status.clean_sheet; });
+}
+
+int Player::get_goal(int week)
+{
+    return count_in_weeks_status(week,
+                                 [](Player_status status)
+                                 { return status.goal; });
+}
+
+int Player::get_assist(int week)
+{
+    return count_in_weeks_status(week,
+                                 [](Player_status status)
+                                 { return status.assist; });
 }
 
 bool Player::can_play(int week)
@@ -100,4 +131,4 @@ void Player::add_new_match(Player_status status, int week)
     weeks_games.insert(make_pair(week, status));
 }
 
-int Player::get_price() {return price;}
+int Player::get_price() { return price; }

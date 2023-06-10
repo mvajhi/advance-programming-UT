@@ -40,9 +40,10 @@ void Match_reporter::get_cli_report()
     }
 }
 
-string Best_team_reporter::convert_player_to_cli_output(string role, int index)
+string Best_team_reporter::convert_player_to_cli_output(string role,
+                                                        int index)
 {
-    return players[role][index]->get_name() + " | " +
+    return players[role][index]->get_name() + " | " + "score: " +
            float_to_string(players[role][index]->get_score(week));
 }
 
@@ -70,7 +71,22 @@ string Team_player_reporter::convert_player_to_string(
 
     output += "name: " + player->get_name() + " | ";
     output += "role: " + player->get_role() + " | ";
-    output += "score: " + float_to_string(player->get_avg_score(week));
+    output += "score: " +
+              float_to_string(player->get_avg_score(week)) + " | ";
+
+    if (player->get_role() != GK)
+    {
+        output += "goal: " + to_string(player->get_goal(week)) + " | ";
+        output += "assist: " + to_string(player->get_assist(week)) + " | ";
+    }
+
+    if (player->get_role() != FW)
+        output += "clean sheet: " +
+                  to_string(player->get_clean_sheet(week)) + " | ";
+
+    // remove last " | "
+    for (size_t i = 0; i < string(" | ").size(); i++)
+        output.pop_back();
 
     return output;
 }

@@ -21,6 +21,9 @@ private:
     bool check_pre_weeks_status(
         int week, size_t pre_weeks_check,
         bool (*have_this_state)(Player_status));
+    double count_in_weeks_status(
+        int week,
+        function<double(Player_status)> things_should_count);
 
     // other
     void update_card_status(Player_status &status);
@@ -32,11 +35,15 @@ public:
     bool can_play(int week);
 
     // output
+    int get_price();
     string get_role();
     string get_name();
     double get_score(int week);
+    int get_clean_sheet(int week);
+    int get_goal(int week);
+    int get_assist(int week);
     double get_avg_score(int week);
-    int get_price();
+
     // other
     void add_new_match(Player_status status, int week);
 };

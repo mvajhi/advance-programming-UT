@@ -87,3 +87,5 @@ GET squad ?
 GET show_budget
 POST logout
 GET show_budget
+GET players ? team_name AFC_Bournemouth rank
+GET team_of_the_week ?
