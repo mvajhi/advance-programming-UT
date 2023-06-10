@@ -135,9 +135,13 @@ struct Match_info
 struct Fantasy_team_data
 {
     string team_name;
-    string gk,df1,df2,mf,fw;
+    string gk, df1, df2, mf, fw;
     double total_score;
+    // TODO
+    int total_cost;
     bool is_full;
+    bool have_captain;
+    string captain_name;
 };
 
 struct Fantasy_input
@@ -173,6 +177,7 @@ const string USERS_RANKING_COMMAND = "GET users_ranking";
 const string BEST_TEAM_COMMAND = "GET team_of_the_week ?";
 const string BUY_PLAYER_COMMAND = "POST buy_player ? name";
 const string SELL_PLAYER_COMMAND = "POST sell_player ? name";
+const string SET_CAPTAIN_COMMAND = "POST set_captain ? name";
 const string MATCH_REPORT_COMMAND = "GET matches_result_league";
 const string REGISTER_ADMIN_COMMAND = "POST register_admin ? username";
 const string OPEN_TRANSFER_WINDOW_COMMAND = "POST open_transfer_window";
@@ -187,12 +192,12 @@ const string OWN_GOAL_COMMAND = "OWN_GOAL";
 // commands size
 const int POST_COMMAND_SIZE = 2;
 const int LOGIN_COMMAND_SIZE = 7;
+const int CAPTAIN_COMMAND_SIZE = 5;
 const int TRANSFER_COMMAND_SIZE = 5;
 const int GET_SQUAD_COMMAND_SIZE = 5;
 const int TEAM_LIST_COMMAND_SIZE = 2;
 const int MATCHES_COMMAND_MIN_SIZE = 3;
 const int MATCHES_COMMAND_MAX_SIZE = 5;
-const int INITIAL_PLAYER_SCORE = 0;
 const int TEAM_PLAYERS_COMMAND_SIZE = 5;
 const int BEST_TEAM_COMMAND_MIN_SIZE = 3;
 const int BEST_TEAM_COMMAND_MAX_SIZE = 5;
@@ -203,6 +208,7 @@ const int TEAM_PLAYERS_COMMAND_MAX_SIZE = 7;
 const int USERNAME_INDEX = 4;
 const int PASSWORD_INDEX = 6;
 const int WEEK_NUM_INDEX = 3;
+const int CAPTAIN_NAME_INDEX = 4;
 const int POST_COMMAND_INDEX = 5;
 const int TEAM_NAME_COMMAND_INDEX = 4;
 
@@ -237,6 +243,7 @@ const int GOALS_ASSIST_INDEX = 5;
 const int TEAM1_PLAYERS_INDEX = 6;
 const int TEAM2_PLAYERS_INDEX = 7;
 const int INJURED_PLAYER_INDEX = 2;
+
 const int GK_NUMBER = 0;
 const int LB_NUMBER = 1;
 const int CB1_NUMBER = 2;
@@ -247,8 +254,7 @@ const int MF2_NUMBER = 6;
 const int MF3_NUMBER = 7;
 const int LW_NUMBER = 8;
 const int CF_NUMBER = 9;
-const int RW_NUMBER = 10; 
-
+const int RW_NUMBER = 10;
 
 // files address
 const string CSV_FORMAT = ".csv";
@@ -268,13 +274,15 @@ const string MF = "mf";
 const string FW = "fw";
 const string CF = "cf";
 const vector<string> POSTS = {GK, DF, MF, FW};
-const vector<Role> ORIGINAL_POSTS = {gk,lb,cb,cb,rb,mf,mf,mf,lw,cf,rw};
+const vector<Role> ORIGINAL_POSTS = {gk, lb, cb, cb, rb,
+                                     mf, mf, mf, lw, cf, rw};
 
 // real game role
 const int WIN_SCORE = 3;
 const int DRAW_SCORE = 1;
 const int LOSE_SCORE = 0;
 const int MAX_YELLOW_CARD = 3;
+const int INITIAL_PLAYER_SCORE = 0;
 const int NUM_WEEK_DONT_PLAY_FOR_INJURED = 3;
 const int NUM_WEEK_DONT_PLAY_FOR_RED_CARD = 1;
 

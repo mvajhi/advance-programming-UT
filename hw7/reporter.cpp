@@ -151,6 +151,29 @@ void FantasyTeamReporter::sort_defender()
     }
 }
 
+vector<string> FantasyTeamReporter::create_team_player_output()
+{
+    vector<string> output;
+
+    output.push_back("fantasy_team: " + target_team.team_name);
+    output.push_back("Goalkeeper: " + target_team.gk);
+    output.push_back("Defender1: " + target_team.df1);
+    output.push_back("Defender2: " + target_team.df2);
+    output.push_back("Midfielder: " + target_team.mf);
+    output.push_back("Striker: " + target_team.fw);
+
+    return output;
+}
+
+void FantasyTeamReporter::add_captain_in_output(vector<string> &output)
+{
+    if (!target_team.have_captain)
+        return;
+    for (auto &&line : output)
+        if (line.find(target_team.captain_name) != string::npos)
+            line += " (CAPTAIN)";
+}
+
 FantasyTeamReporter::FantasyTeamReporter(Fantasy_team_data target_team_)
 {
     target_team = target_team_;
@@ -166,11 +189,12 @@ void FantasyTeamReporter::get_cli_report()
         return;
     }
 
-    cout << "fantasy_team: " << target_team.team_name << endl;
-    cout << "Goalkeeper: " << target_team.gk << endl;
-    cout << "Defender1: " << target_team.df1 << endl;
-    cout << "Defender2: " << target_team.df2 << endl;
-    cout << "Midfielder: " << target_team.mf << endl;
-    cout << "Striker: " << target_team.fw << endl;
+    vector<string> output = create_team_player_output();
+    add_captain_in_output(output);
+
+    for (auto line : output)
+        cout << line << endl;
+
     cout << "Total Points: " << float_to_string(target_team.total_score) << endl;
+    cout << "Total Cost: " << target_team.total_cost << endl;
 }

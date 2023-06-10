@@ -112,6 +112,11 @@ void User::ready_for_new_week()
         user_teams[Time::get_week()].team;
 }
 
+void User::set_captain(string name)
+{
+    user_teams[Time::get_next_week()].team.set_captain(name);
+}
+
 double User::get_total_score(int week_num)
 {
     double result = 0;
@@ -138,12 +143,20 @@ Fantasy_team_data User::show_fantasy_team(int week_num)
     if (target.is_full == false)
         return target;
 
-    map<string, vector<shared_ptr<Player>>> teams_players = get_team(week_num).get_players();
+    map<string, vector<shared_ptr<Player>>> teams_players =
+        get_team(week_num).get_players();
     target.gk = teams_players[GK][0]->get_name();
     target.df1 = teams_players[DF][0]->get_name();
     target.df2 = teams_players[DF][1]->get_name();
     target.mf = teams_players[MF][0]->get_name();
     target.fw = teams_players[FW][0]->get_name();
+
+    target.have_captain = get_team(week_num).get_captain_status();
+    if (target.have_captain)
+    target.captain_name = get_team(week_num).get_captain_name();
+
+    target.total_cost = get_team(week_num).get_cost();
+
     return target;
 }
 shared_ptr<Massage_reporter> User::show_transfer_budget()

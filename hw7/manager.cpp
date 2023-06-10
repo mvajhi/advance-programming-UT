@@ -99,6 +99,13 @@ void Manager::check_can_sell_player(string name)
         throw PERMISSION_DENIED_MASSAGE;
 }
 
+void Manager::check_can_set_captain(string name)
+{
+    // check login
+    if (!is_user_logged())
+        throw PERMISSION_DENIED_MASSAGE;
+}
+
 void Manager::check_team_players(Team_players_input input)
 {
     // have this post
@@ -310,6 +317,22 @@ shared_ptr<Reporter> Manager::sell_player(string name)
         check_can_sell_player(name);
 
         user_logged->sell_player(name);
+
+        return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
+    }
+    catch (const string &error)
+    {
+        return make_shared<Massage_reporter>(error + "\n");
+    }
+}
+
+shared_ptr<Reporter> Manager::set_captain(string name)
+{
+    try
+    {
+        check_can_set_captain(name);
+
+        user_logged->set_captain(name);
 
         return make_shared<Massage_reporter>(SUCCESS_MASSAGE + "\n");
     }
