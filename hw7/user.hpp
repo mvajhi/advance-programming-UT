@@ -30,6 +30,10 @@ private:
     void update_after_sell();
     void update_team_state();
 
+    // transform
+    void decrease_budget(int player_price);
+    void increase_budget(int player_price);
+
     // other
     void create_weekly_teams();
 
@@ -49,11 +53,10 @@ public:
     // transform
     void sell_player(string name);
     void buy_player(shared_ptr<Player> player);
-    void decrease_budget(int player_price);
-    void increase_budget(int player_price);
 
     // other
     void ready_for_new_week();
+    void set_captain(string name);
 };
 
 class Admin

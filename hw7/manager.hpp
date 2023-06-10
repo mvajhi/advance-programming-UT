@@ -21,6 +21,7 @@ private:
     void check_can_buy_player(string name);
     bool can_signup(User_login_info input);
     void check_can_sell_player(string name);
+    void check_can_set_captain(string name);
     void check_can_login(User_login_info input);
     void check_team_players(Team_players_input input);
     void check_admin_can_login(User_login_info input);
@@ -60,4 +61,7 @@ public:
     // transfer
     shared_ptr<Reporter> buy_player(string name);
     shared_ptr<Reporter> sell_player(string name);
+
+    // other
+    shared_ptr<Reporter> set_captain(string name);
 };

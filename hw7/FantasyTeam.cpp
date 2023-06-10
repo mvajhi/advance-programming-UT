@@ -35,8 +35,20 @@ int FantasyTeam::find_player_price(string name)
             }
     throw NOT_FOUND_MASSAGE;
 }
+
+void FantasyTeam::set_captain(string name)
+{
+    check_can_set_captain(name);
+
+    have_captain = true;
+    captain_name = name;
+}
+
 void FantasyTeam::sell_player(string name)
 {
+    if (name == captain_name)
+        have_captain = false;
+
     for (auto &role : players)
         for (size_t player = 0; player < players[role.first].size(); player++)
             if (players[role.first][player]->get_name() == name)
@@ -63,18 +75,68 @@ void FantasyTeam::check_can_buy(shared_ptr<Player> player)
         throw BAD_REQUEST_MASSAGE;
 }
 
+void FantasyTeam::check_can_set_captain(string name)
+{
+    // check have this player
+    if (find_player(name) == nullptr)
+        throw NOT_FOUND_MASSAGE;
+}
+
+shared_ptr<Player> FantasyTeam::find_player(string name)
+{
+    shared_ptr<Player> player;
+
+    for (auto &role : players)
+        for (size_t player = 0; player < players[role.first].size(); player++)
+            if (players[role.first][player]->get_name() == name)
+                return players[role.first][player];
+
+    return nullptr;
+}
+
+FantasyTeam::FantasyTeam()
+{
+    have_captain = false;
+}
+
 double FantasyTeam::get_score(int week_num)
 {
     double result = 0;
     for (auto role : players)
         for (auto player : players[role.first])
             result += player->get_score(week_num);
+
+    // add 2x captain score
+    if (have_captain)
+        result += find_player(captain_name)->get_score(week_num);
+
     return result;
 }
 
 map<string, vector<shared_ptr<Player>>> FantasyTeam::get_players()
 {
     return players;
+}
+
+bool FantasyTeam::get_captain_status()
+{
+    return have_captain;
+}
+
+string FantasyTeam::get_captain_name()
+{
+    return captain_name;
+}
+
+int FantasyTeam::get_cost()
+{
+    int cost = 0;
+
+    for (auto players_in_post : players)
+     for (auto player : players_in_post.second)
+        cost += player->get_price();
+
+    return cost;
 }
 
 bool FantasyTeam::can_add_player(string post)

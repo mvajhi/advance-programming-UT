@@ -92,6 +92,8 @@ shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager)
         return manager.get_team_players(convert_to_team_players_input(input));
     else if (are_commands_some(input, MATCH_REPORT_COMMAND))
         return manager.get_week_matches_report(convert_to_matches_input(input));
+    else if (are_commands_some(input, SET_CAPTAIN_COMMAND))
+        return manager.set_captain(convert_to_captain_input(input));
     else
         return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 }
@@ -135,6 +137,13 @@ int convert_to_team_list_input(vector<string> input)
     if (input.size() != TEAM_LIST_COMMAND_SIZE)
         throw BAD_REQUEST_MASSAGE;
     return Time::get_week();
+}
+
+string convert_to_captain_input(vector<string> input)
+{
+    check_captain_input(input);
+
+    return merge_input(input, CAPTAIN_NAME_INDEX);
 }
 
 Team_players_input convert_to_team_players_input(vector<string> input)
@@ -190,16 +199,22 @@ string replace_char(string input, char str_char, char final_char)
     return output;
 }
 
-string convert_to_transfer_input(vector<string> input)
+string merge_input(vector<string> input, size_t start_pos)
 {
-    check_transfer_input(input);
-
     string output = "";
-    for (size_t i = TRANSFER_COMMAND_SIZE - 1; i < input.size(); i++)
+
+    for (size_t i = start_pos; i < input.size(); i++)
         output += input[i] + " ";
     output.pop_back();
 
     return output;
+}
+
+string convert_to_transfer_input(vector<string> input)
+{
+    check_transfer_input(input);
+
+    return merge_input(input, TRANSFER_COMMAND_SIZE - 1);
 }
 
 void check_transfer_input(vector<string> input)
@@ -248,6 +263,12 @@ void check_matches_input(vector<string> input)
             return;
     else
         return;
+}
+
+void check_captain_input(vector<string> input)
+{
+    if (input.size() < CAPTAIN_COMMAND_SIZE)
+        throw BAD_REQUEST_MASSAGE;
 }
 
 void check_sso_input(vector<string> input)

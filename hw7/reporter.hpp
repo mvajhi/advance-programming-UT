@@ -90,6 +90,8 @@ private:
     Fantasy_team_data target_team;
 
     void sort_defender();
+    vector<string> create_team_player_output();
+    void add_captain_in_output(vector<string> &output);
 
 public:
     FantasyTeamReporter(Fantasy_team_data target_team_);
