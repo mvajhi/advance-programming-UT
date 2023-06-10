@@ -45,6 +45,7 @@ public:
     FantasyTeam get_team(int week);
     double get_total_score(int week_num);
     Fantasy_team_data show_fantasy_team(int week_num);
+    shared_ptr<Massage_reporter> show_transfer_budget();
 
     // check
     bool is_joined(int week);

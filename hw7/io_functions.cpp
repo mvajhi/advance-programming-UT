@@ -94,6 +94,8 @@ shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager)
         return manager.get_team_players(convert_to_team_players_input(input));
     else if (are_commands_some(input, MATCH_REPORT_COMMAND))
         return manager.get_week_matches_report(convert_to_matches_input(input));
+    else if (are_commands_some(input, SHOW_BUDGET_COMMAND))
+        return manager.get_users_budget();
     else
         return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 }
@@ -201,6 +203,7 @@ string replace_char(string input, char str_char, char final_char)
 
 string merge_input(vector<string> input, size_t start_pos)
 {
+
     string output = "";
 
     for (size_t i = start_pos; i < input.size(); i++)

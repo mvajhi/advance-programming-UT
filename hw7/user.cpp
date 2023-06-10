@@ -159,7 +159,10 @@ Fantasy_team_data User::show_fantasy_team(int week_num)
 
     return target;
 }
-
+shared_ptr<Massage_reporter> User::show_transfer_budget()
+{
+    return make_shared<Massage_reporter>(to_string(transfer_budget) +"\n");
+}
 Admin::Admin()
 {
     logged = false;
