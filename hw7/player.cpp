@@ -42,11 +42,11 @@ void Player::update_card_status(Player_status &status)
     }
 }
 
-Player::Player(string name_, string role_, int price_)
+Player::Player(Player_info info)
 {
-    name = name_;
-    role = role_;
-    price = price_;
+    name = info.name;
+    role = info.post;
+    price = info.price;
     sum_yellow_card = 0;
 }
 

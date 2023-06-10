@@ -26,7 +26,7 @@ private:
     void update_card_status(Player_status &status);
 
 public:
-    Player(string name_, string role_,int price_);
+    Player(Player_info info);
 
     // check
     bool can_play(int week);

@@ -226,11 +226,9 @@ void check_team_player_input(vector<string> input)
         else if (find(POSTS.begin(), POSTS.end(), input[5]) == POSTS.end())
             throw BAD_REQUEST_MASSAGE;
         else
-        {
-        }
+            return;
     else
-    {
-    }
+        return;
 }
 
 void check_matches_input(vector<string> input)
@@ -246,6 +244,10 @@ void check_matches_input(vector<string> input)
             throw BAD_REQUEST_MASSAGE;
         else if (Time::get_week() < stoi(input[WEEK_NUM_INDEX + 1]))
             throw BAD_REQUEST_MASSAGE;
+        else
+            return;
+    else
+        return;
 }
 
 void check_sso_input(vector<string> input)
@@ -268,6 +270,10 @@ void check_best_team_input(vector<string> input)
             throw BAD_REQUEST_MASSAGE;
         else if (Time::get_week() < stoi(input[WEEK_NUM_INDEX + 1]))
             throw BAD_REQUEST_MASSAGE;
+        else
+            return;
+    else
+        return;
 }
 
 bool is_number(string num)

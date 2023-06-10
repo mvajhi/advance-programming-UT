@@ -25,16 +25,17 @@ void Massage_reporter::get_cli_report()
 
 Match_reporter::Match_reporter(vector<shared_ptr<Match>> matches_)
 {
-    matches = matches_;
+    for (auto i : matches_)
+        matches.push_back(i->get_match_data());
 }
 
 void Match_reporter::get_cli_report()
 {
     for (auto match : matches)
     {
-        cout << match->team1.first->get_name() << " " << match->team1.second;
+        cout << match.team1.first << " " << match.team1.second;
         cout << " | ";
-        cout << match->team2.first->get_name() << " " << match->team2.second;
+        cout << match.team2.first << " " << match.team2.second;
         cout << endl;
     }
 }

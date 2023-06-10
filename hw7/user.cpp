@@ -16,7 +16,8 @@ void User::check_can_buy(shared_ptr<Player> target_player)
     if (Time::get_next_week() > week_team_is_full)
         if (user_teams[Time::get_next_week()].buy_count >= MAX_BUY_COUNT)
             throw PERMISSION_DENIED_MASSAGE;
-    if ( transfer_budget < target_player->get_price())
+    // check have money
+    if (transfer_budget < target_player->get_price())
         throw BAD_REQUEST_MASSAGE;
 }
 
@@ -85,8 +86,9 @@ FantasyTeam User::get_team(int week)
 void User::buy_player(shared_ptr<Player> player)
 {
     check_can_buy(player);
-    decrease_budget(player->get_price());
+
     user_teams[Time::get_next_week()].team.buy_player(player);
+    decrease_budget(player->get_price());
 
     update_after_buy();
 }
@@ -94,9 +96,13 @@ void User::buy_player(shared_ptr<Player> player)
 void User::sell_player(string name)
 {
     check_can_sell();
-    int player_price = user_teams[Time::get_next_week()].team.find_player_price(name);
-    user_teams[Time::get_next_week()].team.sell_player(name);
+
+    int player_price = user_teams[Time::get_next_week()]
+                           .team.find_player_price(name);
     increase_budget(player_price);
+
+    user_teams[Time::get_next_week()].team.sell_player(name);
+
     update_after_sell();
 }
 
@@ -185,4 +191,3 @@ void Admin::close_transfer_window()
 {
     Time::close_transfer();
 }
-

@@ -25,7 +25,7 @@ public:
 class Match_reporter : public Reporter
 {
 private:
-    vector<shared_ptr<Match>> matches;
+    vector<Match_report_data> matches;
 
 public:
     Match_reporter(vector<shared_ptr<Match>> matches_);

@@ -122,9 +122,9 @@ Match_info convert_line_to_raw_info(string line)
     return output;
 }
 
-map<Name,Roles> convert_players_to_pair(vector<string> team1_players)
+map<Name,Role> convert_players_to_pair(vector<string> team1_players)
 {
-    map<Name,Roles> team_players;
+    map<Name,Role> team_players;
     for( int role = 0 ; role < PLAYERS_NUMBER ; role++)
     {
         team_players.insert(make_pair(team1_players[role],ORIGINAL_POSTS[role]));
@@ -156,8 +156,8 @@ Match_detail convert_to_match_detail(Match_info game)
     match_details.goals_assist = game.goals_and_assists.assists;
     match_details.own_goal = get_own_goal_from_goals(game.goals_and_assists);
 
-    map<Name , Roles> team1_players = convert_players_to_pair(game.team1_players);
-    map<Name , Roles> team2_players = convert_players_to_pair(game.team2_players);
+    map<Name , Role> team1_players = convert_players_to_pair(game.team1_players);
+    map<Name , Role> team2_players = convert_players_to_pair(game.team2_players);
     match_details.players_teams = make_pair(team1_players,team2_players);
 
     match_details.players_status = create_player_status(game);

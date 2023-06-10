@@ -8,11 +8,15 @@
 #include <string>
 #include <fstream>
 #include <functional>
+#include <cmath>
 #include "time.hpp"
 
 using namespace std;
+
+typedef string Name;
+
 // enum
-enum Roles
+enum Role
 {
     gk,
     lb,
@@ -24,25 +28,12 @@ enum Roles
     rw
 };
 
-typedef string Name;
-struct Player_status;
-
-struct Match_detail
-{
-    pair<int, int> teams_goal; //
-    map<Name, Player_status> players_status; //
-    pair<map<Name, Roles>, map<Name, Roles>> players_teams; //
-    pair<Name, Name> teams_name; //
-    vector<Name> goals;//
-    vector<Name> goals_assist;//
-    vector<Name> own_goal;
-};
-
 // struct
 struct Player_info
 {
     string name;
     int price;
+    string post;
 };
 
 struct Team_data
@@ -71,15 +62,19 @@ struct Important_match_info
     int team_ga;
     int team_gf;
 };
+
 struct Player_status
 {
     bool is_played;
+    int row_score;
     double score;
     bool red_card;
     int yellow_card;
     bool injured;
+    bool clean_sheet;
+    int goal;
+    int assist;
 };
-
 
 struct Team_status
 {
@@ -95,6 +90,17 @@ struct Team_players_input
     string post;
     bool is_sort_with_rank;
     int week;
+};
+
+struct Match_detail
+{
+    pair<int, int> teams_goal;
+    map<Name, Player_status> players_status;
+    pair<map<Name, Role>, map<Name, Role>> players_teams;
+    pair<Name, Name> teams_name;
+    vector<Name> goals;
+    vector<Name> goals_assist;
+    vector<Name> own_goal;
 };
 
 struct Week_state
@@ -140,6 +146,11 @@ struct Fantasy_input
     string name;
 };
 
+struct Match_report_data
+{
+    pair<Name, int> team1;
+    pair<Name, int> team2;
+};
 
 // status massage
 const string SUCCESS_MASSAGE = "OK";
@@ -203,7 +214,6 @@ const char PRICE_SEPARATOR = ':';
 const char GOALS_ASSISTS_SEPARATOR = ':';
 
 // file index
-const int PLAYERS_NUMBER = 11;
 const int GK_INDEX = 1;
 const int DF_INDEX = 2;
 const int MF_INDEX = 3;
@@ -217,11 +227,12 @@ const int TEAM1_INDEX = 0;
 const int TEAM2_INDEX = 1;
 const int RESULT_INDEX = 1;
 const int ASSISTS_INDEX = 1;
-const int GOALS_ASSIST_INDEX = 5;
 const int RED_CARD_INDEX = 4;
+const int PLAYERS_NUMBER = 11;
 const int TEAM_NAME_INDEX = 0;
 const int YELLOW_CARD_INDEX = 3;
 const int SCORE_POINT_INDEX = 1;
+const int GOALS_ASSIST_INDEX = 5;
 const int TEAM1_PLAYERS_INDEX = 6;
 const int TEAM2_PLAYERS_INDEX = 7;
 const int INJURED_PLAYER_INDEX = 2;
@@ -240,7 +251,7 @@ const int RW_NUMBER = 10;
 
 // files address
 const string CSV_FORMAT = ".csv";
-const string DATA_ADDRESS = "/home/sayyedali/CLionProjects/clion2/hw7/data";
+const string DATA_ADDRESS = "./data";
 const string LEAGUE_ADDRESS = DATA_ADDRESS + "/premier_league.csv";
 const string WEEK_ADDRESS = DATA_ADDRESS + "/weeks_stats" + "/week_";
 
@@ -256,7 +267,7 @@ const string MF = "mf";
 const string FW = "fw";
 const string CF = "cf";
 const vector<string> POSTS = {GK, DF, MF, FW};
-const vector<Roles> ORIGINAL_POSTS = {gk,lb,cb,cb,rb,mf,mf,mf,lw,cf,rw};
+const vector<Role> ORIGINAL_POSTS = {gk,lb,cb,cb,rb,mf,mf,mf,lw,cf,rw};
 
 // real game role
 const int WIN_SCORE = 3;
@@ -265,6 +276,33 @@ const int LOSE_SCORE = 0;
 const int MAX_YELLOW_CARD = 3;
 const int NUM_WEEK_DONT_PLAY_FOR_INJURED = 3;
 const int NUM_WEEK_DONT_PLAY_FOR_RED_CARD = 1;
+
+const int WIN_PLAYER_SCORE = 5;
+const int DRAW_PLAYER_SCORE = 1;
+const int LOSE_PLAYER_SCORE = -1;
+
+const int OWN_GOAL_SCORE = -3;
+
+const int DEFAULT_GK_SCORE = 3;
+const int NO_GOAL_GK_SCORE = 5;
+const int GOAL_GK_SCORE = -1;
+
+const int DEFAULT_MF_SCORE = 0;
+const int NO_GOAL_MF_SCORE = 1;
+const int MF_PLAYER_GOAL_SCORE = 3;
+const int MF_PLAYER_ASSIST_SCORE = 2;
+const int GA_MF_SCORE = -1;
+
+const int DEFAULT_FW_SCORE = 0;
+const int FW_PLAYER_ASSIST_SCORE = 1;
+const int NO_GOAL_FW_SCORE = -1;
+const int FW_PLAYER_GOAL_SCORE = 3;
+
+const int DEFAULT_DF_SCORE = 1;
+const int NO_GOAL_DF_SCORE = 2;
+const int DF_PLAYER_GOAL_SCORE = 4;
+const int DF_PLAYER_ASSIST_SCORE = 3;
+const int DF_GA_IN_SIDE_SCORE = -1;
 
 // fantasy game role
 const int TEAM_SIZE = 5;
@@ -282,5 +320,5 @@ const int FW_ALLOWED_SIZE = 1;
 const string ADMIN_NAME = "admin";
 const string ADMIN_PASSWORD = "123456";
 
-// budjet
+// budget
 const int DEFAULT_BUDGET = 2500;

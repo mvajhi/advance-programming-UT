@@ -1,28 +1,37 @@
 #include "real_game_manager.hpp"
 
-void Real_game_manager::add_new_player(string name, string role, int price)
+void Real_game_manager::add_new_player(Player_info info)
 {
-    players.insert(make_pair(name, make_shared<Player>(name, role,price)));
+    players.insert(make_pair(
+        info.name, make_shared<Player>(info)));
 }
 
-void Real_game_manager::add_new_players(map<string, string> name_with_role)
+void Real_game_manager::add_new_players(map<string, Player_info> name_with_role)
 {
     for (auto i : name_with_role)
-        add_new_player(i.first, i.second);
+        add_new_player(i.second);
 }
 
-map<string, string> Real_game_manager::convert_team_players_to_map(shared_ptr<Team_data> data)
+pair<string, Player_info> Real_game_manager::convert_player_info_pair(
+    Player_info info, string post)
 {
-    map<string, string> output;
+    info.post = post;
+    return make_pair(info.name, info);
+}
+
+map<string, Player_info> Real_game_manager::convert_team_players_to_map(
+    shared_ptr<Team_data> data)
+{
+    map<string, Player_info> output;
 
     for (auto i : data->gk)
-        output.insert(make_pair(i.name, GK));
+        output.insert(convert_player_info_pair(i, GK));
     for (auto i : data->df)
-        output.insert(make_pair(i.name, DF));
+        output.insert(convert_player_info_pair(i, DF));
     for (auto i : data->mf)
-        output.insert(make_pair(i.name, MF));
+        output.insert(convert_player_info_pair(i, MF));
     for (auto i : data->fw)
-        output.insert(make_pair(i.name, FW));
+        output.insert(convert_player_info_pair(i, FW));
 
     return output;
 }
@@ -37,11 +46,11 @@ void Real_game_manager::add_new_team(shared_ptr<Team_data> team_data)
 }
 
 vector<shared_ptr<Player>> Real_game_manager::get_link_players(
-    vector<string> players_name)
+    vector<Player_info> players_info)
 {
     vector<shared_ptr<Player>> output;
-    for (auto i : players_name)
-        output.push_back(players[i]);
+    for (auto i : players_info)
+        output.push_back(players[i.name]);
     return output;
 }
 
@@ -50,25 +59,24 @@ map<string, vector<shared_ptr<Player>>> Real_game_manager::link_players_team(
 {
     map<string, vector<shared_ptr<Player>>> output;
 
-//    output.insert(make_pair(GK, get_link_players(team_data->gk)));
-//    output.insert(make_pair(DF, get_link_players(team_data->df)));
-//    output.insert(make_pair(FW, get_link_players(team_data->fw)));
-//    output.insert(make_pair(MF, get_link_players(team_data->mf)));
+    output.insert(make_pair(GK, get_link_players(team_data->gk)));
+    output.insert(make_pair(DF, get_link_players(team_data->df)));
+    output.insert(make_pair(FW, get_link_players(team_data->fw)));
+    output.insert(make_pair(MF, get_link_players(team_data->mf)));
 
     return output;
 }
 
-void Real_game_manager::add_new_match(Match_detail new_game, int week)
+shared_ptr<Match> Real_game_manager::add_new_match(Match_detail new_game, int week)
 {
     if (weeks_matches.count(week) == 0)
         weeks_matches.insert(make_pair(week, vector<shared_ptr<Match>>()));
 
-    weeks_matches[week].push_back(
-        make_shared<Match>(
-            teams[new_game.teams_name.first],
-            new_game.teams_goal.first,
-            teams[new_game.teams_name.second],
-            new_game.teams_goal.second));
+    shared_ptr<Match> new_match = make_shared<Match>(new_game);
+
+    weeks_matches[week].push_back(new_match);
+
+    return new_match;
 }
 
 void Real_game_manager::update_teams(Match_detail new_game, int week)
@@ -105,6 +113,11 @@ void Real_game_manager::update_players(Match_detail new_game, int week)
         players[i.first]->add_new_match(i.second, week);
 }
 
+void Real_game_manager::update_match_detail(Match_detail &data, shared_ptr<Match> match)
+{
+    data.players_status = match->get_players_status();
+}
+
 vector<shared_ptr<Player>> Real_game_manager::get_all_players_in_post(
     string post)
 {
@@ -123,9 +136,10 @@ Real_game_manager::Real_game_manager()
 
 void Real_game_manager::add_new_game(Match_detail new_game, int week)
 {
+    auto new_match = add_new_match(new_game, week);
+    update_match_detail(new_game, new_match);
     update_players(new_game, week);
     update_teams(new_game, week);
-    add_new_match(new_game, week);
 }
 
 void Real_game_manager::add_week(vector<Match_detail> games, int week)
@@ -192,7 +206,8 @@ vector<shared_ptr<Player>> Real_game_manager::get_best_players_in_post(
     vector<shared_ptr<Player>> all_players = get_all_players_in_post(post);
 
     sort(all_players.begin(), all_players.end(),
-         [week](shared_ptr<Player> p1, shared_ptr<Player> p2) {
+         [week](shared_ptr<Player> p1, shared_ptr<Player> p2)
+         {
              if (p1->get_score(week) == p2->get_score(week))
                  return p1->get_name().compare(p2->get_name()) < 0;
              else
