@@ -92,6 +92,8 @@ shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager)
         return manager.get_team_players(convert_to_team_players_input(input));
     else if (are_commands_some(input, MATCH_REPORT_COMMAND))
         return manager.get_week_matches_report(convert_to_matches_input(input));
+    else if (are_commands_some(input, SHOW_BUDGET_COMMAND))
+        return manager.get_users_budget();
     else
         return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 }

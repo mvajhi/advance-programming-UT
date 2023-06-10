@@ -165,6 +165,7 @@ const string LOGOUT_COMMAND = "POST logout";
 const string GET_SQUAD_COMMAND = "GET squad ?";
 const string PASS_WEEK_COMMAND = "POST pass_week";
 const string TEAM_PLAYERS_COMMAND = "GET players ?";
+const string SHOW_BUDGET_COMMAND = "GET show_budget";
 const string LOGIN_COMMAND = "POST login ? team_name";
 const string TEAM_LIST_COMMAND = "GET league_standings";
 const string SIGNUP_COMMAND = "POST signup ? team_name";
@@ -251,7 +252,7 @@ const int RW_NUMBER = 10;
 
 // files address
 const string CSV_FORMAT = ".csv";
-const string DATA_ADDRESS = "./data";
+const string DATA_ADDRESS = "C:\\Users\\sayyed ali\\CLionProjects\\advance-programming-UT\\hw7\\data";
 const string LEAGUE_ADDRESS = DATA_ADDRESS + "/premier_league.csv";
 const string WEEK_ADDRESS = DATA_ADDRESS + "/weeks_stats" + "/week_";
 
