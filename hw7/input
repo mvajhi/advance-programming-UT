@@ -84,3 +84,6 @@ POST logout
 POST login ? team_name taham password 123
 GET users_ranking
 GET squad ?
+GET show_budget
+POST logout
+GET show_budget

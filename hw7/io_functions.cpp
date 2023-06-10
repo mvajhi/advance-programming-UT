@@ -66,6 +66,8 @@ shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager)
         return manager.logout();
     else if (are_commands_some(input, PASS_WEEK_COMMAND))
         return manager.pass_week();
+    else if (are_commands_some(input, SHOW_BUDGET_COMMAND))
+        return manager.show_budget();
     else if (are_commands_some(input, USERS_RANKING_COMMAND))
         return manager.get_users_ranking();
     else if (are_commands_some(input, OPEN_TRANSFER_WINDOW_COMMAND))
@@ -78,6 +80,8 @@ shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager)
         return manager.signup(convert_to_login_info(input));
     else if (are_commands_some(input, BUY_PLAYER_COMMAND))
         return manager.buy_player(convert_to_transfer_input(input));
+    else if (are_commands_some(input, SET_CAPTAIN_COMMAND))
+        return manager.set_captain(convert_to_captain_input(input));
     else if (are_commands_some(input, REGISTER_ADMIN_COMMAND))
         return manager.register_admin(convert_to_login_info(input));
     else if (are_commands_some(input, SELL_PLAYER_COMMAND))
@@ -92,8 +96,6 @@ shared_ptr<Reporter> command_proccess(vector<string> input, Manager &manager)
         return manager.get_team_players(convert_to_team_players_input(input));
     else if (are_commands_some(input, MATCH_REPORT_COMMAND))
         return manager.get_week_matches_report(convert_to_matches_input(input));
-    else if (are_commands_some(input, SET_CAPTAIN_COMMAND))
-        return manager.set_captain(convert_to_captain_input(input));
     else
         return make_shared<Massage_reporter>(BAD_REQUEST_MASSAGE + "\n");
 }

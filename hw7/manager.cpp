@@ -64,6 +64,13 @@ void Manager::check_can_logout()
         throw PERMISSION_DENIED_MASSAGE;
 }
 
+void Manager::check_can_show_budget()
+{
+    // check login
+    if (!is_user_logged())
+        throw PERMISSION_DENIED_MASSAGE;
+}
+
 void Manager::check_can_buy_player(string name)
 {
     // check login
@@ -172,6 +179,21 @@ shared_ptr<Reporter> Manager::get_fantasy_team(Fantasy_input target_team)
         else
             return make_shared<FantasyTeamReporter>(
                 user_logged->show_fantasy_team(Time::get_week()));
+    }
+    catch (const string &error)
+    {
+        return make_shared<Massage_reporter>(error + "\n");
+    }
+}
+
+shared_ptr<Reporter> Manager::show_budget()
+{
+    try
+    {
+        check_can_show_budget();
+
+        return make_shared<Massage_reporter>(
+            to_string(user_logged->get_budget()) + "\n");
     }
     catch (const string &error)
     {

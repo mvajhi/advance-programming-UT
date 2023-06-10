@@ -169,6 +169,7 @@ const string LOGOUT_COMMAND = "POST logout";
 const string GET_SQUAD_COMMAND = "GET squad ?";
 const string PASS_WEEK_COMMAND = "POST pass_week";
 const string TEAM_PLAYERS_COMMAND = "GET players ?";
+const string SHOW_BUDGET_COMMAND = "GET show_budget";
 const string LOGIN_COMMAND = "POST login ? team_name";
 const string TEAM_LIST_COMMAND = "GET league_standings";
 const string SIGNUP_COMMAND = "POST signup ? team_name";

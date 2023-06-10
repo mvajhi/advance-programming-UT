@@ -160,6 +160,11 @@ Fantasy_team_data User::show_fantasy_team(int week_num)
     return target;
 }
 
+int User::get_budget()
+{
+    return transfer_budget;
+}
+
 Admin::Admin()
 {
     logged = false;
