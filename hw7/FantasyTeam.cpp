@@ -114,7 +114,6 @@ double FantasyTeam::get_score(int week_num)
         for (auto player : players[role.first])
             result += player->get_score(week_num);
 
-    // add 2x captain score
     if (have_captain)
     {
         result -= find_player(captain_name)->get_score(week_num);
