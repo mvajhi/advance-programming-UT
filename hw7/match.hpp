@@ -35,7 +35,6 @@ private:
 
     // proccess score
     int calculate_score_row(pair<Name, Role> player);
-    double calculate_Ax_score(int row_score);
     int calculate_common_score(Name player);
 
     // update status

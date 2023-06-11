@@ -17,6 +17,7 @@ private:
 
     // other
     shared_ptr<Player> find_player(string name);
+    double calculate_captain_score(int week);
 
 public:
     FantasyTeam();

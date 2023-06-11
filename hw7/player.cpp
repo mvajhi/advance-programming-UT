@@ -74,6 +74,11 @@ int Player::get_clean_sheet(int week)
                                  { return status.clean_sheet; });
 }
 
+double Player::get_row_score(int week)
+{
+    return weeks_games[week].row_score;
+}
+
 int Player::get_goal(int week)
 {
     return count_in_weeks_status(week,

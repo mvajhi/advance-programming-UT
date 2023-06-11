@@ -149,6 +149,9 @@ struct Fantasy_input
     string name;
 };
 
+const auto A = [](double x)
+{ return 1.0 / (1.0 + exp(-x / 6.0)) * 10.0; };
+
 struct Match_report_data
 {
     pair<Name, int> team1;
@@ -317,6 +320,7 @@ const int TEAM_SIZE = 5;
 const int NOT_FULL = 20;
 const int MAX_BUY_COUNT = 2;
 const int MAX_SELL_COUNT = 2;
+const double CAPTAIN_COEFFICIENT = 2;
 
 // allowed size of each post index
 const int GK_ALLOWED_SIZE = 1;

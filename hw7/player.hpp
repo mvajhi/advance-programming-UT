@@ -42,6 +42,7 @@ public:
     int get_assist(int week);
     double get_score(int week);
     int get_clean_sheet(int week);
+    double get_row_score(int week);
     double get_avg_score(int week);
 
     // other

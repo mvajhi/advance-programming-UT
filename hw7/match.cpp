@@ -149,11 +149,6 @@ int Match::calculate_score_row(pair<Name, Role> player)
     return score_algorithm[player.second](player.first);
 }
 
-double Match::calculate_Ax_score(int row_score)
-{
-    return 1.0 / (1.0 + exp(-(double)row_score / 6.0)) * 10;
-}
-
 int Match::calculate_common_score(Name player)
 {
     int score = 0;
@@ -184,7 +179,7 @@ void Match::set_score(pair<Name, Role> player)
 {
     int row_score = calculate_score_row(player);
     players_status[player.first].row_score = row_score;
-    players_status[player.first].score = calculate_Ax_score(row_score);
+    players_status[player.first].score = A(row_score);
 }
 
 void Match::set_goal(Name player)
