@@ -43,14 +43,13 @@ void User::update_after_sell()
 
 void User::update_team_state()
 {
-    if (user_teams[Time::get_next_week()].buy_count -
-                user_teams[Time::get_next_week()].sell_count ==
-            TEAM_SIZE &&
-        week_team_is_full != Time::get_next_week())
-        week_team_is_full = Time::get_next_week();
+    if (week_team_is_full == NOT_FULL)
+        if (user_teams[Time::get_next_week()].team.is_team_full())
+            week_team_is_full = Time::get_next_week();
 
-    else if (week_team_is_full == Time::get_next_week())
-        week_team_is_full = NOT_FULL;
+    if (week_team_is_full == Time::get_next_week())
+        if (!user_teams[Time::get_next_week()].team.is_team_full())
+            week_team_is_full = NOT_FULL;
 }
 
 User::User(string user_name, string user_pass)
@@ -70,7 +69,7 @@ bool User::is_password_valid(string pass)
 
 bool User::is_joined(int week)
 {
-    return week >= week_joined;
+    return week >= week_joined && week >= week_team_is_full;
 }
 
 string User::get_name()
@@ -120,7 +119,7 @@ void User::set_captain(string name)
 double User::get_total_score(int week_num)
 {
     double result = 0;
-    for (int week = FIRST_WEEK; week <= week_num; week++)
+    for (int week = week_team_is_full; week <= week_num; week++)
         result += user_teams[week].team.get_score(week);
     return result;
 }
@@ -134,6 +133,7 @@ void User::increase_budget(int player_price)
 {
     transfer_budget += player_price;
 }
+
 Fantasy_team_data User::show_fantasy_team(int week_num)
 {
     Fantasy_team_data target;

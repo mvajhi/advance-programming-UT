@@ -233,12 +233,13 @@ void check_team_player_input(vector<string> input)
         throw BAD_REQUEST_MASSAGE;
     if (input[3] != "team_name")
         throw BAD_REQUEST_MASSAGE;
+    // TODO bug
     if (input.size() == 6)
-        if (input[5] != "rank" &&
+        if (input[5] != "ranks" &&
             find(POSTS.begin(), POSTS.end(), input[5]) == POSTS.end())
             throw BAD_REQUEST_MASSAGE;
     if (input.size() == 7)
-        if (input[6] != "rank")
+        if (input[6] != "ranks")
             throw BAD_REQUEST_MASSAGE;
         else if (find(POSTS.begin(), POSTS.end(), input[5]) == POSTS.end())
             throw BAD_REQUEST_MASSAGE;

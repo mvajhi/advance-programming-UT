@@ -108,8 +108,11 @@ FantasyTeam::FantasyTeam()
 
 double FantasyTeam::get_score(int week_num)
 {
-    //! check this week score or avg score
     double result = 0;
+
+    if (!is_team_full())
+        return 0;
+
     for (auto role : players)
         for (auto player : players[role.first])
             result += player->get_score(week_num);

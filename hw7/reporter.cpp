@@ -73,15 +73,16 @@ string Team_player_reporter::convert_player_to_string(
     output += "role: " + player->get_role() + " | ";
     output += "score: " +
               float_to_string(player->get_avg_score(week)) + " | ";
+    output += "cost: " + to_string(player->get_price()) + " | ";
 
     if (player->get_role() != GK)
     {
-        output += "goal: " + to_string(player->get_goal(week)) + " | ";
-        output += "assist: " + to_string(player->get_assist(week)) + " | ";
+        output += "goals: " + to_string(player->get_goal(week)) + " | ";
+        output += "assists: " + to_string(player->get_assist(week)) + " | ";
     }
 
     if (player->get_role() != FW)
-        output += "clean sheet: " +
+        output += "clean sheets: " +
                   to_string(player->get_clean_sheet(week)) + " | ";
 
     // remove last " | "
@@ -110,9 +111,9 @@ string Team_list_reporter::convert_team_to_string(shared_ptr<Team> team)
     string output = "";
 
     output += team->get_name() + ": ";
-    output += "score: " + float_to_string(team->get_sum_score(week)) + " | ";
-    output += "GF: " + to_string(team->get_gf(week)) + " | ";
-    output += "GA: " + to_string(team->get_ga(week));
+    output += "score: " + to_string((int)team->get_sum_score(week)) + " | ";
+    output += "GF: " + to_string(team->get_sum_gf(week)) + " | ";
+    output += "GA: " + to_string(team->get_sum_ga(week));
 
     return output;
 }
@@ -159,7 +160,7 @@ void User_ranks_report::get_cli_report()
 void FantasyTeamReporter::sort_defender()
 {
     string buffer;
-    if (target_team.df1.compare(target_team.df2) < 0)
+    if (!(target_team.df1.compare(target_team.df2) < 0))
     {
         buffer = target_team.df1;
         target_team.df1 = target_team.df2;
@@ -212,5 +213,5 @@ void FantasyTeamReporter::get_cli_report()
         cout << line << endl;
 
     cout << "Total Points: " << float_to_string(target_team.total_score) << endl;
-    cout << "Total Cost: " << target_team.total_cost << endl;
+    cout << "Team Cost: " << target_team.total_cost << endl;
 }

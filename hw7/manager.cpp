@@ -361,7 +361,7 @@ shared_ptr<Reporter> Manager::set_captain(string name)
 
 bool compare_users(User_ranking_data a, User_ranking_data b)
 {
-    if ((a.point < b.point) ||
+    if ((a.point > b.point) ||
         ((a.point == b.point) &&
          (a.name[0] < b.name[0])))
         return 1;

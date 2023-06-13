@@ -189,7 +189,7 @@ const string CLOSE_TRANSFER_WINDOW_COMMAND = "POST close_transfer_window";
 const string PASSWORD_COMMAND = "password";
 const string WEEK_NUM_COMMAND = "week_num";
 const string OWN_GOAL_COMMAND = "OWN_GOAL";
-const string SORT_BY_SCORE_COMMAND = "rank";
+const string SORT_BY_SCORE_COMMAND = "ranks";
 
 // commands size
 const int POST_COMMAND_SIZE = 2;
