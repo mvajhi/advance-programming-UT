@@ -5,7 +5,7 @@
 
 string float_to_string(double number)
 {
-    number = round(number * 10) / 10;
+    number = number * 10 / 10;
     string output = to_string(number);
     size_t decimal_pos = output.find('.');
     if (decimal_pos != string::npos && output.size() > decimal_pos + 2)

@@ -24,13 +24,26 @@ GET users_ranking
 POST logout
 POST register_admin ? username admin password 123456
 POST pass_week
+GET team_of_the_week ?
+GET players ? team_name Everton_FC fw ranks
+GET players ? team_name Everton_FC gk ranks
+GET players ? team_name Everton_FC df ranks
+GET players ? team_name Everton_FC fw
+GET players ? team_name Everton_FC gk
+GET players ? team_name Everton_FC df
+GET players ? team_name Everton_FC mdranks
 GET players ? team_name Everton_FC ranks
+GET players ? team_name Everton_FC
 GET team_of_the_week ?
 GET players ? team_name Liverpool_FC gk
+GET players ? team_name Liverpool_FC fw
+GET players ? team_name Liverpool_FC df ranks
 GET matches_result_league ? week_num 2
 GET matches_result_league ? week_num 1
 POST pass_week
+GET team_of_the_week ?
 GET players ? team_name Everton_FC fw ranks
+GET players ? team_name Everton_FC df ranks
 POST logout
 POST login ? team_name Sharks password 123
 GET squad ?
@@ -47,6 +60,7 @@ GET users_ranking
 POST logout
 POST register_admin ? username admin password 123456
 POST pass_week
+GET team_of_the_week ?
 GET users_ranking
 POST logout
 POST signup ? team_name Alireza password 123
@@ -55,4 +69,5 @@ GET league_standings
 POST logout
 POST register_admin ? username admin password 123456
 POST pass_week
+GET team_of_the_week ?
 GET users_ranking
