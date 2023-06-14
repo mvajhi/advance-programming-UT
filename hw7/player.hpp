@@ -15,7 +15,6 @@ private:
     int price;
 
     // check
-    bool is_played(int week);
     static bool is_injured(Player_status status);
     static bool have_red_card(Player_status status);
     bool check_pre_weeks_status(
@@ -33,6 +32,7 @@ public:
 
     // check
     bool can_play(int week);
+    bool is_played(int week);
 
     // output
     int get_price();

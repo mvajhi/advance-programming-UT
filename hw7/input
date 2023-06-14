@@ -24,6 +24,13 @@ GET users_ranking
 POST logout
 POST register_admin ? username admin password 123456
 POST pass_week
+GET players ? team_name Man._City
+GET players ? team_name Liverpool_FC
+POST logout
+POST login ? team_name Sharks password 123
+GET squad ?
+POST logout
+POST team_of_the_week ?
 GET team_of_the_week ?
 GET players ? team_name Everton_FC fw ranks
 GET players ? team_name Everton_FC gk ranks

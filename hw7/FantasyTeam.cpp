@@ -96,6 +96,9 @@ shared_ptr<Player> FantasyTeam::find_player(string name)
 
 double FantasyTeam::calculate_captain_score(int week)
 {
+    if (!find_player(captain_name)->is_played(week))
+        return 0;
+
     double row_score = find_player(captain_name)->get_row_score(week);
 
     return A(row_score * CAPTAIN_COEFFICIENT);
