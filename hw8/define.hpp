@@ -27,11 +27,20 @@ const State NO_ANS = "no_answer";
 const string CLI_SEPARATE1 = " | ";
 const string CLI_SEPARATE2 = ", ";
 
+const string CLI_SUBMIT = "submit_answer";
+const string CLI_END = "finish_exam";
+
 // struct
 struct Question_input
 {
     int number;
     Type type;
     vector<string> question_body;
+    string answer;
+};
+
+struct Submit_input
+{
+    int number;
     string answer;
 };

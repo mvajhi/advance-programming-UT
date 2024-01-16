@@ -1,4 +1,4 @@
-#include "file_handle.hpp"
+#include "io_functions.hpp"
 
 vector<string> read_file_line(string file_path)
 {
@@ -46,7 +46,7 @@ vector<Question_input> convert_to_questions_input(vector<vector<string>> questio
     vector<Question_input> output;
     for (size_t i = 0; i < questions.size(); i++)
     {
-        Question_input new_question = make_question(questions[i], i);
+        Question_input new_question = make_question(questions[i], i + 1);
         output.push_back(new_question);
     }
 
@@ -59,4 +59,43 @@ vector<Question_input> read_file(string file_path)
     vector<vector<string>> questions = divide_into_questions(lines);
     vector<Question_input> output = convert_to_questions_input(questions);
     return output;
+}
+
+vector<string> separate_line(string line)
+{
+    vector<string> result;
+    istringstream iss(line);
+    string token;
+    
+    for (int i = 0; i < 2 && getline(iss, token, ' '); i++)
+        result.push_back(token);
+    
+    while (getline(iss, token))
+        result.push_back(token);
+
+    return result;
+}
+
+Submit_input convert_to_submit(vector<string> input)
+{
+    return Submit_input({stoi(input[1]), input[2]});
+}
+
+vector<shared_ptr<Reporter>> command_proccess(vector<string> input, Manager &manager)
+{
+    vector<shared_ptr<Reporter>> output;
+    if (input[0] == CLI_END)
+        manager.end_quiz();
+    if (input[0] == CLI_SUBMIT)
+        output.push_back(manager.submit(convert_to_submit(input)));
+    if (manager.is_end())
+        output.push_back(manager.get_end_report());
+    return output;
+        
+}
+
+void print_report_CLI(vector<shared_ptr<Reporter>> reports)
+{
+    for (auto &&r : reports)
+        cout << r->get_cli_report();
 }

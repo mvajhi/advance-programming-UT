@@ -1,19 +1,21 @@
 #include "define.hpp"
-#include "file_handle.hpp"
-#include "question.hpp"
+#include "io_functions.hpp"
+#include "manager.hpp"
 #include "reporter.hpp"
 
 int main(int argc, char *argv[])
 {
-    // read_file(argv[FILE_PATH_INDEX_ARG]);
-    Question_input in = {1, "short_answer",
-     {"What is a prime number?"},
-      "A_number_that_is_divisible_only_by_itself_and_1"};
-    shared_ptr<Question> q = make_shared<Q_short_answer>(in);
+    string line;
+    Manager manager(read_file(argv[FILE_PATH_INDEX_ARG]));
 
-    // q->set_user_ans("A_number_that_is_divisible_only_by_itself_and_1");
-    Question_reporter r(q);
-    cout << r.get_cli_short_report();
-    cout << r.get_cli_full_report();
+    while (getline(cin, line) && !manager.is_end())
+    {
+        // input
+        vector<string> separated_line = separate_line(line);
+        // proccess
+        vector<shared_ptr<Reporter>> reports = command_proccess(separated_line, manager);
+        // output
+        print_report_CLI(reports);
+    }
     return 0;
 }
