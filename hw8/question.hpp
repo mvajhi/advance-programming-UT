@@ -43,3 +43,24 @@ public:
     string get_ans();
     string get_user_ans();
 };
+
+class Q_multiple_answer : public Question
+{
+private:
+    vector<string> options;
+    vector<int> answer;
+    vector<int> user_answer;
+
+    void set_question_body(vector<string> raw_body);
+    vector<int> convert_to_ans(string raw_answer);
+    string convert_ans_to_str(vector<int> answer_);
+    void set_answer(string raw_answer);
+    bool is_true_ans();
+public:
+    Q_multiple_answer(Question_input input);
+    void set_user_ans(string raw_answer);
+
+    //getter
+    string get_ans();
+    string get_user_ans();
+};

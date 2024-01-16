@@ -47,19 +47,12 @@ Q_single_answer::Q_single_answer(Question_input input)
 {
     set_question_body(input.question_body);
     set_answer(input.answer);
-    cout << number << endl;
-    cout << "Q_single_answer" << endl;
-    cout << question_txt << endl;
-    for (auto &&i : options)
-        cout << i << endl;
-    cout << answer << endl;
 }
 
 void Q_single_answer::set_user_ans(string raw_answer)
 {
     user_answer = stoi(raw_answer);
     is_ans = true;
-    cout << user_answer << endl;
 }
 
 string Q_single_answer::get_ans()
@@ -70,4 +63,69 @@ string Q_single_answer::get_ans()
 string Q_single_answer::get_user_ans()
 {
     return to_string(user_answer);
+}
+
+void Q_multiple_answer::set_question_body(vector<string> raw_body)
+{
+    question_txt = raw_body.front();
+    options = vector<string>(raw_body.begin() + 2, raw_body.end());
+}
+
+vector<int> Q_multiple_answer::convert_to_ans(string raw_answer)
+{
+    vector<int> output;
+    istringstream stream_ans(raw_answer);
+    string num;
+    while (stream_ans >> num)
+        output.push_back(stoi(num));
+    return output;
+}
+
+string Q_multiple_answer::convert_ans_to_str(vector<int> answer_)
+{
+    string output = "";
+    for (int number : answer_)
+        output += to_string(number) + " ";
+    output.pop_back();
+    return output;
+}
+
+void Q_multiple_answer::set_answer(string raw_answer)
+{
+    answer = convert_to_ans(raw_answer);
+}
+
+bool Q_multiple_answer::is_true_ans()
+{
+    vector<int> sort_ans = answer;
+    vector<int> sort_user_ans = user_answer;
+    sort(sort_ans.begin(), sort_ans.end());
+    sort(sort_user_ans.begin(), sort_user_ans.end());
+
+    if (sort_ans == sort_user_ans)
+        return true;
+    return false;
+}
+
+Q_multiple_answer::Q_multiple_answer(Question_input input)
+    : Question(input)
+{
+    set_question_body(input.question_body);
+    set_answer(input.answer);
+}
+
+void Q_multiple_answer::set_user_ans(string raw_answer)
+{
+    user_answer = convert_to_ans(raw_answer);
+    is_ans = true;
+}
+
+string Q_multiple_answer::get_ans()
+{
+    return convert_ans_to_str(answer);
+}
+
+string Q_multiple_answer::get_user_ans()
+{
+    return convert_ans_to_str(user_answer);
 }

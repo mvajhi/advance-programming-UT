@@ -21,6 +21,7 @@
                 "ranges": "cpp",
                 "span": "cpp",
                 "regex": "cpp",
-                "valarray": "cpp"
+                "valarray": "cpp",
+                "iosfwd": "cpp"
         },
 }
