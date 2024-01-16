@@ -3,7 +3,7 @@ CFLAGS=-c -Wall --std=c++11
 LDFLAGS= 
 
 BIN_DIR =./bin
-EXECUTABLE = $(BIN_DIR)/quizMaker.out
+EXECUTABLE = ./quizMaker
 
 SOURCES=$(wildcard *.cpp)
 OBJS = $(patsubst %.cpp,$(BIN_DIR)/%.o,$(SOURCES))

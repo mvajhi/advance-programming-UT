@@ -45,11 +45,7 @@ vector<Question_input> convert_to_questions_input(vector<vector<string>> questio
 {
     vector<Question_input> output;
     for (size_t i = 0; i < questions.size(); i++)
-    {
-        Question_input new_question = make_question(questions[i], i + 1);
-        output.push_back(new_question);
-    }
-
+        output.push_back(make_question(questions[i], i + 1));
     return output;
 }
 
@@ -66,10 +62,10 @@ vector<string> separate_line(string line)
     vector<string> result;
     istringstream iss(line);
     string token;
-    
+
     for (int i = 0; i < 2 && getline(iss, token, ' '); i++)
         result.push_back(token);
-    
+
     while (getline(iss, token))
         result.push_back(token);
 
@@ -81,7 +77,7 @@ Submit_input convert_to_submit(vector<string> input)
     return Submit_input({stoi(input[1]), input[2]});
 }
 
-vector<shared_ptr<Reporter>> command_proccess(vector<string> input, Manager &manager)
+vector<shared_ptr<Reporter>> process(vector<string> input, Manager &manager)
 {
     vector<shared_ptr<Reporter>> output;
     if (input[0] == CLI_END)
@@ -91,7 +87,6 @@ vector<shared_ptr<Reporter>> command_proccess(vector<string> input, Manager &man
     if (manager.is_end())
         output.push_back(manager.get_end_report());
     return output;
-        
 }
 
 void print_report_CLI(vector<shared_ptr<Reporter>> reports)
