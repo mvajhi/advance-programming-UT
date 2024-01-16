@@ -1,4 +1,4 @@
-#include "io_functions.hpp"
+#include "file_handle.hpp"
 
 vector<string> read_file_line(string file_path)
 {
@@ -58,15 +58,5 @@ vector<Question_input> read_file(string file_path)
     vector<string> lines = read_file_line(file_path);
     vector<vector<string>> questions = divide_into_questions(lines);
     vector<Question_input> output = convert_to_questions_input(questions);
-    for (auto &&q : output)
-    {
-        cout << q.type << endl;
-        cout << "\\\\\\\\" << endl;
-        for (auto &&s : q.question_body)
-            cout << s << endl;
-        cout << "\\\\\\\\" << endl;
-        cout << q.answer << endl;
-        cout << "--------\n";
-    }
     return output;
 }
