@@ -19,6 +19,7 @@ const string SHORT_ANSWER = "short_answer";
 // struct
 struct Question_input
 {
+    int number;
     string type;
     vector<string> question_body;
     string answer;

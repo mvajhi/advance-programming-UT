@@ -30,13 +30,13 @@ vector<vector<string>> divide_into_questions(vector<string> lines)
     return questions;
 }
 
-Question_input make_question(vector<string> question)
+Question_input make_question(vector<string> question, int number)
 {
     string type = question.front();
     vector<string> question_body(question.begin() + 1, question.end() - 1);
     string answer = question.back();
 
-    Question_input output = {type, question_body, answer};
+    Question_input output = {number, type, question_body, answer};
 
     return output;
 }
@@ -44,9 +44,9 @@ Question_input make_question(vector<string> question)
 vector<Question_input> convert_to_questions_input(vector<vector<string>> questions)
 {
     vector<Question_input> output;
-    for (auto &&q : questions)
+    for (size_t i = 0; i < questions.size(); i++)
     {
-        Question_input new_question = make_question(q);
+        Question_input new_question = make_question(questions[i], i);
         output.push_back(new_question);
     }
 
