@@ -129,3 +129,41 @@ string Q_multiple_answer::get_user_ans()
 {
     return convert_ans_to_str(user_answer);
 }
+
+void Q_short_answer::set_question_body(vector<string> raw_body)
+{
+    question_txt = raw_body[0];
+}
+
+void Q_short_answer::set_answer(string raw_answer)
+{
+    answer = raw_answer;
+}
+
+bool Q_short_answer::is_true_ans()
+{
+    return answer == user_answer;
+}
+
+Q_short_answer::Q_short_answer(Question_input input)
+    : Question(input)
+{
+    set_question_body(input.question_body);
+    set_answer(input.answer);
+}
+
+void Q_short_answer::set_user_ans(string raw_answer)
+{
+    user_answer = raw_answer;
+    is_ans = true;
+}
+
+string Q_short_answer::get_ans()
+{
+    return answer;
+}
+
+string Q_short_answer::get_user_ans()
+{
+    return user_answer;
+}

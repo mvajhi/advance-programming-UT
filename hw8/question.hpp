@@ -64,3 +64,21 @@ public:
     string get_ans();
     string get_user_ans();
 };
+
+class Q_short_answer : public Question
+{
+private:
+    string answer;
+    string user_answer;
+
+    void set_question_body(vector<string> raw_body);
+    void set_answer(string raw_answer);
+    bool is_true_ans();
+public:
+    Q_short_answer(Question_input input);
+    void set_user_ans(string raw_answer);
+
+    //getter
+    string get_ans();
+    string get_user_ans();
+};
