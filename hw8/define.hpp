@@ -12,19 +12,14 @@ using namespace std;
 
 //define
 const int FILE_PATH_INDEX_ARG = 1;
-
-// enum
-enum Question_type
-{
-    single_answer,
-    multiple_answer,
-    short_answer
-};
+const string SINGLE_ANSWER = "single_answer";
+const string MULTIPLE_ANSWER = "multiple_answer";
+const string SHORT_ANSWER = "short_answer";
 
 // struct
 struct Question_input
 {
-    Question_type type;
+    string type;
     vector<string> question_body;
     string answer;
 };

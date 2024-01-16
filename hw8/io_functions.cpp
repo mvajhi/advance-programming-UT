@@ -1,10 +1,5 @@
 #include "io_functions.hpp"
 
-map<string, Question_type> STR_TO_Q_TYPE = {
-    {"single_answer", single_answer},
-    {"multiple_answer", multiple_answer},
-    {"short_answer", short_answer}};
-
 vector<string> read_file_line(string file_path)
 {
     ifstream file(file_path);
@@ -41,7 +36,7 @@ Question_input make_question(vector<string> question)
     vector<string> question_body(question.begin() + 1, question.end() - 1);
     string answer = question.back();
 
-    Question_input output = {STR_TO_Q_TYPE[type], question_body, answer};
+    Question_input output = {type, question_body, answer};
 
     return output;
 }
